@@ -1,0 +1,23 @@
+{
+  "name": "web_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariamneffeti/web_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariamneffeti/web_project/issues"
+  },
+  "homepage": "https://github.com/mariamneffeti/web_project#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.8"
+  }
+}
