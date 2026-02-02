@@ -2,9 +2,171 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Finance Dashboard</title>
+    <link rel="stylesheet" href="/web_project/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="/web_project/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
+            <div class="container">
+            <a class="navbar-brand" href="#">Finance Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.html">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="recruitment.html">Recruitment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="sales.html">Sales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="services.html">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="articles.html">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="finance.html">Finance</a>
+                </li>
+                </ul>
+            </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        <section id="summary" class="mb-5">
+            <h2 class="h4 mb-3">Financial Summary</h2>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col">
+                    <div class="card p-3 text-center summary-card-blood">
+                        <h5>Total Revenue</h5>
+                        <p>$XXXX</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3 text-center summary-card-bean">
+                        <h5>Total Expenses</h5>
+                        <p>$XXXX</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3 text-center summary-card-blood">
+                        <h5>Net Profit</h5>
+                        <p>$XXXX</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3 text-center summary-card-bean">
+                        <h5>Number of Sales</h5>
+                        <p>XX</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="add-transaction" class="mb-5">
+            <h2 class="h4 mb-3">Add Transaction</h2>
+            <form id="transaction-form" class="row g-3">
+                <div class="col-md-2">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-control" name="date">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Type</label>
+                    <select name="type" class="form-select">
+                        <option value="sale">Sale</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" name="amount" placeholder="0.00">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Client / Vendor</label>
+                    <input type="text" class="form-control" name="party" placeholder="Name">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Notes</label>
+                    <input type="text" class="form-control" name="notes" placeholder="Invoice or description">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-dark-green mt-2">Add Transaction</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="transactions" class="mb-5">
+            <h2 class="h4 mb-3">Transactions</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Client / Vendor</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-body">
+                        <tr>
+                            <td>2026-02-01</td>
+                            <td>Sale</td>
+                            <td>$500</td>
+                            <td>Client A</td>
+                            <td>Invoice #001</td>
+                        </tr>
+                        <tr>
+                            <td>2026-02-02</td>
+                            <td>Expense</td>
+                            <td>$200</td>
+                            <td>Vendor B</td>
+                            <td>Office supplies</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </section>
+
+        <section id="charts" class="mb-5">
+            <h2 class="h4 mb-3">Charts</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="card p-3 text-center">
+                        <p>Revenue Chart Placeholder</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3 text-center">
+                        <p>Expenses Chart Placeholder</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3 text-center">
+                        <p>Profit Chart Placeholder</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="bg-light p-3 text-center">
+        <p>Company Name - Finance Section</p>
+    </footer>
 </body>
 </html>
