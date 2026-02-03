@@ -4,10 +4,11 @@
 
 ## Group working on the project
 
-* Mariam Neffeti
-* Meriam Cherif
-* Ilef Ben Rahma
-* Yasmine Bouziri
+* Mariam Neffeti GL2/1
+* Meriam Cherif GL2/1
+* Ilef Ben Rahma GL2/1
+* Yasmine Bouziri GL2/1
+* Marwa Boubakri GL2/3
 
 ---
 
