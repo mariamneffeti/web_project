@@ -1,0 +1,46 @@
+.navbar-custom {
+    background-color: #46462A; 
+}
+
+.navbar-custom .nav-link {
+    color: #F5F5DC; 
+}
+
+.navbar-custom .nav-link:hover {
+    color: #B7B76B; 
+}
+
+.navbar-custom .nav-link.active {
+    color: #F3E3B2; 
+}
+
+.summary-card-blood {
+    background-color: #74070D;
+    color: #F5F5DC;
+}
+
+.summary-card-bean {
+    background-color: #310F10;
+    color: #F5F5DC;
+}
+
+.btn-dark-green {
+    background-color: #46462A; 
+    color: #F5F5DC; 
+    border: none; 
+}
+
+.btn-dark-green:hover {
+    background-color: #5C5C35; 
+    color: #FFFFFF;
+}
+.btn-bean {
+    background-color: #310F10; 
+    color: #F5F5DC; 
+    border: none;
+}
+
+.btn-bean:hover {
+    background-color: #4A1A1A; 
+    color: #FFFFFF;
+}
