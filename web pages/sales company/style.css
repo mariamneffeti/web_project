@@ -34,16 +34,6 @@
     background-color: #5C5C35; 
     color: #FFFFFF;
 }
-.btn-bean {
-    background-color: #310F10; 
-    color: #F5F5DC; 
-    border: none;
-}
-
-.btn-bean:hover {
-    background-color: #4A1A1A; 
-    color: #FFFFFF;
-}
 .btn-logout {
     border-color: #74070D; 
     color: #F5F5DC;
@@ -55,4 +45,19 @@
     background-color: #74070D;
     color: #FFFFFF;
     border-color: #74070D;
+}
+/* Add these to your existing style.css */
+
+.table-hover tbody tr:hover {
+    background-color: #f5f5dc80; /* Subtle hover effect using your beige color */
+}
+
+.badge.bg-success {
+    background-color: #46462A !important; 
+}
+.badge.bg-warning {
+    background-color: #F3E3B2 !important; 
+}
+#sales-form {
+    border-left: 5px solid #74070D; 
 }

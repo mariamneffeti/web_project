@@ -28,3 +28,15 @@
     background-color: #5C5C35; 
     color: #FFFFFF;
 }
+.btn-logout {
+    border-color: #74070D; 
+    color: #F5F5DC;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #74070D;
+    color: #FFFFFF;
+    border-color: #74070D;
+}
