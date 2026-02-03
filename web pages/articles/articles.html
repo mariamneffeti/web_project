@@ -2,9 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body style="background-color : #E6CCB2">
 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Employe Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../sales/sales.html">Sales</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../service/service.html">Services</a></li>
+                </ul>
+                <div class="navbar-text d-flex align-items-center">
+                    <span class="me-3">Employee #42</span>
+                    <button class="btn btn-sm btn-outline-danger">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3">Client Portfolio Management</h1>
+                <p class="text-muted">Manage your relationships and churn predictions.</p>
+            </div>
+            <button class="btn btn-dark">+ Add New Client</button>
+        </header>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card p-3 shadow-sm border-4" style="border-color : #102E4A">
+                    <h6 class="text-muted">Total Clients</h6>
+                    <h2 class="mb-0">1,204</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 shadow-sm border-4" style="border-color: #74070D">
+                    <h6 class="text-muted">Churn Alerts</h6>
+                    <h2 class="mb-0">12</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 shadow-sm border-4" style="border-color: #46462A">
+                    <h6 class="text-muted">Avg. Revenue</h6>
+                    <h2 class="mb-0">$4,250</h2>
+                </div>
+            </div>
+        </div>
+
+        <section class="d-flex gap-2 mb-3">
+            <div class="input-group w-50">
+                <input type="text" class="form-control" placeholder="Search by name, ID, or company..." style="border-color : black; border-width : 3px">
+                <button class="btn btn-outline-secondary" type="button" style="border-color : black; border-width : 3px">🔍</button>
+            </div>
+            <select class="form-select w-25" style="border-color : black; border-width : 3px">
+                <option>All Statuses</option>
+                <option>Active</option>
+                <option class="text-danger">At Risk (Churn Prediction)</option>
+            </select>
+            <button class="btn btn-outline-dark">Export to CSV</button>
+        </section>
+
+        <section class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark table-striped">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Engagement Score</th>
+                            <th>Churn Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>John Doe</strong></td>
+                            <td>j.doe@email.com</td>
+                            <td>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 24%"></div>
+                                </div>
+                                <small>24%</small>
+                            </td>
+                            <td><span class="badge rounded-pill text-white" style="background-color : #74070D">High Risk</span></td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-light btn-outline-dark">Details</button>
+                                <button class="btn btn-sm btn-outline-danger">🗑️</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <div class="fixed-bottom">
+<div class="card">
+  <div class="card-body">
+      <h5 class="card-title"><strong>About Us</strong></h5>
+    <p class="card-text">
+        <div class="container text-center">
+      <div class="container text-center">
+  <div class="row">
+    <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+    <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+    <div class="col-3 col-sm-3">
+        information
+    </div>
+    <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+          <div class="w-100"></div>
+
+      <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+      <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+            <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+      <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+                <div class="w-100"></div>
+<div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+      <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+            <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+      <div class="col-3 col-sm-3">.col-6 .col-sm-3</div>
+
+  </div>
+</div>
+  </div>
+</div>
+</div>
+    </div>
 </body>
 </html>
