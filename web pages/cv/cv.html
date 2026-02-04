@@ -1,10 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/web_project/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="/web_project/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body style="height: 1200px;">
+    
+    <nav class="navbar navbar-expand-sm fixed-top" style="background-color: #102E4A" data-bs-theme="dark">
+      <div class="container-fluid">
+        <img src="C:\Users\infosud\Downloads\image-removebg-preview.png" height="60" width="80" alt="Logo" />
+        <a class="navbar-brand h1" href="#">Entreprisa</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav gap-1 gap-md-3 gap-lg-5">
+            <a class="nav-link p-2" href="home.html" style="font-size: 1.2rem;">Home</a>
+            <a class="nav-link p-2" href="offre.html" style="font-size: 1.2rem;">Offre</a>
+            <a class="nav-link active p-2" href="cv.html" style="font-size: 1.2rem;">CV</a>
+          </div>
+          <form class="d-flex ms-auto" role="search">
+            <input class="form-control me-2 rounded-pill" type="search" placeholder="Search" />
+          </form>
+        </div>
+      </div>
+    </nav>
+    
+   
+    <div class="container" style="margin-top: 150px;">
+      <h1>Upload your cv</h1>
+      <h2 style="color:#114900;">Applying for [job title] at [company Name]</h2>
+    </div>
+    
+    
+    <div class="container mt-5 ">
+      <div class="row gx-5 ">
+        
+       
+        <div class="col-md-4 pe-4">
+          
+          <div class="mb-3">
+            <label for="firstName" class="form-label">Your Name</label>
+            <input type="text" class="form-control" id="firstName" placeholder="Username">
+          </div>
+          
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Your Family Name</label>
+            <input type="text" class="form-control" id="lastName" placeholder="Family name">
+          </div>
+          
+          <div class="mb-3">
+            <label for="email" class="form-label">Your Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Email">
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-6">
+              <label for="nationality" class="form-label">Nationality</label>
+              <input class="form-control" list="nationalityOptions" id="nationality" placeholder="Nationality">
+              <datalist id="nationalityOptions">
+                <option value="Tunisian">
+                <option value="French">
+                <option value="American">
+                <option value="British">
+                <option value="German">
+                <option value="Italian">
+                <option value="Spanish">
+                <option value="Canadian">
+                <option value="Chinese">
+                <option value="Japanese">
+              </datalist>
+            </div>
+            <div class="col-6">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="phone" placeholder="Phone number">
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="address" class="form-label">Adresse</label>
+            <input type="text" class="form-control" id="address">
+            <div class="form-text">Adresse doit être précise</div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="linkedin" class="form-label">Profil professionnel</label>
+            <input type="text" class="form-control" id="linkedin" placeholder="LinkedIn">
+          </div>
+          
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="terms" required>
+            <label class="form-check-label" for="terms">
+              I agree to Terms & Conditions
+            </label>
+          </div>
+          
+        </div>
+        
+        
+        <div class="col-md-8 ps-5 d-flex flex-column align-items-center">
+  <label class="form-label">Upload Your CV</label>
+  
+  <div class="border border-4 rounded p-5 text-center mb-3" 
+       style="max-width: 500px; width: 100%; background-color: #e9debe; cursor: pointer; border-style: dashed !important; border-color: #3f0202 !important; min-height: 300px; display: flex; align-items: center; justify-content: center;"
+       onclick="document.getElementById('fileInput').click()">
+    <p class="mb-0" style="color: #3f0202; font-size: 1.1rem;">
+      <strong>Drag & Drop your CV here or<br>Browse Files</strong>
+    </p>
+    <input type="file" id="fileInput" class="d-none" accept=".pdf,.docx">
+  </div>
+  
+  <p class="text-muted small mb-3 ">
+    Accepted: <br>
+    PDF, DOCX
+  </p>
+  
+  <button type="button" class="btn mb-3 px-5" 
+          style="background-color: #3f0202; color:#fffafa;"
+          onclick="document.getElementById('fileInput').click()">
+    Browse Files
+  </button>
+  
+  <button type="submit" class="btn px-5" 
+          style="background-color: #3f0202; color:#fffafa;">
+    Submit Application
+  </button>
+</div>
+    
+  </body>
 </html>
