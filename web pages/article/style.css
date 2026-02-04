@@ -2,8 +2,8 @@
     display: flex;
     margin-top: 20px;
     background-color: rgba(59, 12, 2, 0.152);
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     padding-left: 35px;
     padding-right: 35px;
     font-family: Georgia;
@@ -14,12 +14,10 @@
     align-items: center;
   }
   aside{
-    margin-left:375px;
-    width: 200px;
-    height:100px ;
+    margin-left:auto;
+    width:150px;
     display: flex;
-    align-items: center;
- 
+    background-color: #ffffff;
   }
   h1{
     font-size: 30px;
