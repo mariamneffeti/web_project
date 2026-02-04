@@ -1,0 +1,55 @@
+:root {
+  --vanilla: #F3E3B2;
+  --dark-green: #46462A;
+  --blood-red: #74070D;
+  --bean: #310F10;
+  --midnight: #102E4A;
+  --bg-main: #E6CCB2;
+}
+
+/* Body */
+body {
+  background-color: var(--bg-main);
+  font-family: Arial, sans-serif;
+}
+
+/* Card */
+.card {
+  background-color: var(--vanilla);
+  border: 2px solid var(--dark-green);
+}
+
+/* Card Title */
+.card-title {
+  color: var(--midnight);
+}
+
+/* Labels */
+.form-label {
+  color: var(--bean);
+}
+
+/* Inputs */
+.form-control {
+  border: 1px solid var(--dark-green);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--blood-red);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-green);
+}
+
+/* Links */
+a {
+  color: var(--blood-red);
+}
+
+a:hover {
+  color: var(--dark-green);
+  text-decoration: none;
+}
