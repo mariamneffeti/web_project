@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Articles</title>
+      <link rel="stylesheet" href="/web_project/node_modules/bootstrap/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="style.css">
+      <script src="/web_project/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <body>
+
+      <header>
+        <h1>Articles</h1>
+                <ul>
+                    <li ><a class="n" href="/web_project/web pages/rh/rh.html">Employees</a></li>
+                    <li ><a class="n" href="/web_project/web pages/recruitement/recruitement.html">Recruitment</a></li>
+                    <li ><a class="n" href="/web_project/web pages/sales company/salesC.html">Sales</a></li>
+                    <li ><a class="n" href="/web_project/web pages/service admin/service_admin.html">Services</a></li>
+                    <li ><a class="na" href="/web_project/web pages/articles/articles.html">Articles</a></li>
+                    <li ><a class="n" href="/web_project/web pages/finance/finance.html">Finance</a></li>
+                    <li ><a class="b" href="/logout">Logout</a></li>
+                </ul>
+                <aside>
+                    <img class="m1" src="https://img.freepik.com/vecteurs-libre/document-electronique-papier-electronique-bureau-sans-papier-article-internet-organisation-documentation-ligne-taper-fichier-texte-ordinateur-illustration-metaphore-concept-isole-vecteur_335657-2745.jpg" alt="">
+                </aside>
+      </header>
+      <section class="s0">
+        <h2>Add New Article</h2>
+        <div class="d1">
+          <form class="f">
+                    <label >Article Title : </label>
+                    <input type="text"  placeholder="Enter Title">
+                    <label >Category / Tag : </label>
+                    <select>
+                        <option selected="">Choose...</option>
+                        <option value="1">Technology</option>
+                        <option value="1">Data & AI</option>
+                        <option value="1">Cybersecurity</option>
+                        <option value="2">HR & Careers</option>
+                        <option value="3">Company News</option>
+                    </select>
+                    <label >Description : </label>
+                    <TEXTAREA NAME="comment" ROWS=8 COLS=40> description</TEXTAREA>
+                    <label >Author : </label>
+                    <input type="text"  placeholder="Author">
+                    <label >Content : </label>
+                    <input type="url"  placeholder="https://expl.com/article.pdf">
+                    <label >Publish Date : </label>
+                    <input type="datetime"  placeholder="**/**/****">
+                    <label >Cover Image : </label>
+                    <input type="url"  placeholder="https://expl.com/image.jpg">
+                    <button type="submit" class="btn">Submit</button>
+                
+            </form>
+          
+        </div>
+      </section>
+      <section class="s1">
+        <h2>Search Article</h2>
+        <div class="d1">
+          <input type="text" placeholder="Search by Title or Author">
+          <button class="b1">Search</button>
+        </div>
+      </section>
+      <section class="s3">
+        <h2>Filter by Category/Tag</h2>
+        <div class="d1">
+          <input type="text" placeholder="filter Articles">
+          <button class="b1">Filter</button>
+        </div>
+      </section>
+      <section class="s2">
+        <h2>Article Details</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Content</th>
+              <th>Images</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1A7</td>
+              <td>Intro to Web Development</td>
+              <td>Peter Kelt</td>
+              <td>Technology</td>
+              <td>15/10/2025</td>
+              <td><a href="#">clic here</a></td>
+              <td> <img class="m2" src="https://images.surferseo.art/9602bc4b-cfc4-410e-b291-611d478c9d6a.png" alt=""></td>
+        
+              <td>
+                <button class="b2">View</button>
+                <button class="b2">Edit</button>
+                <button class="b2">Delete</button>
+                <button class="b5">Like</button>
+                <button class="b2">Comment</button>
+              </td>
+            </tr>
+             <tr>
+              <td>1P0</td>
+              <td>Cybersecurity Best Practices</td>
+              <td>Ali Solt</td>
+              <td>Security</td>
+              <td>22/08/2025</td>
+              <td><a href="#"> clic here</a></td>
+              <td> <img class="m2" src="https://eu-images.contentstack.com/v3/assets/blt5412ff9af9aef77f/blt8d3c10e7a16c531a/65eecb85af4416040aced770/Service-Cyber-Security.png?auto=webp&quality=100&format=jpg&disable=upscale" alt=""></td>
+              
+              <td>
+                <button class="b2">View</button>
+                <button class="b2">Edit</button>
+                <button class="b2">Delete</button>
+                <button class="b5">Like</button>
+                <button class="b2">Comment</button>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </section>
+    <footer>
+       <p> Companies Articles  ©2026</p>
+       <p>All rights reserved</p>
+       <p>Contact Support :  </p>
+       <p>+21671589623</p>
+       <p>+21671256383</p>
+     </footer>
+    </body>
+    </html>
