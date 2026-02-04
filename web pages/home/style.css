@@ -1,0 +1,62 @@
+:root {
+  --vanilla: #F3E3B2;
+  --dark-green: #46462A;
+  --blood-red: #74070D;
+  --bean: #310F10;
+  --midnight: #102E4A;
+  --bg-main: #E6CCB2;
+}
+
+/* Body */
+body {
+  background-color: var(--bg-main);
+  color: var(--bean);
+  font-family: Arial, sans-serif;
+}
+
+/* Hero */
+.hero {
+  background-color: var(--vanilla);
+}
+
+.hero h1 {
+  color: var(--midnight);
+}
+
+.hero p {
+  color: var(--bean);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--blood-red);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-green);
+}
+
+.btn-outline-primary {
+  color: var(--blood-red);
+  border-color: var(--blood-red);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--blood-red);
+  color: var(--vanilla);
+  border-color: var(--blood-red);
+}
+
+/* Cards */
+.card {
+  background-color: var(--vanilla);
+  border: 2px solid var(--dark-green);
+  color: var(--bean);
+}
+
+/* Footer */
+footer {
+  background-color: var(--bean);
+  color: var(--vanilla);
+}
