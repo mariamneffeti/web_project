@@ -1,0 +1,15 @@
+vanilla : #F3E3B2
+dark green : #46462A
+blood red : #74070D
+bean : #310F10
+midnight : #102E4A
+background-color : #E6CCB2
+
+// Palette used by yasmine
+midnight : #28222C
+Warm Slate : #4A3F40
+pink : #8A4F55
+Ochre : #D49C68
+Peach : #E4A390
+white : #FFFFFF     
+purple grey : #28222C

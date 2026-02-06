@@ -6,93 +6,131 @@
     <link rel="stylesheet" href="/web_project/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="/web_project/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="#">Company Services</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+    <header>
+        <nav class="navbar navbar-dark navbar-custom p-2">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <img src="" width="35" height="35" alt="Company logo"/><p class="navbar-brand text-vanilla fw-bold">Company Services</p>
+                </div>
+
+                <ul class="nav nav-pills d-none d-lg-flex justify-content-center flex-grow-1">
                     <li class="nav-item"><a class="nav-link" href="/web_project/web pages/rh/rh.html">Employees</a></li>
                     <li class="nav-item"><a class="nav-link" href="/web_project/web pages/recruitement/recruitement.html">Recruitment</a></li>
                     <li class="nav-item"><a class="nav-link" href="/web_project/web pages/sales company/salesC.html">Sales</a></li>
                     <li class="nav-item"><a class="nav-link active" href="/web_project/web pages/service admin/service_admin.html">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="/web_project/web pages/articles/articles.html">Articles</a></li>
                     <li class="nav-item"><a class="nav-link" href="/web_project/web pages/finance/finance.html">Finance</a></li>
-                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-danger btn-logout" href="/logout">
-                            Logout
-                        </a>
-                    </li>
                 </ul>
+
+                <div class="dropdown ms-auto d-none d-lg-block">
+                    <a class="d-flex align-items-center text-vanilla text-decoration-none dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
+                        <div class="user-avatar-placeholder me-2">U</div>                        
+                        User
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="">Profile</a></li>
+                        <li><a class="dropdown-item text-danger" href="">Logout</a></li>
+                    </ul>
+                </div>
+
+                <button class="btn d-lg-none text-vanilla" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
+        </nav>
+    </header>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
+        <div class="offcanvas-header shadow-sm" style="background-color: var(--primary);">
+            <h5 class="offcanvas-title text-vanilla">Services Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
         </div>
-    </nav>
-
-    <div class="container">
-        <section id="calendar" class="mb-5">
-            <h2 class="h4 mb-3">Scheduled Meetings</h2>
-            <div class="card p-3">
-                <button class="btn btn-dark-green mb-3">Add New Meeting</button>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-custom">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Topic</th>
-                                <th>Attendees</th>
-                                <th>Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2026-02-05</td>
-                                <td>10:00</td>
-                                <td>Strategy Meeting</td>
-                                <td>John, Maria</td>
-                                <td>Prepare report</td>
-                            </tr>
-                            <tr>
-                                <td>2026-02-06</td>
-                                <td>14:00</td>
-                                <td>Client Follow-up</td>
-                                <td>Sarah, Tom</td>
-                                <td>Send proposal</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="ai-assistant" class="mb-5">
-            <h2 class="h4 mb-3">AI Assistant (Future Feature)</h2>
-            <div class="card p-3 summary-card-bean">
-                <p>Ask questions to the AI assistant regarding company operations, clients, or sales.</p>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Ask the AI...">
-                    <button class="btn btn-dark-green">Send</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="notifications" class="mb-5">
-            <h2 class="h4 mb-3">Notifications / Mailing (Future Feature)</h2>
-            <div class="card p-3 summary-card-bean">
-                <p>Send automated notifications or emails to clients and employees.</p>
-                <button class="btn btn-dark-green mt-2">Send Notification</button>
-            </div>
-        </section>
-
+        <div class="offcanvas-body p-0" style="background-color: var(--primary);">
+            <ul class="nav flex-column text-center mt-3">
+                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/rh/rh.html">Employees</a></li>
+                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/recruitement/recruitement.html">Recruitment</a></li>
+                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/sales company/salesC.html">Sales</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/web_project/web pages/service admin/service_admin.html">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/articles/articles.html">Articles</a></li>
+                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/finance/finance.html">Finance</a></li>
+            </ul>
+        </div>
     </div>
 
-    <footer class="bg-light p-3 text-center">
-        <p>Company Services Section</p>
+    <div class="container mt-4">
+        <section id="calendar" class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h4 fw-800 text-primary-rustic mb-0">Scheduled Meetings</h2>
+                <button class="btn btn-primary-rustic px-4">Add New Meeting</button>
+            </div>
+            <div class="table-responsive rounded-3 shadow-sm">
+                <table class="table table-bordered table-striped table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Topic</th>
+                            <th>Attendees</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2026-02-05</td>
+                            <td class="fw-bold">10:00</td>
+                            <td>Strategy Meeting</td>
+                            <td>John, Maria</td>
+                            <td>Prepare report</td>
+                        </tr>
+                        <tr>
+                            <td>2026-02-06</td>
+                            <td class="fw-bold">14:00</td>
+                            <td>Client Follow-up</td>
+                            <td>Sarah, Tom</td>
+                            <td>Send proposal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <section id="ai-assistant">
+                    <h2 class="h4 mb-3 text-primary-rustic">AI Assistant</h2>
+                    <div class="card p-4 summary-card-1 rounded-4 border-0 h-100">
+                        <p class="small opacity-75">Ask questions regarding company operations, clients, or sales.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control custom-input" placeholder="Ask the AI...">
+                            <button class="btn btn-primary-rustic">Send</button>
+                        </div>
+                        <div class="mt-3 p-2 rounded bg-white text-dark small" style="min-height: 50px; opacity: 0.9;">
+                            <em>AI Response will appear here...</em>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-md-6">
+                <section id="notifications">
+                    <h2 class="h4 mb-3 text-primary-rustic">Mailing & Alerts</h2>
+                    <div class="card p-4 summary-card-2 rounded-4 border-1 h-100">
+                        <p class="small text-muted">Send automated notifications or emails to clients and employees.</p>
+                        <div class="d-grid">
+                            <button class="btn btn-primary-rustic mb-2">Send Employee Memo</button>
+                            <button class="btn btn-outline-dark border-2 fw-bold" style="border-radius: 8px;">Notify Clients</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer class="p-4 text-center footer-custom mt-5">
+        <p class="mb-0">Company Name - Services & AI Division</p>
     </footer>
 </body>
 </html>
