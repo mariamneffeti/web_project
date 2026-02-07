@@ -6,30 +6,20 @@ header{
   color: antiquewhite;
 }
 
-/* Navbar */
 .custom-navbar {
   background: linear-gradient(90deg, #388087, #0d1f1b);
 }
 
-/* Page spacing */
+
 .page-content {
   padding-top: 120px;
 }
 
-/* Cards */
+
 .card {
   border-radius: 12px;
 }
 
-.tab{
-  width: 100%;
-  background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  border: 1px solid rgb(214, 214, 214);
-  padding: 10px;
-  padding-right: 12px ;
-  margin-bottom: 80px;
-}
 th,td {
   border: 1px solid #24272b;
 }
@@ -48,6 +38,7 @@ table{
     background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     font-family: 'Inter', sans-serif;
+    margin-top: 80px;
 }
 
 .footer-link {
@@ -60,6 +51,7 @@ table{
 .footer-link:hover {
     color: #ffffff;
     padding-left: 5px; 
+    
 }
 
 .footer-brand i {
@@ -69,7 +61,11 @@ table{
 .btn-secondary{
   background-color: #388087;
 }
-
+.btn-outline-success{
+  background-color: rgba(210, 17, 17, 0.634);
+  color: white;
+  border-radius: 12px;
+}
 
 /* blue: #102E4A
 bluegreen :#388087
