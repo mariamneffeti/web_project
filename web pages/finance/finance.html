@@ -2,120 +2,228 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Finance Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/web_project/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entreprisa - Finance Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <script src="/web_project/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-dark navbar-custom p-2">
-            <div class="container d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <img src="" width="35" height="35" alt="Company logo"/><p class="navbar-brand text-vanilla fw-bold">Finance Dashboard</p>
-                </div>
 
-                <ul class="nav nav-pills d-none d-lg-flex justify-content-center flex-grow-1">
-                    <li class="nav-item"><a class="nav-link" href="/web_project/web pages/rh/rh.html">Employees</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/web_project/web pages/recruitement/recruitement.html">Recruitment</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/web_project/web pages/sales company/salesC.html">Sales</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/web_project/web pages/service admin/service_admin.html">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/web_project/web pages/articles/articles.html">Articles</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/web_project/web pages/finance/finance.html">Finance</a></li>
-                </ul>
+    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #388087" data-bs-theme="dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <div class="dropdown ms-auto d-none d-lg-block">
-                    <a class="d-flex align-items-center text-vanilla text-decoration-none dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
-                        <div class="user-avatar-placeholder me-2">U</div>                        
-                        User
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="">Profile</a></li>
-                        <li><a class="dropdown-item text-danger" href="">Logout</a></li>
-                    </ul>
-                </div>
+        <img src="" height="50" width="70" alt="Logo" />
+        <a class="navbar-brand h1 fw-bold" href="">Finance Dashboard</a>
 
-                <button class="btn d-lg-none text-vanilla" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav mx-auto gap-3">
+                <a class="nav-link" href="/web_project/web pages/rh/rh.html">Employees</a>
+                <a class="nav-link" href="/web_project/web pages/recruitement/recruitement.html">Recruitment</a>
+                <a class="nav-link" href="/web_project/web pages/sales company/salesC.html">Sales</a>
+                <a class="nav-link" href="/web_project/web pages/service admin/service_admin.html">Services</a>
+                <a class="nav-link" href="/web_project/web pages/articles/articles.html">Articles</a>
+                <a class="nav-link active" href="/web_project/web pages/finance/finance.html">Finance</a>
             </div>
-        </nav>
-    </header>
-
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
-        <div class="offcanvas-header shadow-sm" style="background-color: var(--primary);">
-            <h5 class="offcanvas-title text-vanilla">Finance Dashboard</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="offcanvas-body p-0" style="background-color: var(--primary);">
-            <ul class="nav flex-column text-center mt-3">
-                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/rh/rh.html">Employees</a></li>
-                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/recruitement/recruitement.html">Recruitment</a></li>
-                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/sales company/salesC.html">Sales</a></li>
-                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/service admin/service_admin.html">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="/web_project/web pages/articles/articles.html">Articles</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/web_project/web pages/finance/finance.html">Finance</a></li>
-            </ul>
-            <hr class="text-white opacity-25">
-            <ul class="nav flex-column text-center">
-                <li><a class="nav-link text-white" href="">Profile</a></li>
-                <li><a class="nav-link text-danger" href="">Logout</a></li>
-            </ul>
+
+        <div class="navbar-nav ms-auto">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                    <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+                    <span class="d-none d-sm-inline">User</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">
+                                <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2"><span >Profil </span></a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#"><img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"><span>Logout </span></a></li>
+                </ul>
+            </div>
         </div>
     </div>
+</nav>
 
-    <div class="container mt-4">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" style="background-color: #0d1f1b; color: white;">
+    <div class="offcanvas-header border-bottom border-secondary">
+        <h5 class="offcanvas-title fw-bold text-uppercase">Entreprisa Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="nav flex-column gap-3">
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" href="/web_project/web pages/rh/rh.html">
+                    <i class="bi bi-people me-3"></i> Employees
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" href="/web_project/web pages/recruitement/recruitement.html">
+                    <i class="bi bi-person-plus me-3"></i> Recruitment
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" href="/web_project/web pages/sales company/salesC.html" style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;">
+                    <i class="bi bi-cart me-3"></i> Sales
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" href="/web_project/web pages/service admin/service_admin.html">
+                    <i class="bi bi-gear me-3"></i> Services
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center" href="/web_project/web pages/articles/articles.html">
+                    <i class="bi bi-box me-3"></i> Articles
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center active" href="/web_project/web pages/finance/finance.html">
+                    <i class="bi bi-cash-stack me-3"></i> Finance
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+    <div class="container" style="margin-top: 100px; margin-bottom: 100px;">
         <section id="summary" class="mb-5">
-            <h2 class="h4 mb-3 fw-800 text-primary-rustic">Financial Summary</h2>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col"><div class="card p-3 text-center summary-card-1"><h5>Total Revenue</h5><p>XXXX Dt</p></div></div>
-                <div class="col"><div class="card p-3 text-center summary-card-2"><h5>Total Expenses</h5><p>XXXX Dt</p></div></div>
-                <div class="col"><div class="card p-3 text-center summary-card-1"><h5>Net Profit</h5><p>XXXX Dt</p></div></div>
-                <div class="col"><div class="card p-3 text-center summary-card-2"><h5>Number of Sales</h5><p>XX</p></div></div>
+            <h2 class="h4 mb-4 fw-bold" style="color: #102E4A;">Financial Summary</h2>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="card p-4 text-center stats-card">
+                        <h6 class="text-secondary text-uppercase small">Total Revenue</h6>
+                        <h3 class="fw-bold">XXXX Dt</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-4 text-center stats-card" style="border-left-color: #102E4A;">
+                        <h6 class="text-secondary text-uppercase small">Total Expenses</h6>
+                        <h3 class="fw-bold">XXXX Dt</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-4 text-center stats-card">
+                        <h6 class="text-secondary text-uppercase small">Net Profit</h6>
+                        <h3 class="fw-bold">XXXX Dt</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-4 text-center stats-card" style="border-left-color: #8D9B6A;">
+                        <h6 class="text-secondary text-uppercase small">Sales count</h6>
+                        <h3 class="fw-bold">XX</h3>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="add-transaction" class="mb-5">
-            <h2 class="h4 mb-3 text-primary-rustic">Add Transaction</h2>
-            <form id="transaction-form" class="row g-3 card-light-rustic p-4 rounded-4 shadow-sm border mx-0">
-                <div class="col-md-2"><label class="form-label fw-bold small">Date</label><input type="date" class="form-control custom-input"></div>
-                <div class="col-md-2"><label class="form-label fw-bold small">Type</label><select class="form-select custom-input"><option>Sale</option><option>Expense</option></select></div>
-                <div class="col-md-2"><label class="form-label fw-bold small">Amount</label><input type="number" class="form-control custom-input" placeholder="0.00"></div>
-                <div class="col-md-3"><label class="form-label fw-bold small">Client / Vendor</label><input type="text" class="form-control custom-input" placeholder="Name"></div>
-                <div class="col-md-3"><label class="form-label fw-bold small">Notes</label><input type="text" class="form-control custom-input" placeholder="Description"></div>
-                <div class="col-12"><button type="submit" class="btn btn-primary-rustic mt-2 px-4">Add Transaction</button></div>
-            </form>
+            <div class="card border-0 shadow-sm p-4 rounded-4">
+                <h2 class="h4 mb-4 fw-bold" style="color: #102E4A;">Add Transaction</h2>
+                <form id="transaction-form" class="row g-3">
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Type</label>
+                        <select class="form-select">
+                            <option>Sale</option>
+                            <option>Expense</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Amount</label>
+                        <input type="number" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Client / Vendor</label>
+                        <input type="text" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Notes</label>
+                        <input type="text" class="form-control" placeholder="Description">
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-finance px-5 py-2 rounded-pill mt-3">
+                            <i class="bi bi-plus-circle me-2"></i>Add Transaction
+                        </button>
+                    </div>
+                </form>
+            </div>
         </section>
 
         <section id="transactions" class="mb-5">
-            <h2 class="h4 mb-3 text-primary-rustic">Transactions</h2>
-            <div class="table-responsive rounded-3 shadow-sm">
-                <table class="table table-bordered table-striped table-custom mb-0">
+            <h2 class="h4 mb-4 fw-bold" style="color: #102E4A;">Recent Transactions</h2>
+            <div class="table-responsive shadow-sm rounded-3">
+                <table class="table table-hover table-custom align-middle mb-0">
                     <thead>
-                        <tr><th>Date</th><th>Type</th><th>Amount</th><th>Client / Vendor</th><th>Notes</th></tr>
+                        <tr>
+                            <th class="py-3 px-4">Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Client / Vendor</th>
+                            <th>Notes</th>
+                        </tr>
                     </thead>
-                    <tbody id="transaction-body">
-                        <tr><td>2026-02-01</td><td>Sale</td><td>500 Dt</td><td>Client A</td><td>Invoice #001</td></tr>
-                        <tr><td>2026-02-02</td><td>Expense</td><td>200 Dt</td><td>Vendor B</td><td>Office supplies</td></tr>
+                    <tbody>
+                        <tr>
+                            <td class="px-4">2026-02-01</td>
+                            <td><span class="badge bg-success-subtle text-success px-3">Sale</span></td>
+                            <td class="fw-bold">500 Dt</td>
+                            <td>Client A</td>
+                            <td class="text-muted italic">Invoice #001</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </section>
-
-        <section id="charts" class="mb-5">
-            <h2 class="h4 mb-3 text-primary-rustic">Charts</h2>
-            <div class="row row-cols-1 row-cols-md-3 g-3">
-                <div class="col"><div class="card p-5 text-center chart-mock">Revenue Chart Placeholder</div></div>
-                <div class="col"><div class="card p-5 text-center chart-mock">Expenses Chart Placeholder</div></div>
-                <div class="col"><div class="card p-5 text-center chart-mock">Profit Chart Placeholder</div></div>
-            </div>
-        </section>
     </div>
 
-    <footer class="p-4 text-center footer-custom mt-5">
-        <p class="mb-0">Company Name - Finance Section</p>
-    </footer>
+    <footer  class="footer-forest text-white py-5" id="About" style="height: 400px;">
+        <div  class="container " Style ="margin-top: 5rem ;">
+            <div class="row gy-4">
+            
+            <div class="col-lg-4 col-md-12">
+                <div class="footer-brand mb-3">
+                <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
+                <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
+                </div>
+            
+            </div>
+            
+            <div class="col-6 col-md-3 col-lg-2">
+                <h6 class="text-uppercase small fw-bold mb-3 opacity-50">The Product</h6>
+                <ul class="list-unstyled">
+                <li class="mb-2"><a href="#" class="footer-link">Contacts us</a></li>
+                <li class="mb-2"><a href="#" class="footer-link">Questions</a></li>
+                <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="col-6 col-md-3 col-lg-2">
+                <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
+                <ul class="list-unstyled">
+                <li class="mb-2"><a href="#" class="footer-link">Terms & Conditions</a></li>
+                <li class="mb-2"><a href="#" class="footer-link">Privacy policy</a></li>
+                </ul>
+            </div>
+        <hr class="opacity-25">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3">
+                        <p>© 2026 CareerFlow Inc. All rights reserved.</p>
+                        <ul class="list-inline">
+                            <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Privacy</a></li>
+                            <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Terms</a></li>
+                            <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Cookies</a></li>
+                        </ul>
+                    </div>
+            </div>
+        </div>
+        </footer>
 </body>
 </html>
