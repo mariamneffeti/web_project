@@ -1,5 +1,57 @@
 .custom{
 border : none !important;
 border-left :10px solid #102E4A !important;
-
 }
+.custom1{
+border : none !important;
+border-left : 10px solid #46462A !important;
+}
+.custom2{
+border : none !important;
+border-left : 10px solid #FFC30B !important;
+}
+.custom3{
+border : none !important;
+border-left : 10px solid #74070D !important;
+}
+.small{
+height: 260px;
+object-fit: cover;
+}
+ .dashboard-cover {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .dashboard-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(0,0,0,0.55),
+      rgba(0,0,0,0.2)
+    );
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 2rem;
+  }
+
+  .cover-overlay h3 {
+    font-weight: 700;
+  }
+
+  .cover-overlay p {
+    opacity: 0.85;
+    margin-bottom: 0;
+  }
