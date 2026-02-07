@@ -3,130 +3,426 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/web_project/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-      <script src="/web_project/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="clienthome.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
     <title>Document</title>
   </head>
-  <body style="height: 1200px">
-    <nav
-      class="navbar navbar-expand-sm fixed-top"
-      style="background-color: #102e4a"
-      data-bs-theme="dark"
-    >
-      <div class="container-fluid">
-        <img
-          src="C:\Users\infosud\Downloads\image-removebg-preview.png"
-          height="60"
-          width="80"
-          alt="Logo"
-        />
-        <a class="navbar-brand h1" href="#">Entreprisa</a>
+  <style>
+    .dropdown-toggle::after {
+      display: none !important;
+    }
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: #f8f9fa;
+    }
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-        >
+    .search-container {
+      background: white;
+      padding: 10px;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+  
+    .job-card {
+      transition: all 0.3s ease;
+      border-radius: 16px;
+      border: 1px solid #e9ecef;
+      background: white;
+    }
+
+    .job-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      border-color: #0f172a;
+    }
+
+    .company-logo {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: #f1f5f9;
+    }
+
+    .stats-divider {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: #0f172a;
+    }
+
+    .footer-forest {
+      background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
+      color: white;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .footer-link:hover {
+      color: #8d9b6a;
+      transform: translateX(5px);
+    }
+
+    .btn-primary {
+      border-radius: 50px;
+      padding: 10px 25px;
+      font-weight: 600;
+    }
+  </style>
+  <body style="height: 1500px; background-color: #f6f6f2">
+    <nav class="navbar navbar-expand-sm fixed-top" style="background-color: #388087" data-bs-theme="dark">
+      <div class="container-fluid">
+        <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
+        <a class="navbar-brand h1" href="../home/home.html" >Entreprisa</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
           <span class="navbar-toggler-icon"></span>
         </button>
-
+        
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav gap-1 gap-md-3 gap-lg-5">
-            <a class="nav-link p-2" href="home.html" style="font-size: 1.2rem"
-              >Home</a
-            >
-            <a class="nav-link p-2" href="offre.html" style="font-size: 1.2rem"
-              >Offre</a
-            >
-            <a
-              class="nav-link active p-2"
-              href="cv.html"
-              style="font-size: 1.2rem"
-              >CV</a
-            >
+          <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
+            <a class="nav-link p-2  " href="../clienthome/clienthome.html" style=" font-family: Inter; font-size: 1.2rem;">Home</a>
+            <a class="nav-link p-2 active" href="../offre/offre.html" style=" font-family: Inter; font-size: 1.2rem;">Offre</a>
+            <a class="nav-link  p-2" href="../cv/cv.html" style="font-family: Inter; font-size: 1.2rem;">CV</a>
           </div>
-          <form class="d-flex ms-auto" role="search">
-            <input
-              class="form-control me-2 rounded-pill"
-              type="search"
-              placeholder="Search"
-            />
-          </form>
+          <div class="navbar-nav ms-auto">
+            <div class="nav-item dropdown">
+ <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+  <img src="../image\profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+      </a>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" href="#">
+        <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2"><span >Profil </span></a></li>
+    <li><hr class="dropdown-devider"></li>
+    <li><a class="dropdown-item" href="#"><img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"><span>Logout </span></a></li>
+  </ul>
+</div></div>
         </div>
       </div>
     </nav>
-    <div class="container " style ="margin-top:150px ">
-      <div class="row gx-2">
-           <div class="col-4 sm-8 pe-2 pb-3">
-          <div class="card text-center" style="max-width: 250 px;">
-            <div class="card-header">Featured
-             </div>
-            <div class="container">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-4 col-sm-8 pe-2">
-          <div class="card text-center" style="max-width : 250 px;">
-            <div class="card-header">Featured
-             </div>
-            <div class="container">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-4 col-sm-8 pe-2">
-          <div class="card text-center" style="max-width : 250 px;">
-            <div class="card-header">Featured
-             </div>
-            <div class="container">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-4 col-sm-8 pe-2">
-          <div class="card text-center" style="max-width : 250 px;">
-            <div class="card-header">Featured
-             </div>
-            <div class="container">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-        </div>
 
+    <header
+      class="job-hero mt-5"
+      style="background-color: #f6f6f2; padding: 100px 0; height: 550px"
+    >
+      <div class="container">
+        <h1 class="display-3 fw-bold mb-3">Find your next big move</h1>
+        <p
+          class="lead opacity-75"
+          style="
+            font-family: &quot;Roboto Mono&quot;;
+            font-size: 18px;
+            margin-bottom: 5rem;
+          "
+        >
+          Browse through thousands of high-paying jobs from top-rated companies.
+        </p>
 
-
+        <div class="row">
+          <div class="col-lg-7 col-xl-7">
+            <div
+              class="search-container d-flex flex-column flex-md-row align-items-center"
+            >
+              <div
+                class="flex-grow-1 d-flex align-items-center px-3 mb-2 mb-md-0 w-100"
+              >
+                <i class="bi bi-search text-muted me-2"></i>
+                <input
+                  type="text"
+                  class="form-control border-0 shadow-none"
+                  placeholder="Job title, keywords..."
+                />
+              </div>
+              <div
+                class="flex-grow-1 d-flex align-items-center px-3 mb-3 mb-md-0 border-start w-100"
+              >
+                <i class="bi bi-geo-alt text-muted me-2"></i>
+                <input
+                  type="text"
+                  class="form-control border-0 shadow-none"
+                  placeholder="City or remote"
+                />
+              </div>
+              <button
+                class="btn btn-lg w-sm-auto w-md-auto"
+                style="
+                  color: #f6f6f2;
+                  background-color: #8d9b6a;
+                  width: 215px;
+                  height: 45px;
+                  font-size: 13px;
+                "
+              >
+                <strong>Find Jobs</strong>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
+
+    <section class="stats-divider py-5 text-white">
+      <div class="container text-center">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <h2 class="fw-bold" style="color: #8d9b6a">12,482</h2>
+            <p class="small text-uppercase opacity-50 m-0">Live Job Offers</p>
+          </div>
+          <div class="col-md-4 border-start border-secondary border-opacity-25">
+            <h2 class="fw-bold" style="color: #8d9b6a">450+</h2>
+            <p class="small text-uppercase opacity-50 m-0">Trusted Partners</p>
+          </div>
+          <div class="col-md-4 border-start border-secondary border-opacity-25">
+            <h2 class="fw-bold" style="color: #8d9b6a">2.4M</h2>
+            <p class="small text-uppercase opacity-50 m-0">
+              Monthly Candidates
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-5" Style="height:650px; margin-top: 8rem;">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+          <div>
+            <h6
+              class="fw-bold text-uppercase mb-2"
+              style="
+                font-family: &quot;Roboto Mono&quot;;
+                font-size: 20px;
+                color: #8d9b6a;
+              "
+            >
+              Featured Opportunities
+            </h6>
+            <h2 class="fw-bold m-0">Recent job openings</h2>
+          </div>
+          <button class="btn btn-outline-dark rounded-pill">
+            View All Jobs <i class="bi bi-arrow-up-right ms-1"></i>
+          </button>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="card job-card p-4">
+              <div
+                class="d-flex justify-content-between align-items-start mb-4"
+              >
+                <div class="company-logo">
+                  <i class="bi bi-stripe fs-3 text-primary"></i>
+                </div>
+                <span
+                  class="badge bg-subtle text-emphasis border border-subtle rounded-pill"
+                  style="
+                    background-color: #b7c4df;
+                    border: 2px solid #0f172a;
+                    color: #0f172a;
+                  "
+                  >Full-time</span
+                >
+              </div>
+              <h5 class="fw-bold mb-1">Backend Engineer</h5>
+              <p class="text-muted small">Stripe • Remote, Europe</p>
+              <p class="text-secondary small mb-4">
+                Help us build the financial infrastructure of the internet using
+                Ruby and Go.
+              </p>
+              <div
+                class="d-flex justify-content-between align-items-center mt-auto"
+              >
+                <span class="fw-bold">4000DT-4500DT</span>
+                <a href="#" class="btn btn-dark btn-sm rounded-pill px-3"
+                  >Apply</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="card job-card p-4">
+              <div
+                class="d-flex justify-content-between align-items-start mb-4"
+              >
+                <div class="company-logo">
+                  <i
+                    class="bi bi-piggy-bank-fill fs-3"
+                    Style="color: rgb(226, 62, 90);"
+                  ></i>
+                </div>
+                <span
+                  class="badge bg-subtle text-emphasis border border-subtle rounded-pill"
+                  style="
+                    background-color: #b8cfd2;
+                    border: 2px solid #388087;
+                    color: #388087;
+                  "
+                  >Contract</span
+                >
+              </div>
+              <h5 class="fw-bold mb-1">UI/UX Designer</h5>
+              <p class="text-muted small">Flouci • Tunis, SE</p>
+              <p class="text-secondary small mb-4">
+                Design beautiful experiences for millions ofFlouci users
+                worldwide.
+              </p>
+              <div
+                class="d-flex justify-content-between align-items-center mt-auto"
+              >
+                <span class="fw-bold">3000DT-3700DT</span>
+                <a href="#" class="btn btn-dark btn-sm rounded-pill px-3"
+                  >Apply</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="card job-card p-4">
+              <div
+                class="d-flex justify-content-between align-items-start mb-4"
+              >
+                <div class="company-logo">
+                  <i class="bi bi-nvidia fs-3 text-dark"></i>
+                </div>
+                <span
+                  class="badge bg-subtle text-emphasis border border-subtle rounded-pill"
+                  style="
+                    background-color: #c38989;
+                    border: 2px solid #3a0404;
+                    color: #3a0404;
+                  "
+                  >Urgent</span
+                >
+              </div>
+              <h5 class="fw-bold mb-1">AI Research Lead</h5>
+              <p class="text-muted small">NVIDIA • German</p>
+              <p class="text-secondary small mb-4">
+                Push the boundaries of deep learning and GPU accelerated
+                computing.
+              </p>
+              <div
+                class="d-flex justify-content-between align-items-center mt-auto"
+              >
+                <span class="fw-bold">2000DT-3500DT</span>
+                <a href="#" class="btn btn-dark btn-sm rounded-pill px-3"
+                  >Apply</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer
+      class="footer-forest text-white py-5"
+      id="About"
+      style="height: 400px"
+    >
+      <div class="container" style="margin-top: 5rem">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-12">
+            <div class="footer-brand mb-3">
+              <img
+                src="C:\Users\infosud\Downloads\image-removebg-preview (1).png"
+                height="60"
+                width="80"
+                alt="Logo"
+              />
+              <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3 col-lg-2">
+            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">
+              Start <br />
+              your busniss
+            </h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="footer-link"
+                  ><i class="bi bi-cloud-plus me-2"></i>Join us as a company
+                  leader
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="footer-link"
+                  ><i class="bi bi-bar-chart me-2"></i>Try Entreprisa</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-md-3 col-lg-2">
+            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">
+              The Product
+            </h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="footer-link">Contacts us</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="footer-link">Questions</a>
+              </li>
+              <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-md-3 col-lg-2">
+            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#" class="footer-link">Terms & Conditions</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="footer-link">Privacy policy</a>
+              </li>
+            </ul>
+          </div>
+          <hr class="opacity-25" />
+          <div
+            class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3"
+          >
+            <p>© 2026 CareerFlow Inc. All rights reserved.</p>
+            <ul class="list-inline">
+              <li class="list-inline-item me-3">
+                <a href="#" class="text-white text-decoration-none">Privacy</a>
+              </li>
+              <li class="list-inline-item me-3">
+                <a href="#" class="text-white text-decoration-none">Terms</a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="text-white text-decoration-none">Cookies</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
