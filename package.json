@@ -1,7 +1,7 @@
 {
   "name": "web_project",
   "version": "1.0.0",
-  "description": "",
+  "description": "---",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +19,6 @@
   "homepage": "https://github.com/mariamneffeti/web_project#readme",
   "dependencies": {
     "bootstrap": "^5.3.8"
-  }
+  },
+  "type": "commonjs"
 }

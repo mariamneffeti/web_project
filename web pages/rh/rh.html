@@ -1,154 +1,182 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>Team Management</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="/web_project/node_modules/bootstrap/dist/css/bootstrap.min.css">
-      <link rel="stylesheet" href="style.css">
-      <script src="/web_project/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    </head>
-    <body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Employees Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark custom-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">Employees</a>
 
-      <header>
-        <h1>Employees</h1>
-                <ul>
-                    <li ><a class="na" href="/web_project/web pages/rh/rh.html">Employees</a></li>
-                    <li ><a class="n" href="/web_project/web pages/recruitement/recruitement.html">Recruitment</a></li>
-                    <li ><a class="n" href="/web_project/web pages/sales company/salesC.html">Sales</a></li>
-                    <li ><a class="n" href="/web_project/web pages/service admin/service_admin.html">Services</a></li>
-                    <li ><a class="n" href="/web_project/web pages/articles/articles.html">Articles</a></li>
-                    <li ><a class="n" href="/web_project/web pages/finance/finance.html">Finance</a></li>
-                    <li ><a class="b" href="/logout">Logout</a></li>
-                </ul>
-      </header>
-      <section class="s0">
-        <h2>Add New Employee</h2>
-        <div class="d1">
-          <form class="f">
-                    <label >Name : </label>
-                    <input type="text"  placeholder="Enter Emloyee name">
-                    <label >Departement : </label>
-                    <select>
-                        <option selected="">Choose...</option>
-                        <option value="1">Finance</option>
-                        <option value="1">Marketing</option>
-                        <option value="1">Cybersecurity</option>
-                        <option value="2">Human Ressources</option>
-                        <option value="3">IT</option>
-                    </select>
-                    <label >Position : </label>
-                    <input type="text"  placeholder="position">
-                    <label >Email : </label>
-                    <input type="email"  placeholder="email">
-                    <label >CV : </label>
-                    <input type="url"  placeholder="https://expl.com/cv.pdf">
-                    <button type="submit" class="btn">Submit</button>
-                
-            </form>
-          
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto gap-lg-4">
+        <li class="nav-item"><a class="nav-link active" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/rh/rh.html#">Employees</a></li>
+        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/recruitement/recruitement.html">Recruitment</a></li>
+        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/sales/sales.html">Sales</a></li>
+        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/service%20admin/service_admin.html">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/articles/articles.html">Articles</a></li>
+        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/finance/finance.html">Finance</a></li>
+      </ul>
+
+      <a class="btn btn-outline-light btn-sm" href="#">Logout</a>
+    </div>
+  </div>
+</nav>
+</header>
+<main class="container page-content">
+  <section class="card shadow-sm mb-5">
+    <div class="card-body">
+      <h3 class="mb-4">Add New Employee</h3>
+
+      <form class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" placeholder="Employee name">
         </div>
-      </section>
-      <section class="s1">
-        <h2>Search Employee</h2>
-        <div class="d1">
-          <input type="text" placeholder="Search by name or ID">
-          <button class="b1">Search</button>
+
+        <div class="col-md-6">
+          <label class="form-label">Department</label>
+          <select class="form-select">
+            <option selected>Choose...</option>
+            <option>IT</option>
+            <option>Finance</option>
+            <option>Marketing</option>
+            <option>Human Resources</option>
+          </select>
         </div>
-      </section>
-      <section class="s3">
-        <h2>Filter Employees</h2>
-        <div class="d1">
-          <select >
-                        <option selected="">Filter by..</option>
-                        <option value="1">Departement</option>
-                        <option value="2">Position</option>
-                        <option value="3">Statut</option>
-                    </select>
-          <button class="b1">Filter</button>
+
+        <div class="col-md-6">
+          <label class="form-label">Position</label>
+          <input type="text" class="form-control" placeholder="Position">
         </div>
-      </section>
-      <section class="s2">
-        <h2>Employee Details</h2>
+
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" placeholder="email@company.com">
+        </div>
+
+        <div class="col-md-12">
+          <label class="form-label">CV Link</label>
+          <input type="url" class="form-control" placeholder="https://example.com/cv.pdf">
+        </div>
+
+        <div class="col-12 text-end">
+          <button class="btn btn-primary">Add Employee</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="row mb-4">
+    <div class="col-md-6 mb-2">
+      <input type="text" class="form-control" placeholder="Search by name or ID">
+    </div>
+    <div class="col-md-4 mb-2">
+      <select class="form-select">
+        <option selected>Filter by...</option>
+        <option>Department</option>
+        <option>Position</option>
+        <option>Status</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-secondary w-100">Apply</button>
+    </div>
+  </section>
+
+  <section class="tab">
+    <div >
+      <h3>Employee List</h3>
+      <div >
         <table>
-          <thead>
+          <thead >
             <tr>
               <th>Name</th>
-              <th>Employee ID</th>
+              <th>ID</th>
               <th>Position</th>
               <th>Department</th>
               <th>Email</th>
-              <th>CV</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             <tr>
               <td>Sara Dh</td>
               <td>05A</td>
               <td>Web Developer</td>
               <td>IT</td>
-              <td>SaraDh@company.com</td>
-              <td><a href="/web_project/web pages/cv/Sara Dh.html"> view cv</a></td>
-              <td>Active</td>
+              <td>sara@company.com</td>
+              <td><span class="badge bg-success">Active</span></td>
               <td>
-                <button class="b2">View</button>
-                <button class="b3">Edit</button>
-                <button class="b4">Delete</button>
+                <button class="btn btn-sm btn-outline-primary">View</button>
+                <button class="btn btn-sm btn-outline-warning">Edit</button>
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
               </td>
             </tr>
+
             <tr>
-              <td>Alex Rv </td>
+              <td>Alex Rv</td>
               <td>05B</td>
               <td>HR Manager</td>
-              <td>Human Resources</td>
-              <td>AlexRv@company.com</td>
-              <td><a href="/web_project/web pages/cv/Alex Rv.html"> view cv</a></td>
-              <td>Inactive</td>
+              <td>HR</td>
+              <td>alex@company.com</td>
+              <td><span class="badge bg-secondary">Inactive</span></td>
               <td>
-                <button class="b2">View</button>
-                <button class="b3">Edit</button>
-                <button class="b4">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td>Sara Dh</td>
-              <td>05A</td>
-              <td>Web Developer</td>
-              <td>IT</td>
-              <td>SaraDh@company.com</td>
-              <td><a href="/web_project/web pages/cv/Sara Dh.html"> view cv</a></td>
-              <td>Active</td>
-              <td>
-                <button class="b2">View</button>
-                <button class="b3">Edit</button>
-                <button class="b4">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td>Alex Rv </td>
-              <td>05B</td>
-              <td>HR Manager</td>
-              <td>Human Resources</td>
-              <td>AlexRv@company.com</td>
-              <td><a href="/web_project/web pages/cv/Alex Rv.html"> view cv</a></td>
-              <td>Inactive</td>
-              <td>
-                <button class="b2">View</button>
-                <button class="b3">Edit</button>
-                <button class="b4">Delete</button>
+                <button class="btn btn-sm btn-outline-primary">View</button>
+                <button class="btn btn-sm btn-outline-warning">Edit</button>
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
               </td>
             </tr>
           </tbody>
         </table>
-      </section>
-    <footer>
-       <p> Company Dashboard ©2026</p>
-       <p>All rights reserved</p>
-       <p>Contact Support :  </p>
-       <p>+21671589623</p>
-       <p>+21671256383</p>
-     </footer>
-    </body>
-    </html>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+    <footer class="footer-forest text-white py-5">
+        <div class="container">
+            <div class="row gy-4 text-center text-md-start">
+                <div class="col-lg-4">
+                    <div class="footer-brand mb-3">
+                        <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
+                        <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Division</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Services & AI</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Communications</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-4">
+                    <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Support</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Technical Help</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">IT Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="opacity-25 mt-5">
+            <div class="text-center small opacity-50">
+                <p class="mb-0">© 2026 Entreprisa Inc. - Services & AI Division</p>
+            </div>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
