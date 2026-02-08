@@ -33,19 +33,29 @@
             </div>
 
             <div class="navbar-nav ms-auto">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                        <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-                        <span class="d-none d-sm-inline">User</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">
-                                <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2"><span >Profil </span></a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#"><img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"><span>Logout </span></a></li>
-                </ul>
-                </div>
-            </div>
+    <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+            <span class="ms-2 d-none d-sm-inline">User</span>
+        </a>
+        
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="userDropdown" style="background-color: #212529;">
+            <li>
+                <a class="dropdown-item" href="#">
+                    <img src="../image/profile.png" width="32" height="32" class="rounded-circle me-2">
+                    <span>Profil</span>
+                </a>
+            </li>
+            <li><hr class="dropdown-divider border-secondary"></li>
+            <li>
+                <a class="dropdown-item text-danger" href="#">
+                    <img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
         </div>
     </nav>
 

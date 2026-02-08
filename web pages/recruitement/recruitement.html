@@ -19,7 +19,7 @@
         </button>
 
         <img src="" height="50" width="70" alt="Logo" />
-        <a class="navbar-brand h1 fw-bold" href="">Recrutment Dashboard</a>
+        <a class="navbar-brand h1 fw-bold" href="">Recruitement</a>
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav mx-auto gap-3">
@@ -33,19 +33,29 @@
         </div>
 
         <div class="navbar-nav ms-auto">
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                    <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-                    <span class="d-none d-sm-inline">User</span>
+    <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+            <span class="ms-2 d-none d-sm-inline">User</span>
+        </a>
+        
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" aria-labelledby="userDropdown" style="background-color: #212529;">
+            <li>
+                <a class="dropdown-item" href="#">
+                    <img src="../image/profile.png" width="32" height="32" class="rounded-circle me-2">
+                    <span>Profil</span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">
-                                <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2"><span >Profil </span></a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#"><img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"><span>Logout </span></a></li>
-                </ul>
-            </div>
-        </div>
+            </li>
+            <li><hr class="dropdown-divider border-secondary"></li>
+            <li>
+                <a class="dropdown-item text-danger" href="#">
+                    <img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
     </div>
 </nav>
 
@@ -62,12 +72,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white d-flex align-items-cente active" href="/web_project/web pages/recruitement/recruitement.html">
+                <a class="nav-link text-white d-flex align-items-cente active" href="/web_project/web pages/recruitement/recruitement.html" style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;">
                     <i class="bi bi-person-plus me-3"></i> Recruitment
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white d-flex align-items-center" href="/web_project/web pages/sales company/salesC.html" style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;">
+                <a class="nav-link text-white d-flex align-items-center" href="/web_project/web pages/sales company/salesC.html">
                     <i class="bi bi-cart me-3"></i> Sales
                 </a>
             </li>
@@ -173,43 +183,37 @@
         </section>
     </div>
 
-    <footer  class="footer-forest text-white py-5" id="About" style="height: 400px;">
-        <div  class="container " Style ="margin-top: 5rem ;">
+    <footer class="footer-forest text-white py-5">
+        <div class="container">
             <div class="row gy-4">
-            
-            <div class="col-lg-4 col-md-12">
-                <div class="footer-brand mb-3">
-                <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
-                <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer-brand mb-3">
+                        <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
+                        <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
+                    </div>
                 </div>
-            
-            </div>
-            
-            <div class="col-6 col-md-3 col-lg-2">
-                <h6 class="text-uppercase small fw-bold mb-3 opacity-50">The Product</h6>
-                <ul class="list-unstyled">
-                <li class="mb-2"><a href="#" class="footer-link">Contacts us</a></li>
-                <li class="mb-2"><a href="#" class="footer-link">Questions</a></li>
-                <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
-                </ul>
-            </div>
-
-            <div class="col-6 col-md-3 col-lg-2">
-                <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
-                <ul class="list-unstyled">
-                <li class="mb-2"><a href="#" class="footer-link">Terms & Conditions</a></li>
-                <li class="mb-2"><a href="#" class="footer-link">Privacy policy</a></li>
-                </ul>
+                <div class="col-6 col-md-3">
+                    <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Sales Division</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Order Tracking</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Client Portal</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3">
+                    <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">Terms of Sale</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Privacy policy</a></li>
+                    </ul>
+                </div>
             </div>
             <hr class="opacity-25">
-                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3">
-                        <p>© 2026 CareerFlow Inc. All rights reserved.</p>
-                        <ul class="list-inline">
-                            <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Privacy</a></li>
-                            <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Terms</a></li>
-                            <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Cookies</a></li>
-                        </ul>
-                    </div>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3">
+                <p>© 2026 Entreprisa Inc. All rights reserved.</p>
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Privacy</a></li>
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Terms</a></li>
+                </ul>
             </div>
         </div>
     </footer>

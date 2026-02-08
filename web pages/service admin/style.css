@@ -81,3 +81,33 @@ body {
 .footer-brand i {
     color: #8D9B6A; 
 }
+@media (max-width: 991px) {
+    .navbar-nav .dropdown-menu {
+        position: absolute !important; 
+        float: none;
+        right: 0;
+        left: auto;
+        margin-top: 10px;
+        background-color: #212529; 
+        min-width: 160px;
+    }
+}
+
+.dropdown-menu {
+    border-radius: 8px;
+    padding: 8px 0;
+}
+
+.dropdown-item {
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
