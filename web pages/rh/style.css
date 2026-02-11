@@ -15,6 +15,10 @@ header{
 .page-content {
   padding-top: 120px;
 }
+.card-body{
+  border-left:4px solid #388087;
+}
+
 
 /* Cards */
 .card {
@@ -25,7 +29,6 @@ header{
   width: 100%;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
-  border: 1px solid rgb(214, 214, 214);
   padding: 10px;
   padding-right: 12px ;
   margin-bottom: 80px;
