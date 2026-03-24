@@ -1,15 +1,22 @@
+:root {
+    --primary-teal: #388087;
+    --dark-forest: #0d1f1b;
+    --bg-light: #F6F6F2;
+    --accent-blue: #102E4A;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #F6F6F2;
+    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
 }
 header{
-  background-color: #388087;
+  background-color: var(--primary-teal);
   color: antiquewhite;
 }
 
 /* Navbar */
 .custom-navbar {
-  background: linear-gradient(90deg, #388087, #0d1f1b);
+  background: linear-gradient(90deg, var(--primary-teal), var(--dark-forest));
 }
 
 /* Page spacing */
@@ -17,7 +24,7 @@ header{
   padding-top: 120px;
 }
 .card-body{
-  border-left:4px solid #388087;
+  border-left:4px solid var(--primary-teal);
 }
 
 

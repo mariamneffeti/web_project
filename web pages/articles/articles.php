@@ -1,51 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Articles Management</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body >
-<header>
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark custom-navbar">
-  <div class="container-fluid">
-    <img src="C:\Users\DELL\Documents\web_project\web pages\image\logoentreprisa.png" height="50" width="70" alt="Logo" />
-    <a class="navbar-brand fw-bold" href="#">Articles</a>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mx-auto gap-lg-4">
-        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/rh/rh.html">Employees</a></li>
-        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/recruitement/recruitement.html">Recruitment</a></li>
-        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/sales/sales.html">Sales</a></li>
-        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/service%20admin/service_admin.html">Services</a></li>
-        <li class="nav-item"><a class="nav-link active" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/articles/articles.html">Articles</a></li>
-        <li class="nav-item"><a class="nav-link" href="file:///C:/Users/DELL/Documents/web_project/web%20pages/finance/finance.html">Finance</a></li>
-      </ul>
-
-                  <div class="navbar-nav ms-auto">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                        <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-                        <span class="d-none d-sm-inline">User</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">
-                                <img src="C:\Users\DELL\Documents\web_project\web pages\image\profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2"><span >Profil </span></a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#"><img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"><span>Logout </span></a></li>
-                </ul>
-                </div>
-            </div>
-    </div>
-  </div>
-</nav>
-</header>
+<?php 
+    $pageTitle = "Articles"; 
+    include('../squelettes entreprise/header.php');
+?>
 <main class="container page-content">
   <section class="card shadow-sm mb-5">
     <div class="card p-4 stats-card h-100" style="border-left: 4px solid #388087;">
@@ -183,36 +139,4 @@
   </section>
 
 </main>
-    <footer class="footer-forest text-white py-5">
-        <div class="container">
-            <div class="row gy-4 text-center text-md-start">
-                <div class="col-lg-4">
-                    <div class="footer-brand mb-3">
-                        <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
-                        <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4">
-                    <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Division</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="footer-link">Services & AI</a></li>
-                        <li class="mb-2"><a href="#" class="footer-link">Communications</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-md-4">
-                    <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Support</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="footer-link">Technical Help</a></li>
-                        <li class="mb-2"><a href="#" class="footer-link">IT Support</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="opacity-25 mt-5">
-            <div class="text-center small opacity-50">
-                <p class="mb-0">© 2026 Entreprisa Inc. - Services & AI Division</p>
-            </div>
-        </div>
-    </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php include('../squelettes entreprise/footer.php'); ?>
