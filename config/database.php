@@ -3,8 +3,8 @@
  Database Configuration
  */
  
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'erp_platform');
+define('DB_HOST', '127.0.0.1');
+define('DB_NAME', 'web_project');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
@@ -55,7 +55,13 @@ class Database {
  * Helper function to get database connection
  */
 function getDB() {
-    return Database::getInstance()->getConnection();
+    try {
+        $db = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $db;
+    } catch(PDOException $e) {
+        die("Connection failed: " . $e->getMessage()); 
+    }
 }
 ?>
  
