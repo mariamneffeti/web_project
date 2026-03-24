@@ -1,55 +1,62 @@
 :root {
-  --vanilla: #F3E3B2;
+ /* --vanilla: #F3E3B2;
   --dark-green: #46462A;
   --blood-red: #74070D;
   --bean: #310F10;
   --midnight: #102E4A;
-  --bg-main: #E6CCB2;
+  --bg-main: #E6CCB2; */
+
+   --blue:#102E4A;
+  --bluegreen :#388087;
+  --gris:#F6F6F2;
+  --black:#000000;
+  --footer : #212529;
+
 }
 
 /* Body */
 body {
-  background-color: var(--bg-main);
+  background-color: var(--gris);
   font-family: Arial, sans-serif;
 }
 
 /* Card */
 .card {
-  background-color: var(--vanilla);
-  border: 2px solid var(--dark-green);
+  background-color: var(--gris);
+  border: 2px solid var(--bluegreen);
 }
 
 /* Card Title */
 .card-title {
-  color: var(--midnight);
+  color: var(--blue);
 }
 
 /* Labels */
 .form-label {
-  color: var(--bean);
+  color: var(--black);
 }
 
 /* Inputs */
 .form-control {
-  border: 1px solid var(--dark-green);
+  border: 1px solid var(--bluegreen);
 }
 
 /* Buttons */
 .btn-primary {
-  background-color: var(--blood-red);
+  background-color: var(--blue);
   border: none;
 }
 
 .btn-primary:hover {
-  background-color: var(--dark-green);
+  background-color: var(--bluegreen);
 }
 
 /* Links */
 a {
-  color: var(--blood-red);
+  color: var(--blue);
 }
 
 a:hover {
-  color: var(--dark-green);
+  color: var(--bluegreen);
   text-decoration: none;
 }

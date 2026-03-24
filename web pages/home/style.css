@@ -1,10 +1,17 @@
 :root {
-  --vanilla: #F3E3B2;
+  /*--vanilla: #F3E3B2;
   --dark-green: #46462A;
   --blood-red: #74070D;
   --bean: #310F10;
   --midnight: #102E4A;
-  --bg-main: #E6CCB2;
+  --bg-main: #E6CCB2;*/
+
+  --blue:#102E4A;
+  --bluegreen :#388087;
+  --gris:#F6F6F2;
+  --black:#000000;
+  --footer : #212529;
+
 }
 
 /* Body */
@@ -16,47 +23,113 @@ body {
 
 /* Hero */
 .hero {
-  background-color: var(--vanilla);
+  background-color: var(--gris);
 }
 
 .hero h1 {
-  color: var(--midnight);
+  color: var(--blue);
 }
 
 .hero p {
-  color: var(--bean);
+  color: var(--black);
 }
 
 /* Buttons */
 .btn-primary {
-  background-color: var(--blood-red);
+  background-color: var(--bluegreen);
   border: none;
 }
 
 .btn-primary:hover {
-  background-color: var(--dark-green);
+  background-color: var(--bluegreen);
 }
 
 .btn-outline-primary {
-  color: var(--blood-red);
-  border-color: var(--blood-red);
+  color: var(--blue);
+  border-color: var(--blue);
 }
 
 .btn-outline-primary:hover {
-  background-color: var(--blood-red);
+  background-color: var(--blue);
   color: var(--vanilla);
-  border-color: var(--blood-red);
+  border-color: var(--blue);
 }
 
 /* Cards */
 .card {
-  background-color: var(--vanilla);
-  border: 2px solid var(--dark-green);
+  background-color: var(--gris);
+  border: 2px solid var(--bluegreen);
   color: var(--bean);
 }
 
 /* Footer */
 footer {
-  background-color: var(--bean);
-  color: var(--vanilla);
+  background-color: var(--footer);
+  color: var(--green);
+}
+
+
+/*SERVICES SECTION */
+#services {
+  padding: 60px 20px;
+  transition: background-color 0.3s ease;
+}
+
+/* HIGHLIGHT EFFECT */
+.highlight {
+  animation: highlightAnim 1s ease;
+}
+
+@keyframes highlightAnim {
+  0% {
+    background-color: transparent;
+  }
+  30% {
+    background-color: rgba(255, 200, 0, 0.3);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/*SERVICE CARDS */
+.service-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+}
+
+/* When visible */
+.service-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* OPTIONAL: CARD STYLE (makes it look nicer) */
+.service-card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* OPTIONAL: HOVER EFFECT */
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+
+#backToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none; /* hidden at first */
 }
