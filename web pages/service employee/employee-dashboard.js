@@ -18,6 +18,23 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clientModalEl) {
         clientModal = new bootstrap.Modal(clientModalEl);
     }
+    const searchBtn = document.getElementById('btn-search-client');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', async function() {
+            const searchTerm = nameInput.value.trim();
+            
+            if (!searchTerm) {
+                showToast('Please enter a name to search', 'warning');
+                return;
+            }
+            await performClientSearch(searchTerm);});}
+    const nameInput = document.getElementById('client-name');
+    if (nameInput) {
+        nameInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                document.getElementById('btn-search-client').click();
+            }});}
     
     // Load initial data
     loadDashboardStats();
@@ -27,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     document.getElementById('sale-start-date').value = weekAgo;
     document.getElementById('sale-end-date').value = today;
+    initServicesTable();
 });
 
 // Navigation
@@ -67,9 +85,42 @@ function showSection(sectionName) {
 
 // Dashboard Statistics
 
+
+// Function to update the cards for a SPECIFIC client
+async function updateClientStats(clientId) {
+    try {
+        // Fetch data for just ONE client
+        const response = await fetch(`../../api/clients.php?action=get&id=${clientId}`);
+        const result = await response.json();
+        
+        if (result.success) {
+            const client = result.data;
+            
+            /*/document.getElementById('stat-today-count').textContent = client.total_transactions || 0;
+
+            document.getElementById('stat-today-amount').textContent = formatCurrency(client.total_spent);
+            
+            document.getElementById('stat-clients').textContent = client.status;
+            
+            if(document.getElementById('last-purchase-date')) {
+                document.getElementById('last-purchase-date').textContent = client.last_purchase || 'No purchases';
+            }/*/
+            const lastPurchaseEl = document.getElementById('last-purchase-date');
+            if (lastPurchaseEl) {
+                lastPurchaseEl.textContent = client.last_purchase_date || 'No purchases';
+            }
+            const totalSpentEl = document.getElementById('client-total-spent');
+            if (totalSpentEl) {
+                totalSpentEl.textContent = formatCurrency(client.total_spent);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading client stats:', error);
+    }
+}
 async function loadDashboardStats() {
     try {
-        const response = await fetch('../api/sales.php?action=stats');
+        const response = await fetch('../../api/sales.php?action=stats');
         const result = await response.json();
         
         if (result.success) {
@@ -90,6 +141,27 @@ async function loadDashboardStats() {
     } catch (error) {
         console.error('Error loading dashboard stats:', error);
         showToast('Error loading dashboard statistics', 'error');
+    }
+}
+async function performClientSearch(name) {
+    try {
+        const response = await fetch(`../../api/clients.php?action=list&search=${encodeURIComponent(name)}`);
+        const result = await response.json();
+
+        if (result.success && result.data.length > 0) {
+            const foundClient = result.data[0]; 
+            
+            document.getElementById('client-email').value = foundClient.email || '';
+            
+            await updateClientStats(foundClient.id);
+            
+            showToast(`Found: ${foundClient.client_name}`, 'success');
+        } else {
+            showToast('No client found with that name', 'error');
+        }
+    } catch (error) {
+        console.error('Search error:', error);
+        showToast('Error searching for client', 'error');
     }
 }
 
@@ -170,7 +242,7 @@ async function loadClients() {
             status: status
         });
         
-        const response = await fetch(`../api/clients.php?${params}`);
+        const response = await fetch(`../../api/clients.php?${params}`);
         const result = await response.json();
         
         if (result.success) {
@@ -232,7 +304,7 @@ function openClientModal(clientId = null) {
 
 async function editClient(clientId) {
     try {
-        const response = await fetch(`../api/clients.php?action=get&id=${clientId}`);
+        const response = await fetch(`../../api/clients.php?action=get&id=${clientId}`);
         const result = await response.json();
         
         if (result.success) {
@@ -247,6 +319,7 @@ async function editClient(clientId) {
             
             document.getElementById('clientModalTitle').textContent = 'Edit Client';
             clientModal.show();
+            updateClientStats(clientId);
         }
     } catch (error) {
         console.error('Error loading client:', error);
@@ -272,8 +345,8 @@ async function saveClient() {
     
     try {
         const url = clientId 
-            ? `../api/clients.php?action=update&id=${clientId}`
-            : '../api/clients.php?action=create';
+            ? `../../api/clients.php?action=update&id=${clientId}`
+            : '../../api/clients.php?action=create';
         
         const response = await fetch(url, {
             method: 'POST',
@@ -302,7 +375,7 @@ async function deleteClient(clientId, clientName) {
     }
     
     try {
-        const response = await fetch(`../api/clients.php?action=delete&id=${clientId}`, {
+        const response = await fetch(`../../api/clients.php?action=delete&id=${clientId}`, {
             method: 'POST'
         });
         
@@ -338,7 +411,7 @@ async function loadSales(page = 1) {
             end_date: endDate
         });
         
-        const response = await fetch(`../api/sales.php?${params}`);
+        const response = await fetch(`../../api/sales.php?${params}`);
         const result = await response.json();
         
         if (result.success) {
@@ -437,7 +510,7 @@ function searchSales() {
 
 async function viewSale(saleId) {
     try {
-        const response = await fetch(`../api/sales.php?action=get&id=${saleId}`);
+        const response = await fetch(`../../api/sales.php?action=get&id=${saleId}`);
         const result = await response.json();
         
         if (result.success) {
@@ -456,7 +529,7 @@ async function deleteSale(saleId, transactionId) {
     }
     
     try {
-        const response = await fetch(`../api/sales.php?action=delete&id=${saleId}`, {
+        const response = await fetch(`../../api/sales.php?action=delete&id=${saleId}`, {
             method: 'POST'
         });
         
@@ -573,3 +646,80 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+// Service Management
+
+function addNewServiceRow() {
+    const tbody = document.getElementById('services-tbody');
+    const newRow = document.createElement('tr');
+
+    newRow.innerHTML = `
+        <td>
+            <select class="form-select service-select" onchange="updateRowPrice(this)">
+                <option value="0" data-price="0">Select Service</option>
+                <option value="1" data-price="150">Consultation Fee</option>
+                <option value="2" data-price="100">Standard Repair</option>
+                <option value="3" data-price="50">Software Update</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control qty-input" value="1" min="1" style="width:80px" oninput="calculateRowTotal(this)">
+        </td>
+        <td class="unit-price">$0</td>
+        <td class="fw-bold row-total">$0</td>
+        <td>
+            <button class="btn btn-outline-danger btn-sm" onclick="removeServiceRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(newRow);
+}
+function removeServiceRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+    calculateOrderSummary();
+}
+function updateRowPrice(selectElement) {
+    const row = selectElement.closest('tr');
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+    
+    row.querySelector('.unit-price').textContent = `$${price}`;
+    calculateRowTotal(row.querySelector('.qty-input'));
+}
+function calculateRowTotal(inputElement) {
+    const row = inputElement.closest('tr');
+    const qty = parseFloat(inputElement.value) || 0;
+    const priceText = row.querySelector('.unit-price').textContent.replace('$', '');
+    const price = parseFloat(priceText) || 0;
+    
+    const total = qty * price;
+    row.querySelector('.row-total').textContent = `$${total}`;
+    
+    calculateOrderSummary();
+}
+function calculateOrderSummary() {
+    let subtotal = 0;
+
+    // Grab every element that has the row-total class
+    const rowTotals = document.querySelectorAll('.row-total');
+    
+    rowTotals.forEach(cell => {
+        // Strip out the '$' and commas to get a clean number
+        const value = parseFloat(cell.textContent.replace(/[$,]/g, '')) || 0;
+        subtotal += value;
+    });
+
+    const discount = subtotal * 0.10;
+    const total = subtotal - discount;
+
+    // Push the values to the Summary Card IDs we just created
+    const subtotalEl = document.getElementById('summary-subtotal');
+    const discountEl = document.getElementById('summary-discount');
+    const totalEl = document.getElementById('summary-total');
+
+    if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotal);
+    if (discountEl) discountEl.textContent = `-${formatCurrency(discount)}`;
+    if (totalEl) totalEl.textContent = formatCurrency(total);
+}
