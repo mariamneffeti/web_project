@@ -9,7 +9,11 @@
 let currentPage = 1;
 let salesChart = null;
 let clientModal, saleModal;
-
+const SERVICE_PRICES = {
+    'Consultation Fee': 150,
+    'Standard Repair': 200,
+    'Software Update': 50
+};
 // Initialize on Page Load
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -151,16 +155,18 @@ async function performClientSearch(name) {
         if (result.success && result.data.length > 0) {
             const foundClient = result.data[0]; 
             
-            document.getElementById('client-email').value = foundClient.email || '';
+            document.getElementById('client-name').value = foundClient.client_name;
+            document.getElementById('client-id').value = foundClient.id; 
             
+            document.getElementById('client-email').value = foundClient.email || '';
             await updateClientStats(foundClient.id);
             
             showToast(`Found: ${foundClient.client_name}`, 'success');
         } else {
-            showToast('No client found with that name', 'error');
+            showToast('No client found', 'error');
+            document.getElementById('client-id').value = ''; // Clear ID if not found
         }
     } catch (error) {
-        console.error('Search error:', error);
         showToast('Error searching for client', 'error');
     }
 }
@@ -722,4 +728,187 @@ function calculateOrderSummary() {
     if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotal);
     if (discountEl) discountEl.textContent = `-${formatCurrency(discount)}`;
     if (totalEl) totalEl.textContent = formatCurrency(total);
+}
+function initServicesTable() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+
+    tbody.addEventListener('change', recalcServices);
+    tbody.addEventListener('input', recalcServices);
+
+    
+    const addBtn = document.getElementById('add-service-btn');
+    if (addBtn) {
+        addBtn.onclick = addServiceRow; 
+    }
+
+
+    recalcServices();
+}
+function addServiceRow() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+    let options = `<option value="">Select Service</option>`;
+    options += Object.keys(SERVICE_PRICES)
+        .map(name => `<option value="${name}">${name}</option>`)
+        .join('');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>
+            <select class="form-select service-name">
+                ${options}
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control service-qty" value="1" min="1" style="width:80px">
+        </td>
+        <td class="service-unit-price">$0.00</td>
+        <td class="fw-bold service-line-total">$0.00</td>
+        <td>
+            <button class="btn btn-outline-danger btn-sm remove-service-btn">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+
+    tr.querySelector('.remove-service-btn').addEventListener('click', () => {
+        tr.remove();
+        recalcServices();
+    });
+
+    tbody.appendChild(tr);
+    recalcServices();
+}
+function recalcServices() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+    let subtotal = 0;
+
+    tbody.querySelectorAll('tr').forEach(row => {
+        const nameEl  = row.querySelector('.service-name');
+        const qtyEl   = row.querySelector('.service-qty');
+        const unitEl  = row.querySelector('.service-unit-price');
+        const totalEl = row.querySelector('.service-line-total');
+
+        if (!nameEl || !qtyEl) return;
+
+        const serviceName = nameEl.value;
+        const unitPrice   = SERVICE_PRICES[serviceName] || 0;
+        const qty         = Math.max(1, parseInt(qtyEl.value, 10) || 1);
+        const lineTotal   = unitPrice * qty;
+
+        if (unitEl)  unitEl.textContent  = formatCurrency(unitPrice);
+        if (totalEl) totalEl.textContent = formatCurrency(lineTotal);
+
+        subtotal += lineTotal;
+    });
+
+    const discount   = subtotal * 0.10;
+    const grandTotal = subtotal - discount;
+
+    // Update Summary Card
+    const subtotalEl  = document.getElementById('summary-subtotal');
+    const discountEl  = document.getElementById('summary-discount');
+    const grandTotalEl = document.getElementById('summary-total');
+
+    if (subtotalEl)   subtotalEl.textContent  = formatCurrency(subtotal);
+    if (discountEl)   discountEl.textContent  = `-${formatCurrency(discount)}`;
+    if (grandTotalEl) grandTotalEl.textContent = formatCurrency(grandTotal);
+}
+function addServiceRow() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+    let options = `<option value="">Select Service</option>`;
+    options += Object.keys(SERVICE_PRICES)
+        .map(name => `<option value="${name}">${name}</option>`)
+        .join('');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><select class="form-select service-name">${options}</select></td>
+        <td><input type="number" class="form-control service-qty" value="1" min="1" style="width:80px"></td>
+        <td class="service-unit-price">$0.00</td>
+        <td class="fw-bold service-line-total">$0.00</td>
+        <td>
+            <button class="btn btn-outline-danger btn-sm remove-service-btn">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+
+    tr.querySelector('.remove-service-btn').addEventListener('click', () => {
+        tr.remove();
+        recalcServices();
+    });
+
+    tbody.appendChild(tr);
+    recalcServices();
+}
+async function processTransaction() {
+    const tbody = document.getElementById('services-tbody');
+    const rows = tbody.querySelectorAll('tr');
+    
+    // Get the ID from the hidden field
+    const clientId = document.getElementById('client-id').value;
+    
+    if (!clientId) {
+        showToast('Please search and select a valid client first', 'warning');
+        return;
+    }
+
+    if (rows.length === 0) {
+        showToast('Please add at least one service', 'error');
+        return;
+    }
+
+    const transactionData = {
+        client_id: clientId,
+        sale_date: new Date().toISOString().split('T')[0],
+        payment_method: 'Cash',
+        payment_status: 'Paid',
+        // Extract numbers from currency strings (e.g., "$15.00" -> 15.00)
+        discount: parseFloat(document.getElementById('summary-discount').textContent.replace(/[$-]/g, '')) || 0,
+        items: []
+    };
+
+    rows.forEach(row => {
+        const serviceName = row.querySelector('.service-name').value;
+        const qty = parseInt(row.querySelector('.service-qty').value);
+        const price = parseFloat(row.querySelector('.service-unit-price').textContent.replace(/[$-]/g, ''));
+        
+        if (serviceName) {
+            transactionData.items.push({
+                product_name: serviceName,
+                quantity: qty,
+                unit_price: price,
+                discount_percent: 0
+            });
+        }
+    });
+
+    try {
+        const response = await fetch('../../api/sales.php?action=create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(transactionData)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            showToast('Transaction Processed!', 'success');
+            tbody.innerHTML = ''; 
+            document.getElementById('client-name').value = '';
+            document.getElementById('client-id').value = ''; // Reset for next sale
+            recalcServices(); 
+        } else {
+            showToast('Error: ' + result.error, 'error');
+        }
+    } catch (error) {
+        showToast('Server connection failed', 'error');
+    }
 }

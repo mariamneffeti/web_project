@@ -191,6 +191,7 @@ body {
           <label class="form-label">Client Name</label>
           <div class="input-group">
           <input class="form-control" id="client-name">
+          <input type="hidden" id="client-id" value="1">
           <br>
           <button class="btn btn-outline-dark" type="button" id="btn-search-client">
             <i class="bi bi-search"></i>
@@ -230,51 +231,7 @@ body {
       </div>
     </div>
 
-      <div class="card mb-4">
-          <div class="card-header">
-              <i class="bi bi-person me-2"></i> Scheduled Meetings
-          </div>
-          <section id="calendar" class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <br><br>
-                <button class="btn btn-finance rounded-pill px-4 shadow-sm">
-                    <i class="bi bi-plus-lg me-2"></i>Add New Meeting
-                </button>
-            </div>
-            <div class="table-responsive shadow-sm rounded-3">
-                <table class="table table-hover table-custom align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th class="py-3 px-4">Date</th>
-                            <th>Time</th>
-                            <th>Topic</th>
-                            <th>Attendees</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="px-4">2026-02-05</td>
-                            <td class="fw-bold">10:00</td>
-                            <td>Strategy Meeting</td>
-                            <td>John, Maria</td>
-                            <td class="text-muted small">Prepare report</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4">2026-02-06</td>
-                            <td class="fw-bold">14:00</td>
-                            <td>Client Follow-up</td>
-                            <td>Sarah, Tom</td>
-                            <td class="text-muted small">Send proposal</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-
-
-      </div>
+      
       <div class="card mb-4">
   <div class="card-header">
     <i class="bi bi-graph-up me-2"></i> Sales Overview (Last 7 Days)
@@ -304,28 +261,10 @@ body {
             </tr>
           </thead>
           <tbody id="services-tbody">
-            <tr>
-              <td>
-                <select class="form-select">
-                  <option>Consultation Fee</option>
-                  <option>Standard Repair</option>
-                </select>
-              </td>
-              <td>
-                <input type="number" class="form-control" value="1" style="width:80px">
-              </td>
-              <td>$150</td>
-              <td class="fw-bold">$150</td>
-              <td>
-                <button class="btn btn-outline-danger btn-sm">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
           </tbody>
         </table>
 
-        <button class="btn btn-sm btn-outline-secondary" onclick="addNewServiceRow()">
+        <button class="btn btn-sm btn-outline-secondary" onclick="addNewServiceRow()" id="add-service-btn">
           + Add Service
         </button>
       </div>
@@ -354,7 +293,7 @@ body {
           <span id="summary-total">$0</span>
         </div>
 
-        <button class="btn btn-primary-custom w-100 py-2">
+        <button class="btn btn-primary-custom w-100 py-2" onclick="processTransaction()" id="process-transaction-btn">
           <i class="bi bi-check-circle me-2"></i> Process Transaction
         </button>
       </div>
