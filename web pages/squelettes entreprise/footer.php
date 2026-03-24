@@ -30,4 +30,6 @@
     </footer>
 
 </body>
+<script src="/js libs/chart.js"></script>
+<script src=<?php echo $pagePath ?>>></script>
 </html>

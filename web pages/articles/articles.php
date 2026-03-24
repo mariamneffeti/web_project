@@ -139,4 +139,7 @@
   </section>
 
 </main>
-<?php include('../squelettes entreprise/footer.php'); ?>
+<?php
+    $pagePath = "../articles/articles.js";
+    include('../squelettes entreprise/footer.php'); 
+?>

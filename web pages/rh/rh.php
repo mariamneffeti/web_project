@@ -115,4 +115,7 @@
   </section>
 
 </main>
-<?php include('../squelettes entreprise/footer.php'); ?>
+<?php
+    $pagePath = "../rh/rh.js";
+    include('../squelettes entreprise/footer.php'); 
+?>

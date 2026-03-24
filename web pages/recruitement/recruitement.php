@@ -85,4 +85,7 @@
         </section>
     </div>
 
-<?php include('../squelettes entreprise/footer.php'); ?>
+<?php
+    $pagePath = "../recruitement/recruitement.js";
+    include('../squelettes entreprise/footer.php'); 
+?>
