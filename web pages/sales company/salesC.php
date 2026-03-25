@@ -90,4 +90,7 @@
             </div>
         </section>
     </div>
-<?php include('../squelettes entreprise/footer.php'); ?>
+<?php
+    $pagePath = "../sales company/salesC.js";
+    include('../squelettes entreprise/footer.php'); 
+?>

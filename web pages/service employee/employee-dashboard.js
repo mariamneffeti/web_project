@@ -5,11 +5,15 @@
  */
 
 // Global Variables
-
+let receiptModal;
 let currentPage = 1;
 let salesChart = null;
 let clientModal, saleModal;
-
+const SERVICE_PRICES = {
+    'Consultation Fee': 150,
+    'Standard Repair': 200,
+    'Software Update': 50
+};
 // Initialize on Page Load
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -18,6 +22,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clientModalEl) {
         clientModal = new bootstrap.Modal(clientModalEl);
     }
+    const receiptModalEl = document.getElementById('receiptModal');
+    if (receiptModalEl) receiptModal = new bootstrap.Modal(receiptModalEl);
+    const searchBtn = document.getElementById('btn-search-client');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', async function() {
+            const searchTerm = nameInput.value.trim();
+            
+            if (!searchTerm) {
+                showToast('Please enter a name to search', 'warning');
+                return;
+            }
+            await performClientSearch(searchTerm);});}
+    const nameInput = document.getElementById('client-name');
+    if (nameInput) {
+        nameInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                document.getElementById('btn-search-client').click();
+            }});}
     
     // Load initial data
     loadDashboardStats();
@@ -27,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     document.getElementById('sale-start-date').value = weekAgo;
     document.getElementById('sale-end-date').value = today;
+    initServicesTable();
 });
 
 // Navigation
@@ -67,9 +91,42 @@ function showSection(sectionName) {
 
 // Dashboard Statistics
 
+
+// Function to update the cards for a SPECIFIC client
+async function updateClientStats(clientId) {
+    try {
+        // Fetch data for just ONE client
+        const response = await fetch(`../../api/clients.php?action=get&id=${clientId}`);
+        const result = await response.json();
+        
+        if (result.success) {
+            const client = result.data;
+            
+            /*/document.getElementById('stat-today-count').textContent = client.total_transactions || 0;
+
+            document.getElementById('stat-today-amount').textContent = formatCurrency(client.total_spent);
+            
+            document.getElementById('stat-clients').textContent = client.status;
+            
+            if(document.getElementById('last-purchase-date')) {
+                document.getElementById('last-purchase-date').textContent = client.last_purchase || 'No purchases';
+            }/*/
+            const lastPurchaseEl = document.getElementById('last-purchase-date');
+            if (lastPurchaseEl) {
+                lastPurchaseEl.textContent = client.last_purchase_date || 'No purchases';
+            }
+            const totalSpentEl = document.getElementById('client-total-spent');
+            if (totalSpentEl) {
+                totalSpentEl.textContent = formatCurrency(client.total_spent);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading client stats:', error);
+    }
+}
 async function loadDashboardStats() {
     try {
-        const response = await fetch('../api/sales.php?action=stats');
+        const response = await fetch('../../api/sales.php?action=stats');
         const result = await response.json();
         
         if (result.success) {
@@ -90,6 +147,29 @@ async function loadDashboardStats() {
     } catch (error) {
         console.error('Error loading dashboard stats:', error);
         showToast('Error loading dashboard statistics', 'error');
+    }
+}
+async function performClientSearch(name) {
+    try {
+        const response = await fetch(`../../api/clients.php?action=list&search=${encodeURIComponent(name)}`);
+        const result = await response.json();
+
+        if (result.success && result.data.length > 0) {
+            const foundClient = result.data[0]; 
+            
+            document.getElementById('client-name').value = foundClient.client_name;
+            document.getElementById('client-id').value = foundClient.id; 
+            
+            document.getElementById('client-email').value = foundClient.email || '';
+            await updateClientStats(foundClient.id);
+            
+            showToast(`Found: ${foundClient.client_name}`, 'success');
+        } else {
+            showToast('No client found', 'error');
+            document.getElementById('client-id').value = ''; // Clear ID if not found
+        }
+    } catch (error) {
+        showToast('Error searching for client', 'error');
     }
 }
 
@@ -170,7 +250,7 @@ async function loadClients() {
             status: status
         });
         
-        const response = await fetch(`../api/clients.php?${params}`);
+        const response = await fetch(`../../api/clients.php?${params}`);
         const result = await response.json();
         
         if (result.success) {
@@ -232,7 +312,7 @@ function openClientModal(clientId = null) {
 
 async function editClient(clientId) {
     try {
-        const response = await fetch(`../api/clients.php?action=get&id=${clientId}`);
+        const response = await fetch(`../../api/clients.php?action=get&id=${clientId}`);
         const result = await response.json();
         
         if (result.success) {
@@ -247,6 +327,7 @@ async function editClient(clientId) {
             
             document.getElementById('clientModalTitle').textContent = 'Edit Client';
             clientModal.show();
+            updateClientStats(clientId);
         }
     } catch (error) {
         console.error('Error loading client:', error);
@@ -272,8 +353,8 @@ async function saveClient() {
     
     try {
         const url = clientId 
-            ? `../api/clients.php?action=update&id=${clientId}`
-            : '../api/clients.php?action=create';
+            ? `../../api/clients.php?action=update&id=${clientId}`
+            : '../../api/clients.php?action=create';
         
         const response = await fetch(url, {
             method: 'POST',
@@ -302,7 +383,7 @@ async function deleteClient(clientId, clientName) {
     }
     
     try {
-        const response = await fetch(`../api/clients.php?action=delete&id=${clientId}`, {
+        const response = await fetch(`../../api/clients.php?action=delete&id=${clientId}`, {
             method: 'POST'
         });
         
@@ -338,7 +419,7 @@ async function loadSales(page = 1) {
             end_date: endDate
         });
         
-        const response = await fetch(`../api/sales.php?${params}`);
+        const response = await fetch(`../../api/sales.php?${params}`);
         const result = await response.json();
         
         if (result.success) {
@@ -437,7 +518,7 @@ function searchSales() {
 
 async function viewSale(saleId) {
     try {
-        const response = await fetch(`../api/sales.php?action=get&id=${saleId}`);
+        const response = await fetch(`../../api/sales.php?action=get&id=${saleId}`);
         const result = await response.json();
         
         if (result.success) {
@@ -456,7 +537,7 @@ async function deleteSale(saleId, transactionId) {
     }
     
     try {
-        const response = await fetch(`../api/sales.php?action=delete&id=${saleId}`, {
+        const response = await fetch(`../../api/sales.php?action=delete&id=${saleId}`, {
             method: 'POST'
         });
         
@@ -573,3 +654,282 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+// Service Management
+
+function addNewServiceRow() {
+    const tbody = document.getElementById('services-tbody');
+    const newRow = document.createElement('tr');
+
+    newRow.innerHTML = `
+        <td>
+            <select class="form-select service-select" onchange="updateRowPrice(this)">
+                <option value="0" data-price="0">Select Service</option>
+                <option value="1" data-price="150">Consultation Fee</option>
+                <option value="2" data-price="100">Standard Repair</option>
+                <option value="3" data-price="50">Software Update</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control qty-input" value="1" min="1" style="width:80px" oninput="calculateRowTotal(this)">
+        </td>
+        <td class="unit-price">$0</td>
+        <td class="fw-bold row-total">$0</td>
+        <td>
+            <button class="btn btn-outline-danger btn-sm" onclick="removeServiceRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(newRow);
+}
+function removeServiceRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+    calculateOrderSummary();
+}
+function updateRowPrice(selectElement) {
+    const row = selectElement.closest('tr');
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+    
+    row.querySelector('.unit-price').textContent = `$${price}`;
+    calculateRowTotal(row.querySelector('.qty-input'));
+}
+function calculateRowTotal(inputElement) {
+    const row = inputElement.closest('tr');
+    const qty = parseFloat(inputElement.value) || 0;
+    const priceText = row.querySelector('.unit-price').textContent.replace('$', '');
+    const price = parseFloat(priceText) || 0;
+    
+    const total = qty * price;
+    row.querySelector('.row-total').textContent = `$${total}`;
+    
+    calculateOrderSummary();
+}
+function calculateOrderSummary() {
+    let subtotal = 0;
+
+    // Grab every element that has the row-total class
+    const rowTotals = document.querySelectorAll('.row-total');
+    
+    rowTotals.forEach(cell => {
+        // Strip out the '$' and commas to get a clean number
+        const value = parseFloat(cell.textContent.replace(/[$,]/g, '')) || 0;
+        subtotal += value;
+    });
+
+    const discount = subtotal * 0.10;
+    const total = subtotal - discount;
+
+    // Push the values to the Summary Card IDs we just created
+    const subtotalEl = document.getElementById('summary-subtotal');
+    const discountEl = document.getElementById('summary-discount');
+    const totalEl = document.getElementById('summary-total');
+
+    if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotal);
+    if (discountEl) discountEl.textContent = `-${formatCurrency(discount)}`;
+    if (totalEl) totalEl.textContent = formatCurrency(total);
+}
+function initServicesTable() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+
+    tbody.addEventListener('change', recalcServices);
+    tbody.addEventListener('input', recalcServices);
+
+    
+    const addBtn = document.getElementById('add-service-btn');
+    if (addBtn) {
+        addBtn.onclick = addServiceRow; 
+    }
+
+
+    recalcServices();
+}
+function addServiceRow() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+    let options = `<option value="">Select Service</option>`;
+    options += Object.keys(SERVICE_PRICES)
+        .map(name => `<option value="${name}">${name}</option>`)
+        .join('');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>
+            <select class="form-select service-name">
+                ${options}
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control service-qty" value="1" min="1" style="width:80px">
+        </td>
+        <td class="service-unit-price">$0.00</td>
+        <td class="fw-bold service-line-total">$0.00</td>
+        <td>
+            <button class="btn btn-outline-danger btn-sm remove-service-btn">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+
+    tr.querySelector('.remove-service-btn').addEventListener('click', () => {
+        tr.remove();
+        recalcServices();
+    });
+
+    tbody.appendChild(tr);
+    recalcServices();
+}
+function recalcServices() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+    let subtotal = 0;
+
+    tbody.querySelectorAll('tr').forEach(row => {
+        const nameEl  = row.querySelector('.service-name');
+        const qtyEl   = row.querySelector('.service-qty');
+        const unitEl  = row.querySelector('.service-unit-price');
+        const totalEl = row.querySelector('.service-line-total');
+
+        if (!nameEl || !qtyEl) return;
+
+        const serviceName = nameEl.value;
+        const unitPrice   = SERVICE_PRICES[serviceName] || 0;
+        const qty         = Math.max(1, parseInt(qtyEl.value, 10) || 1);
+        const lineTotal   = unitPrice * qty;
+
+        if (unitEl)  unitEl.textContent  = formatCurrency(unitPrice);
+        if (totalEl) totalEl.textContent = formatCurrency(lineTotal);
+
+        subtotal += lineTotal;
+    });
+
+    const discount   = subtotal * 0.10;
+    const grandTotal = subtotal - discount;
+
+    // Update Summary Card
+    const subtotalEl  = document.getElementById('summary-subtotal');
+    const discountEl  = document.getElementById('summary-discount');
+    const grandTotalEl = document.getElementById('summary-total');
+
+    if (subtotalEl)   subtotalEl.textContent  = formatCurrency(subtotal);
+    if (discountEl)   discountEl.textContent  = `-${formatCurrency(discount)}`;
+    if (grandTotalEl) grandTotalEl.textContent = formatCurrency(grandTotal);
+}
+function addServiceRow() {
+    const tbody = document.getElementById('services-tbody');
+    if (!tbody) return;
+
+    let options = `<option value="">Select Service</option>`;
+    options += Object.keys(SERVICE_PRICES)
+        .map(name => `<option value="${name}">${name}</option>`)
+        .join('');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><select class="form-select service-name">${options}</select></td>
+        <td><input type="number" class="form-control service-qty" value="1" min="1" style="width:80px"></td>
+        <td class="service-unit-price">$0.00</td>
+        <td class="fw-bold service-line-total">$0.00</td>
+        <td>
+            <button class="btn btn-outline-danger btn-sm remove-service-btn">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+
+    tr.querySelector('.remove-service-btn').addEventListener('click', () => {
+        tr.remove();
+        recalcServices();
+    });
+
+    tbody.appendChild(tr);
+    recalcServices();
+}
+async function processTransaction() {
+    const tbody = document.getElementById('services-tbody');
+    const rows = tbody.querySelectorAll('tr');
+    const clientName = document.getElementById('client-name').value;
+    const clientId = document.getElementById('client-id')?.value || 1;
+
+    if (!clientName || rows.length === 0) {
+        showToast('Please select a client and add services', 'warning');
+        return;
+    }
+
+    // Capture summary values for the receipt BEFORE clearing them
+    const summaryData = {
+        subtotal: document.getElementById('summary-subtotal').textContent,
+        discount: document.getElementById('summary-discount').textContent,
+        total: document.getElementById('summary-total').textContent,
+        client: clientName,
+        items: []
+    };
+
+    const transactionData = {
+        client_id: clientId,
+        sale_date: new Date().toISOString().split('T')[0],
+        payment_method: 'Cash',
+        payment_status: 'Paid',
+        discount: parseFloat(summaryData.discount.replace(/[$-]/g, '')) || 0,
+        items: []
+    };
+
+    rows.forEach(row => {
+        const sName = row.querySelector('.service-name').value;
+        const sPrice = row.querySelector('.service-line-total').textContent;
+        if(sName) {
+            transactionData.items.push({
+                product_name: sName,
+                quantity: parseInt(row.querySelector('.service-qty').value),
+                unit_price: parseFloat(row.querySelector('.service-unit-price').textContent.replace(/[$-]/g, '')),
+                discount_percent: 0
+            });
+            summaryData.items.push({ name: sName, price: sPrice });
+        }
+    });
+
+    try {
+        const response = await fetch('../../api/sales.php?action=create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(transactionData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            showToast('Transaction Processed!', 'success');
+            
+            // --- GENERATE RECEIPT ---
+            document.getElementById('receipt-id').textContent = '#' + (result.transaction_id || 'N/A');
+            document.getElementById('receipt-date').textContent = new Date().toLocaleDateString();
+            document.getElementById('receipt-client-name').textContent = summaryData.client;
+            document.getElementById('receipt-subtotal').textContent = summaryData.subtotal;
+            document.getElementById('receipt-discount').textContent = summaryData.discount;
+            document.getElementById('receipt-total').textContent = summaryData.total;
+            
+            const itemsBody = document.getElementById('receipt-items');
+            itemsBody.innerHTML = summaryData.items.map(item => `
+                <tr><td>${item.name}</td><td class="text-end">${item.price}</td></tr>
+            `).join('');
+
+            receiptModal.show(); // Show the receipt to the user
+            
+            // Reset UI
+            tbody.innerHTML = ''; 
+            document.getElementById('client-name').value = '';
+            recalcServices(); 
+            loadDashboardStats();
+        } else {
+            showToast('Error: ' + result.error, 'error');
+        }
+    } catch (error) {
+        showToast('Server error', 'error');
+    }
+}

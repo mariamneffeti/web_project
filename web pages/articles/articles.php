@@ -1,9 +1,7 @@
 <?php 
     $pageTitle = "Articles"; 
 ?>
-<?php
-include_once("../config/database.php");  
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -205,6 +203,7 @@ include_once("../config/database.php");
   </section>
 
 </main>
+
 <footer class="footer-forest text-white py-5">
         <div class="container">
             <div class="row gy-4 text-center text-md-start">
@@ -238,3 +237,4 @@ include_once("../config/database.php");
 <script src="article.js"></script>
 </body>
 </html>
+

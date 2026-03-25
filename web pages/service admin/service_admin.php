@@ -77,4 +77,7 @@
             </div>
         </div>
     </div>
-<?php include('../squelettes entreprise/footer.php'); ?>
+<?php
+    $pagePath = "../service admin/service_admin.js";
+    include('../squelettes entreprise/footer.php'); 
+?>

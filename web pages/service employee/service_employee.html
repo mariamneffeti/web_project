@@ -9,6 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="employee-dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 body {
   background-color: #F6F6F2;
@@ -86,6 +87,17 @@ body {
 .navbar-nav.center-shift {
   transform: translateX(-90px);
 }
+@media print {
+    body * { visibility: hidden; }
+    #receipt-content, #receipt-content * { visibility: visible; }
+    #receipt-content { 
+        position: absolute; 
+        left: 0; 
+        top: 0; 
+        width: 100%; 
+    }
+    .modal-footer, .btn-close { display: none !important; }
+}
 </style>
 </head>
 
@@ -98,7 +110,8 @@ body {
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
     <span class="navbar-toggler-icon"></span>
   </button>
-
+  <input type="hidden" id="sale-start-date">
+  <input type="hidden" id="sale-end-date">
   <div class="collapse navbar-collapse justify-content-center" id="nav">
 
   <ul class="navbar-nav gap-4 fw-semibold center-shift">
@@ -145,7 +158,37 @@ body {
 </div>
 </div>
 <div class="row">
-
+  <div class="row mb-4 text-center">
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-clock-history fs-4 text-primary"></i>
+      <p class="mb-0 fw-semibold">Today's Sales Count</p>
+      <h3 id="stat-today-count" class="mb-0">0</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-wallet2 fs-4 text-success"></i>
+      <p class="mb-0 fw-semibold">Today's Revenue</p>
+      <h3 id="stat-today-amount" class="mb-0">$0</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-wallet2 fs-4 text-success"></i>
+      <p class="mb-0 fw-semibold">Monthly Revenue</p>
+      <h3 id="stat-month-amount" class="mb-0">$0</h3>
+      <span id="stat-month-count" class="d-none">0</span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-star-fill fs-4 text-warning"></i>
+      <p class="mb-0 fw-semibold">Total Clients</p>
+      <h3 id="stat-clients" class="mb-0">0</h3>
+    </div>
+  </div>
+</div>
   <div class="col-lg-7">
 
     <div class="card mb-4">
@@ -157,12 +200,19 @@ body {
 
         <div class="col-md-4">
           <label class="form-label">Client Name</label>
-          <input class="form-control">
+          <div class="input-group">
+          <input class="form-control" id="client-name">
+          <input type="hidden" id="client-id" value="1">
+          <br>
+          <button class="btn btn-outline-dark" type="button" id="btn-search-client">
+            <i class="bi bi-search"></i>
+          </button>
+          </div>
         </div>
 
         <div class="col-md-4">
           <label class="form-label">Email</label>
-          <input class="form-control">
+          <input class="form-control" id="client-email">
         </div>
 
         <div class="col-md-4">
@@ -172,24 +222,18 @@ body {
             <option>B2C</option>
           </select>
         </div>
-
         <div class="col-12 mt-3">
           <div class="soft-alert p-3 text-center">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <i class="bi bi-clock-history fs-4"></i>
                 <p class="mb-0 fw-semibold">Last Purchase</p>
-                <small>3 months ago</small>
+                <small id="last-purchase-date"></small>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <i class="bi bi-wallet2 fs-4"></i>
                 <p class="mb-0 fw-semibold">Total Spent</p>
-                <small>$2,350</small>
-              </div>
-              <div class="col-md-4">
-                <i class="bi bi-star-fill fs-4"></i>
-                <p class="mb-0 fw-semibold">Status</p>
-                <small>Premium</small>
+                <small id="client-total-spent">$0</small>
               </div>
             </div>
           </div>
@@ -198,51 +242,15 @@ body {
       </div>
     </div>
 
+      
       <div class="card mb-4">
-          <div class="card-header">
-              <i class="bi bi-person me-2"></i> Scheduled Meetings
-          </div>
-          <section id="calendar" class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <br><br>
-                <button class="btn btn-finance rounded-pill px-4 shadow-sm">
-                    <i class="bi bi-plus-lg me-2"></i>Add New Meeting
-                </button>
-            </div>
-            <div class="table-responsive shadow-sm rounded-3">
-                <table class="table table-hover table-custom align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th class="py-3 px-4">Date</th>
-                            <th>Time</th>
-                            <th>Topic</th>
-                            <th>Attendees</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="px-4">2026-02-05</td>
-                            <td class="fw-bold">10:00</td>
-                            <td>Strategy Meeting</td>
-                            <td>John, Maria</td>
-                            <td class="text-muted small">Prepare report</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4">2026-02-06</td>
-                            <td class="fw-bold">14:00</td>
-                            <td>Client Follow-up</td>
-                            <td>Sarah, Tom</td>
-                            <td class="text-muted small">Send proposal</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-
-
-      </div>
+  <div class="card-header">
+    <i class="bi bi-graph-up me-2"></i> Sales Overview (Last 7 Days)
+  </div>
+  <div class="card-body">
+    <canvas id="salesChart" width="400" height="200"></canvas>
+  </div>
+</div>
   </div>
 
   <div class="col-lg-5">
@@ -263,29 +271,11 @@ body {
               <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>
-                <select class="form-select">
-                  <option>Consultation Fee</option>
-                  <option>Standard Repair</option>
-                </select>
-              </td>
-              <td>
-                <input type="number" class="form-control" value="1" style="width:80px">
-              </td>
-              <td>$150</td>
-              <td class="fw-bold">$150</td>
-              <td>
-                <button class="btn btn-outline-danger btn-sm">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
+          <tbody id="services-tbody">
           </tbody>
         </table>
 
-        <button class="btn btn-sm btn-outline-secondary">
+        <button class="btn btn-sm btn-outline-secondary" onclick="addNewServiceRow()" id="add-service-btn">
           + Add Service
         </button>
       </div>
@@ -299,22 +289,22 @@ body {
       <div class="card-body">
         <div class="d-flex justify-content-between mb-2">
           <span class="text-muted">Subtotal</span>
-          <span>$150</span>
+          <span id="summary-subtotal">$0</span>
         </div>
 
         <div class="d-flex justify-content-between mb-2">
           <span>Discount</span>
-          <span>-$15</span>
+          <span id="summary-discount">-$0</span>
         </div>
 
         <hr>
 
         <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
           <span>Total</span>
-          <span>$135</span>
+          <span id="summary-total">$0</span>
         </div>
 
-        <button class="btn btn-primary-custom w-100 py-2">
+        <button class="btn btn-primary-custom w-100 py-2" onclick="processTransaction()" id="process-transaction-btn">
           <i class="bi bi-check-circle me-2"></i> Process Transaction
         </button>
       </div>
@@ -390,3 +380,63 @@ body {
 </div>
 </body>
 </html>
+<div class="modal fade" id="receiptModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">Transaction Receipt</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="receipt-content">
+                <div class="text-center mb-4">
+                    <h4 class="fw-bold mb-0">CareerFlow Inc.</h4>
+                    <p class="text-muted small">Official Service Receipt</p>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Transaction ID:</span>
+                    <span id="receipt-id" class="fw-semibold">#0000</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Date:</span>
+                    <span id="receipt-date"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="text-muted">Client:</span>
+                    <span id="receipt-client-name" class="fw-semibold"></span>
+                </div>
+
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receipt-items">
+                        </tbody>
+                </table>
+
+                <div class="border-top pt-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Subtotal</span>
+                        <span id="receipt-subtotal"></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1 text-danger">
+                        <span>Discount (10%)</span>
+                        <span id="receipt-discount"></span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold fs-5 mt-2">
+                        <span>Total Paid</span>
+                        <span id="receipt-total" class="text-success"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i>Print Receipt
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

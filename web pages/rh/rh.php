@@ -3,9 +3,7 @@
 <html lang="en">
 <?php $pageTitle = "Employees"; 
 ?>
-<?php
-include_once("../config/database.php");  
-?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +12,7 @@ include_once("../config/database.php");
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="rh.js"></script>
+  
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -175,6 +173,7 @@ include_once("../config/database.php");
 
 
 </main>
+
 <footer class="footer-forest text-white py-5">
         <div class="container">
             <div class="row gy-4 text-center text-md-start">
@@ -205,5 +204,7 @@ include_once("../config/database.php");
             </div>
         </div>
     </footer>
+      <script src="rh.js"></script>
 </body>
 </html>
+
