@@ -5,7 +5,7 @@
  */
 
 // Global Variables
-
+let receiptModal;
 let currentPage = 1;
 let salesChart = null;
 let clientModal, saleModal;
@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clientModalEl) {
         clientModal = new bootstrap.Modal(clientModalEl);
     }
+    const receiptModalEl = document.getElementById('receiptModal');
+    if (receiptModalEl) receiptModal = new bootstrap.Modal(receiptModalEl);
     const searchBtn = document.getElementById('btn-search-client');
     if (searchBtn) {
         searchBtn.addEventListener('click', async function() {
@@ -852,42 +854,43 @@ function addServiceRow() {
 async function processTransaction() {
     const tbody = document.getElementById('services-tbody');
     const rows = tbody.querySelectorAll('tr');
-    
-    // Get the ID from the hidden field
-    const clientId = document.getElementById('client-id').value;
-    
-    if (!clientId) {
-        showToast('Please search and select a valid client first', 'warning');
+    const clientName = document.getElementById('client-name').value;
+    const clientId = document.getElementById('client-id')?.value || 1;
+
+    if (!clientName || rows.length === 0) {
+        showToast('Please select a client and add services', 'warning');
         return;
     }
 
-    if (rows.length === 0) {
-        showToast('Please add at least one service', 'error');
-        return;
-    }
+    // Capture summary values for the receipt BEFORE clearing them
+    const summaryData = {
+        subtotal: document.getElementById('summary-subtotal').textContent,
+        discount: document.getElementById('summary-discount').textContent,
+        total: document.getElementById('summary-total').textContent,
+        client: clientName,
+        items: []
+    };
 
     const transactionData = {
         client_id: clientId,
         sale_date: new Date().toISOString().split('T')[0],
         payment_method: 'Cash',
         payment_status: 'Paid',
-        // Extract numbers from currency strings (e.g., "$15.00" -> 15.00)
-        discount: parseFloat(document.getElementById('summary-discount').textContent.replace(/[$-]/g, '')) || 0,
+        discount: parseFloat(summaryData.discount.replace(/[$-]/g, '')) || 0,
         items: []
     };
 
     rows.forEach(row => {
-        const serviceName = row.querySelector('.service-name').value;
-        const qty = parseInt(row.querySelector('.service-qty').value);
-        const price = parseFloat(row.querySelector('.service-unit-price').textContent.replace(/[$-]/g, ''));
-        
-        if (serviceName) {
+        const sName = row.querySelector('.service-name').value;
+        const sPrice = row.querySelector('.service-line-total').textContent;
+        if(sName) {
             transactionData.items.push({
-                product_name: serviceName,
-                quantity: qty,
-                unit_price: price,
+                product_name: sName,
+                quantity: parseInt(row.querySelector('.service-qty').value),
+                unit_price: parseFloat(row.querySelector('.service-unit-price').textContent.replace(/[$-]/g, '')),
                 discount_percent: 0
             });
+            summaryData.items.push({ name: sName, price: sPrice });
         }
     });
 
@@ -899,16 +902,34 @@ async function processTransaction() {
         });
 
         const result = await response.json();
+
         if (result.success) {
             showToast('Transaction Processed!', 'success');
+            
+            // --- GENERATE RECEIPT ---
+            document.getElementById('receipt-id').textContent = '#' + (result.transaction_id || 'N/A');
+            document.getElementById('receipt-date').textContent = new Date().toLocaleDateString();
+            document.getElementById('receipt-client-name').textContent = summaryData.client;
+            document.getElementById('receipt-subtotal').textContent = summaryData.subtotal;
+            document.getElementById('receipt-discount').textContent = summaryData.discount;
+            document.getElementById('receipt-total').textContent = summaryData.total;
+            
+            const itemsBody = document.getElementById('receipt-items');
+            itemsBody.innerHTML = summaryData.items.map(item => `
+                <tr><td>${item.name}</td><td class="text-end">${item.price}</td></tr>
+            `).join('');
+
+            receiptModal.show(); // Show the receipt to the user
+            
+            // Reset UI
             tbody.innerHTML = ''; 
             document.getElementById('client-name').value = '';
-            document.getElementById('client-id').value = ''; // Reset for next sale
             recalcServices(); 
+            loadDashboardStats();
         } else {
             showToast('Error: ' + result.error, 'error');
         }
     } catch (error) {
-        showToast('Server connection failed', 'error');
+        showToast('Server error', 'error');
     }
 }
