@@ -215,3 +215,37 @@ ul li {
 .sidebar::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+    .dropdown-toggle::after {
+      display: none !important;
+    }
+    .form-control {
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      transform: translateX(5px);
+      border-color: #102e4a;
+      box-shadow: 0 4px 8px rgba(16, 46, 74, 0.1);
+    }
+    .footer-forest {
+      background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: "Inter", sans-serif;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: #ffffff;
+      padding-left: 5px;
+    }
+
+    .footer-brand i {
+      color: #8d9b6a;
+    }
