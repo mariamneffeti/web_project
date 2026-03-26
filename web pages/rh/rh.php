@@ -21,7 +21,7 @@
             <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <img src="" height="50" width="70" alt="Logo" />
+            <img src="../image/logoentreprisa.png" height="50" width="70" alt="Logo" />
             <a class="navbar-brand h1 fw-bold" href=""><?php echo $pageTitle; ?> Dashboard</a>
 
             <div class="collapse navbar-collapse" id="navbarNav">
