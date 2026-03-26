@@ -37,9 +37,9 @@
                         <span class="ms-2 d-none d-sm-inline">User</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
-                        <li><a class="dropdown-item text-white" href="#"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
+                        <li><a class="dropdown-item text-white" href="../profil/profil.php"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
                         <li><hr class="dropdown-divider border-secondary"></li>
-                        <li><a class="dropdown-item text-danger" href="#"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="../login/login.php"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
                     </ul>
                 </div>
             </div>
