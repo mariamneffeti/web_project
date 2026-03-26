@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterSelect = document.querySelectorAll('.form-select')[1]; // Le deuxième select (filtre)
     const applyBtn = document.querySelector('.btn-secondary');
 
-    // --- 1. FONCTION : AJOUTER UN EMPLOYÉ ---
+    
     employeeForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Récupération des valeurs
+       
         const name = employeeForm.querySelector('input[placeholder="Employee name"]').value;
         const dept = employeeForm.querySelector('select').value;
         const pos = employeeForm.querySelector('input[placeholder="Position"]').value;
         const email = employeeForm.querySelector('input[placeholder="email@company.com"]').value;
-        const id = Math.floor(Math.random() * 100) + 'C'; // Génération d'ID factice
+        const id = Math.floor(Math.random() * 100) + 'C';
 
         if (name && dept !== "Choose..." && pos && email) {
             const newRow = `
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 2. FONCTION : SUPPRIMER OU ACTIONS ---
+    
     employeeTableBody.addEventListener('click', (e) => {
         if (e.target.classList.contains('btn-delete')) {
             if (confirm("Are you sure you want to remove this employee? ?")) {
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 3. FONCTION : RECHERCHE ET FILTRE ---
+
     const filterEmployees = () => {
         const searchTerm = searchInput.value.toLowerCase();
         const rows = employeeTableBody.querySelectorAll('tr');

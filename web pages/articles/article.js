@@ -3,13 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const articleTableBody = document.querySelector('tbody');
     const searchInput = document.querySelector('input[placeholder="Search by title or author"]');
     const filterInput = document.querySelector('input[placeholder="Filter by category"]');
-    const searchBtn = document.querySelector('section.row .btn-secondary'); // Bouton Search
+    const searchBtn = document.querySelector('section.row .btn-secondary'); 
 
-    // --- 1. FONCTION : AJOUTER UN ARTICLE ---
+    
     articleForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Récupération des valeurs
+      
         const title = articleForm.querySelector('input[placeholder="Enter title"]').value;
         const category = articleForm.querySelector('select').value;
         const author = articleForm.querySelector('input[placeholder="Author name"]').value;
@@ -22,10 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Création de l'ID aléatoire (simulé)
         const id = Math.random().toString(36).substr(2, 3).toUpperCase();
 
-        // Création de la nouvelle ligne
+        
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>${id}</td>
@@ -45,10 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         articleTableBody.appendChild(newRow);
-        articleForm.reset(); // Réinitialiser le formulaire
+        articleForm.reset(); 
     });
 
-    // --- 2. FONCTION : RECHERCHE ET FILTRE ---
+
     const filterArticles = () => {
         const searchText = searchInput.value.toLowerCase();
         const filterText = filterInput.value.toLowerCase();
@@ -70,13 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Écouteurs pour la recherche (temps réel ou bouton)
+   
     searchInput.addEventListener('input', filterArticles);
     filterInput.addEventListener('input', filterArticles);
     searchBtn.addEventListener('click', filterArticles);
 
-    // --- 3. FONCTION : ACTIONS (DELETE & LIKE) ---
-    // Utilisation de la délégation d'événements pour gérer les boutons créés dynamiquement
+
     articleTableBody.addEventListener('click', (e) => {
         // Suppression
         if (e.target.classList.contains('btn-delete')) {
@@ -85,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Like (Simple compteur)
+
         if (e.target.classList.contains('btn-like')) {
             const span = e.target.querySelector('span');
             let count = parseInt(span.innerText);
