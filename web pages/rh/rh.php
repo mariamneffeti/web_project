@@ -67,7 +67,6 @@
         </div>
     </div>
 
-
 <main class="container page-content">
   <section class="card shadow-sm mb-5">
     <div class="card p-4 stats-card h-100" style="border-left: 4px solid #388087;">
@@ -151,21 +150,47 @@
           </tr>
         </thead>
 
-        <tbody id="employeeTableBody">
-          <tr>
-            <td>Sara Dh</td>
-            <td>05A</td>
-            <td>Web Developer</td>
-            <td>IT</td>
-            <td>sara@company.com</td>
-            <td><span class="badge bg-success">Active</span></td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary">View</button>
-              <button class="btn btn-sm btn-outline-warning">Edit</button>
-              <button class="btn btn-sm btn-outline-danger btn-delete">Delete</button>
-            </td>
-          </tr>
-        </tbody>
+      <tbody id="employeeTableBody">
+        <?php
+        require '../../config/database.php';
+
+        try {
+            $pdo = getDB();
+            $query = $pdo->query("SELECT * FROM employees ");
+
+            $employees = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($employees) > 0) {
+                foreach ($employees as $row) {
+                    echo "<tr>
+                            <td>" . htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) . "</td>
+                            <td>" . htmlspecialchars($row['id']) . "</td>
+                            <td>" . htmlspecialchars($row['position']) . "</td>
+                            <td>" . htmlspecialchars($row['department']) . "</td>
+                            <td>" . htmlspecialchars($row['email']) . "</td>
+                            <td><span class='badge bg-success'>Active</span></td>
+                            <td>
+                                <button class='btn btn-sm btn-outline-primary'>View</button>
+                                <button class='btn btn-sm btn-outline-warning'>Edit</button>
+                                <button class='btn btn-sm btn-outline-danger btn-delete'>Delete</button>
+                            </td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr>
+                        <td colspan='7' class='text-center'>Aucun employé trouvé</td>
+                      </tr>";
+            }
+
+        } catch (PDOException $e) {
+            echo "<tr>
+                    <td colspan='7' class='text-danger text-center'>
+                        Erreur : " . htmlspecialchars($e->getMessage()) . "
+                    </td>
+                  </tr>";
+        }
+        ?>
+      </tbody>
 
       </table>
     </div>
