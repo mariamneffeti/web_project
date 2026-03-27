@@ -85,7 +85,7 @@ CREATE TABLE sales (
     tax DECIMAL(12, 2) DEFAULT 0.00,
     total_amount DECIMAL(12, 2) NOT NULL,
     payment_method ENUM('Cash', 'Credit Card', 'Bank Transfer', 'Mobile Payment') NOT NULL,
-    payment_status ENUM('Paid', 'Pending', 'Overdue') DEFAULT 'Paid',
+    payment_status ENUM('Paid', 'Pending') DEFAULT 'Pending',
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -103,7 +103,6 @@ CREATE TABLE sale_items (
     product_name VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
     unit_price DECIMAL(10, 2) NOT NULL,
-    discount_percent DECIMAL(5, 2) DEFAULT 0.00,
     total_price DECIMAL(12, 2) NOT NULL,
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
@@ -117,7 +116,6 @@ CREATE TABLE invoices (
     sale_id INT UNIQUE NOT NULL,
     issue_date DATE NOT NULL,
     due_date DATE,
-    status ENUM('Draft', 'Sent', 'Paid', 'Overdue', 'Cancelled') DEFAULT 'Draft',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE
 );
@@ -190,17 +188,17 @@ INSERT INTO sales (transaction_id, company_id, employee_id, client_id, sale_date
 ('TX-2024-003', 1, 1, 3, '2024-01-20', 750.00, 50.00, 70.00, 770.00, 'Cash', 'Paid');
 
 -- Insert sample sale items
-INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price, discount_percent, total_price) VALUES 
-(1, 2, 'Security Suite', 1, 150.00, 10.00, 135.00),
-(2, 3, 'Premium Support Pack', 1, 500.00, 0.00, 500.00),
-(3, 4, 'Enterprise Router', 2, 299.00, 5.00, 568.10),
-(3, 5, 'Office Suite License', 1, 450.00, 10.00, 405.00);
+INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price, total_price) VALUES 
+(1, 2, 'Security Suite', 1, 150.00, 135.00),
+(2, 3, 'Premium Support Pack', 1, 500.00, 500.00),
+(3, 4, 'Enterprise Router', 2, 299.00, 568.10),
+(3, 5, 'Office Suite License', 1, 450.00, 405.00);
 
 -- Insert invoices
-INSERT INTO invoices (invoice_number, sale_id, issue_date, due_date, status) VALUES 
-('INV-2024-001', 1, '2024-01-15', '2024-02-15', 'Paid'),
-('INV-2024-002', 2, '2024-01-10', '2024-02-10', 'Paid'),
-('INV-2024-003', 3, '2024-01-20', '2024-02-20', 'Sent');
+INSERT INTO invoices (invoice_number, sale_id, issue_date, due_date) VALUES 
+('INV-2024-001', 1, '2024-01-15', '2024-02-15'),
+('INV-2024-002', 2, '2024-01-10', '2024-02-10'),
+('INV-2024-003', 3, '2024-01-20', '2024-02-20');
 
 -- Insert job icons
 INSERT INTO job_icons (icon_name, bootstrap_class, default_color) VALUES 
