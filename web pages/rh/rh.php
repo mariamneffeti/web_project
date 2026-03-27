@@ -1,9 +1,9 @@
 
-<!DOCTYPE html>
-<html lang="en">
+
 <?php $pageTitle = "Employees"; 
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -67,23 +66,24 @@
             </ul>
         </div>
     </div>
-<main class="container page-content">
 
+
+<main class="container page-content">
   <section class="card shadow-sm mb-5">
     <div class="card p-4 stats-card h-100" style="border-left: 4px solid #388087;">
       <h3 class="mb-4">Add New Employee</h3>
 
-      <form id="employeeForm" class="row g-3">
+      <form id="employeeForm" class="row g-3" method="POST" action="add_employee.php" >
 
         <div class="col-md-6">
           <label class="form-label">Name</label>
-          <input id="name" type="text" class="form-control" placeholder="Employee name">
+          <input name="name" type="text" class="form-control" placeholder="Employee name">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Department</label>
-          <select id="department" class="form-select">
-            <option selected>Choose...</option>
+          <select name="department" class="form-select">
+            <option value="" selected>Choose...</option>
             <option>IT</option>
             <option>Finance</option>
             <option>Marketing</option>
@@ -93,21 +93,21 @@
 
         <div class="col-md-6">
           <label class="form-label">Position</label>
-          <input id="position" type="text" class="form-control" placeholder="Position">
+          <input name="position" type="text" class="form-control">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Email</label>
-          <input id="email" type="email" class="form-control" placeholder="email@company.com">
+          <input name="email" type="email" class="form-control">
         </div>
 
         <div class="col-md-12">
           <label class="form-label">CV Link</label>
-          <input type="url" class="form-control" placeholder="https://example.com/cv.pdf">
+          <input name="cv" type="url" class="form-control">
         </div>
 
         <div class="col-12 text-end">
-          <button type="submit" class="btn btn-primary">Add Employee</button>
+          <button type="submit" name="btn_submit" class="btn btn-primary">Add Employee</button>
         </div>
 
       </form>
@@ -204,7 +204,7 @@
             </div>
         </div>
     </footer>
-      <script src="rh.js"></script>
-</body>
-</html>
 
+</body>
+<script src="rh.js"></script>
+</html>
