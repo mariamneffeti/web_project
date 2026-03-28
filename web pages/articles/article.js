@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const articleForm = document.querySelector('form');
-    const articleTableBody = document.querySelector('tbody');
+    const articleTableBody = document.querySelector('articleTableBody');
     const searchInput = document.querySelector('input[placeholder="Search by title or author"]');
     const filterInput = document.querySelector('input[placeholder="Filter by category"]');
     const searchBtn = document.querySelector('section.row .btn-secondary'); 

@@ -26,13 +26,14 @@ CREATE TABLE companies (
 
 CREATE TABLE employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT UNIQUE NOT NULL,
+    user_id INT NOT NULL,
     company_id INT NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     position VARCHAR(100),
     department VARCHAR(100),
     hire_date DATE,
+    email VARCHAR(250),
     salary DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -56,6 +57,20 @@ CREATE TABLE clients (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
     INDEX idx_company_client (company_id, client_name)
+);
+
+CREATE TABLE articles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    author_name VARCHAR(255) NOT NULL,
+    title VARCHAR(100),
+    category VARCHAR(100),
+    date DATE,
+    description TEXT,
+    link VARCHAR(250),
+    image VARCHAR(250),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
 );
 
 -- Sales Management

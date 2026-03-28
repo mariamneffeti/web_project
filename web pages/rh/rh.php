@@ -78,13 +78,13 @@
 
         <div class="col-md-6">
           <label class="form-label">Name</label>
-          <input id="name" type="text" class="form-control" placeholder="Employee name">
+          <input name="name" type="text" class="form-control" placeholder="Employee name" required>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Department</label>
-          <select id="department" class="form-select">
-            <option selected>Choose...</option>
+          <select name="department" class="form-select" required>
+            <option value="" selected>Choose...</option>
             <option>IT</option>
             <option>Finance</option>
             <option>Marketing</option>
@@ -94,21 +94,21 @@
 
         <div class="col-md-6">
           <label class="form-label">Position</label>
-          <input id="position" type="text" class="form-control" placeholder="Position">
+          <input name="position" type="text" class="form-control" placeholder="Position">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Email</label>
-          <input id="email" type="email" class="form-control" placeholder="email@company.com">
+          <input name="email" type="email" class="form-control" placeholder="email@company.com" required>
         </div>
 
         <div class="col-md-12">
           <label class="form-label">CV Link</label>
-          <input type="url" class="form-control" placeholder="https://example.com/cv.pdf">
+          <input name="cv" type="url" class="form-control" placeholder="https://example.com/cv.pdf">
         </div>
 
         <div class="col-12 text-end">
-          <button type="submit" class="btn btn-primary">Add Employee</button>
+          <button name="submit" type="submit" class="btn btn-primary">Add Employee</button>
         </div>
 
       </form>
@@ -165,7 +165,7 @@
             if (count($employees) > 0) {
                 foreach ($employees as $row) {
                     echo "<tr>
-                            <td>" . htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) . "</td>
+                            <td>" . htmlspecialchars($row['first_name'] ) . "</td>
                             <td>" . htmlspecialchars($row['id']) . "</td>
                             <td>" . htmlspecialchars($row['position']) . "</td>
                             <td>" . htmlspecialchars($row['department']) . "</td>
@@ -174,7 +174,7 @@
                             <td>
                                 <button class='btn btn-sm btn-outline-primary'>View</button>
                                 <button class='btn btn-sm btn-outline-warning'>Edit</button>
-                                <button class='btn btn-sm btn-outline-danger btn-delete'>Delete</button>
+                                <button class='btn btn-sm btn-outline-danger btn-delete' >Delete</button>
                             </td>
                           </tr>";
                 }

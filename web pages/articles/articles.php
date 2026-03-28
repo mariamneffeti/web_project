@@ -71,15 +71,15 @@
     <div class="card p-4 stats-card h-100" style="border-left: 4px solid #388087;">
       <h3 class="mb-4">Add New Article</h3>
 
-      <form class="row g-3">
+      <form class="row g-3" id="articleForm" >
         <div class="col-md-6">
           <label class="form-label">Article Title</label>
-          <input type="text" class="form-control" placeholder="Enter title">
+          <input type="text" id ="title" class="form-control" placeholder="Enter title">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Category / Tag</label>
-          <select class="form-select">
+          <select class="form-select" id="category">
             <option selected>Choose...</option>
             <option>Technology</option>
             <option>Data & AI</option>
@@ -91,7 +91,7 @@
 
         <div class="col-md-12">
           <label class="form-label">Description</label>
-          <textarea class="form-control" rows="4" placeholder="Article description"></textarea>
+          <textarea id="description" class="form-control" rows="4" placeholder="Article description"></textarea>
         </div>
 
         <div class="col-md-6">
@@ -156,7 +156,47 @@
               <th>Actions</th>
             </tr>
           </thead>
+      <tbody id="articleTableBody">
+        <?php
+        require '../../config/database.php';
 
+        try {
+            $pdo = getDB();
+            $query = $pdo->query("SELECT * FROM articles ");
+
+            $articles = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($articles) > 0) {
+                foreach ($articles as $row) {
+                    echo "<tr>
+                            <td>" . htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) . "</td>
+                            <td>" . htmlspecialchars($row['id']) . "</td>
+                            <td>" . htmlspecialchars($row['position']) . "</td>
+                            <td>" . htmlspecialchars($row['department']) . "</td>
+                            <td>" . htmlspecialchars($row['email']) . "</td>
+                            <td><span class='badge bg-success'>Active</span></td>
+                            <td>
+                                <button class='btn btn-sm btn-outline-primary'>View</button>
+                                <button class='btn btn-sm btn-outline-warning'>Edit</button>
+                                <button class='btn btn-sm btn-outline-danger btn-delete'>Delete</button>
+                            </td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr>
+                        <td colspan='7' class='text-center'>Aucun employé trouvé</td>
+                      </tr>";
+            }
+
+        } catch (PDOException $e) {
+            echo "<tr>
+                    <td colspan='7' class='text-danger text-center'>
+                        Erreur : " . htmlspecialchars($e->getMessage()) . "
+                    </td>
+                  </tr>";
+        }
+        ?>
+      </tbody>
           <tbody>
             <tr>
               <td>1A7</td>

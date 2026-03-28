@@ -1,30 +1,25 @@
 <?php
 include ('../../config/database.php');
 
-header('Content-Type: application/json');
+header('Content-Type: application/json'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $first_name = $_POST['name']; 
-        $last_name  = 'NN';   
-
-        $user_id     = 1; 
+        $last_name  = '';   
+        $user_id     = 3;
         $company_id  = 1;              
-        
         $position    = $_POST['position'];
         $department  = $_POST['department'];
         $hire_date   = date('Y-m-d');
-        $email       = $_POST['email'];
+        $email= $_POST['email'];
 
         $pdo = getDB();
 
-        $sql = "INSERT INTO employees 
-                (user_id, company_id, first_name, last_name, position, department, hire_date, email)
-                VALUES 
-                (:user_id, :company_id, :first_name, :last_name, :position, :department, :hire_date, :email)";
+        $sql = "INSERT INTO employees (user_id, company_id, first_name, last_name, position , department, hire_date,email)
+                VALUES (:user_id, :company_id, :first_name, :last_name, :position, :department, :hire_date ,:email)";
         
         $stmt = $pdo->prepare($sql);
-
         $stmt->execute([
             ':user_id'    => $user_id,
             ':company_id' => $company_id,
@@ -33,12 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':position'   => $position,
             ':department' => $department,
             ':hire_date'  => $hire_date,
-            ':email'      => $email
+            ':email' => $email
         ]);
 
         echo json_encode([
             'status' => 'success',
-            'message' => 'Employee added successfully'
+            
         ]);
 
     } catch (PDOException $e) {
