@@ -74,13 +74,13 @@
       <form class="row g-3" id="articleForm" >
         <div class="col-md-6">
           <label class="form-label">Article Title</label>
-          <input type="text" id ="title" class="form-control" placeholder="Enter title">
+          <input type="text" name ="title" class="form-control" placeholder="Enter title">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Category / Tag</label>
-          <select class="form-select" id="category">
-            <option selected>Choose...</option>
+          <select class="form-select" name="category">
+            <option value ="" selected>Choose...</option>
             <option>Technology</option>
             <option>Data & AI</option>
             <option>Cybersecurity</option>
@@ -91,31 +91,31 @@
 
         <div class="col-md-12">
           <label class="form-label">Description</label>
-          <textarea id="description" class="form-control" rows="4" placeholder="Article description"></textarea>
+          <textarea name="description" class="form-control" rows="4" placeholder="Article description"></textarea>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Author</label>
-          <input type="text" class="form-control" placeholder="Author name">
+          <input name="name" type="text" class="form-control" placeholder="Author name">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Publish Date</label>
-          <input type="date" class="form-control">
+          <input name="date" type="date" class="form-control">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Content Link</label>
-          <input type="url" class="form-control" placeholder="https://example.com/article.pdf">
+          <input name="link" type="url" class="form-control" placeholder="https://example.com/article.pdf">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Cover Image</label>
-          <input type="url" class="form-control" placeholder="https://example.com/image.jpg">
+          <input name="image" type="url" class="form-control" placeholder="https://example.com/image.jpg">
         </div>
 
         <div class="col-12 text-end">
-          <button class="btn btn-primary">Publish Article</button>
+          <button name="submit" type="submit" class="btn btn-primary">Publish Article</button>
         </div>
       </form>
     </div>
@@ -123,7 +123,7 @@
 
   <section class="row mb-4">
     <div class="col-md-6 mb-2">
-      <input type="text" class="form-control" placeholder="Search by title or author">
+      <input id="searchInput" type="text" class="form-control" placeholder="Search by title or author">
     </div>
         <div class="col-md-2">
       <button class="btn btn-secondary w-100">Search</button>
@@ -169,22 +169,25 @@
             if (count($articles) > 0) {
                 foreach ($articles as $row) {
                     echo "<tr>
-                            <td>" . htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) . "</td>
-                            <td>" . htmlspecialchars($row['id']) . "</td>
-                            <td>" . htmlspecialchars($row['position']) . "</td>
-                            <td>" . htmlspecialchars($row['department']) . "</td>
-                            <td>" . htmlspecialchars($row['email']) . "</td>
-                            <td><span class='badge bg-success'>Active</span></td>
+                            <td>" . htmlspecialchars($row['id'] ) . "</td>
+                            <td>" . htmlspecialchars($row['title']) . "</td>
+                            <td>" . htmlspecialchars($row['author_name']) . "</td>
+                            <td>" . htmlspecialchars($row['category']) . "</td>
+                            <td>" . htmlspecialchars($row['ar_date']) . "</td>
+                            <td>" . htmlspecialchars($row['link']) . "</td>
+                            <td>" . htmlspecialchars($row['ar_image']) . "</td>
                             <td>
                                 <button class='btn btn-sm btn-outline-primary'>View</button>
                                 <button class='btn btn-sm btn-outline-warning'>Edit</button>
                                 <button class='btn btn-sm btn-outline-danger btn-delete'>Delete</button>
+                                <button class='btn btn-sm btn-outline-success'>Like</button>
+                                <button class='btn btn-sm btn-outline-secondary'>Comment</button>    
                             </td>
                           </tr>";
                 }
             } else {
                 echo "<tr>
-                        <td colspan='7' class='text-center'>Aucun employé trouvé</td>
+                        <td colspan='7' class='text-center'>Aucun article trouvé</td>
                       </tr>";
             }
 
@@ -197,46 +200,6 @@
         }
         ?>
       </tbody>
-          <tbody>
-            <tr>
-              <td>1A7</td>
-              <td>Intro to Web Development</td>
-              <td>Peter Kelt</td>
-              <td>Technology</td>
-              <td>15/10/2025</td>
-              <td><a href="#">Click here</a></td>
-              <td>
-                <img src="https://images.surferseo.art/9602bc4b-cfc4-410e-b291-611d478c9d6a.png" class="img-thumbnail" width="80">
-              </td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary">View</button>
-                <button class="btn btn-sm btn-outline-warning">Edit</button>
-                <button class="btn btn-sm btn-outline-danger">Delete</button>
-                <button class="btn btn-sm btn-outline-success">Like</button>
-                <button class="btn btn-sm btn-outline-secondary">Comment</button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>1P0</td>
-              <td>Cybersecurity Best Practices</td>
-              <td>Ali Solt</td>
-              <td>Security</td>
-              <td>22/08/2025</td>
-              <td><a href="#">Click here</a></td>
-              <td>
-                <img src="https://eu-images.contentstack.com/v3/assets/blt5412ff9af9aef77f/blt8d3c10e7a16c531a/65eecb85af4416040aced770/Service-Cyber-Security.png"
-                     class="img-thumbnail" width="80">
-              </td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary">View</button>
-                <button class="btn btn-sm btn-outline-warning">Edit</button>
-                <button class="btn btn-sm btn-outline-danger">Delete</button>
-                <button class="btn btn-sm btn-outline-success">Like</button>
-                <button class="btn btn-sm btn-outline-secondary">Comment</button>
-              </td>
-            </tr>
-          </tbody>
         </table>
       </div>
     </div>

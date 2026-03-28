@@ -5,35 +5,35 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $first_name = $_POST['name']; 
-        $last_name  = '';   
-        $user_id     = 3;
+        $author_name = $_POST['name']; 
+        $title  =$_POST['title'];   
         $company_id  = 1;              
-        $position    = $_POST['position'];
-        $department  = $_POST['department'];
-        $hire_date   = date('Y-m-d');
-        $email= $_POST['email'];
+        $category    = $_POST['category'];
+        $ar_description  = $_POST['description'];
+        $ar_date   = $_POST['date'];;
+        $link= $_POST['link'];
+        $ar_image= $_POST['image'];
 
         $pdo = getDB();
 
-        $sql = "INSERT INTO employees (user_id, company_id, first_name, last_name, position , department, hire_date,email)
-                VALUES (:user_id, :company_id, :first_name, :last_name, :position, :department, :hire_date ,:email)";
+        $sql = "INSERT INTO articles ( company_id, author_name, title, category , ar_date,ar_description,link,ar_image)
+                VALUES (:company_id, :author_name, :title, :category , :ar_date, :ar_description, :link, :ar_image)";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
-            ':user_id'    => $user_id,
             ':company_id' => $company_id,
-            ':first_name' => $first_name,
-            ':last_name'  => $last_name,
-            ':position'   => $position,
-            ':department' => $department,
-            ':hire_date'  => $hire_date,
-            ':email' => $email
+            ':author_name' => $author_name,
+            ':title'  => $title,
+            ':category'   => $category,
+            ':ar_date' => $ar_date,
+            ':ar_description'  => $ar_description,
+            ':link' => $link,
+            ':ar_image'=> $ar_image
         ]);
 
         echo json_encode([
             'status' => 'success',
-            
+            'message' => 'article added successfully'
         ]);
 
     } catch (PDOException $e) {

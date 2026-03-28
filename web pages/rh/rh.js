@@ -40,12 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
 employeeTableBody.addEventListener('click', async (e) => {
     if (e.target.classList.contains('btn-delete')) {
 
-        const id = e.target.getAttribute('data-id');
-
         if (confirm("Are you sure you want to delete this employee?")) {
 
                     e.target.closest('tr').remove();
-            
+                
         }
     }
 });
