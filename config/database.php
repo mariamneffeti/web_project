@@ -1,9 +1,9 @@
 <?php
 /*
- Database Configuration   127.0.0.1
+ Database Configuration  
  */
  
-define('DB_HOST', 'localhost');
+define('DB_HOST', ' 127.0.0.1');
 define('DB_NAME', 'web_project');
 define('DB_USER', 'root');
 define('DB_PASS', '');
