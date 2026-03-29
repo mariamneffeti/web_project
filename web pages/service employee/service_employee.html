@@ -116,10 +116,10 @@ body {
 
   <ul class="navbar-nav gap-4 fw-semibold center-shift">
     <li class="nav-item">
-      <a class="nav-link" href="/web%20pages/clients%20viewE/clientsE.html">Clients</a>
+      <a class="nav-link" href="../clients%20viewE/clientsE.html">Clients</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/web%20pages/sales/sales.html">Sales</a>
+      <a class="nav-link" href="../sales/sales.html">Sales</a>
     </li>
     <li class="nav-item">
       <a class="nav-link active" href="#">Services</a>
@@ -275,12 +275,38 @@ body {
           </tbody>
         </table>
 
-        <button class="btn btn-sm btn-outline-secondary" onclick="addNewServiceRow()" id="add-service-btn">
+        <button class="btn btn-sm btn-outline-secondary" onclick="addServiceRow()" id="add-service-btn">
           + Add Service
         </button>
       </div>
+      
     </div>
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="bi bi-cart-plus me-2"></i> Sales Rendered
+      </div>
 
+      <div class="card-body">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>sale</th>
+              <th>Qty/Hrs</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="sales-tbody">
+          </tbody>
+        </table>
+
+        <button class="btn btn-sm btn-outline-secondary" onclick="addSaleRow()" id="add-sale-btn">
+          + Add Sale
+        </button>
+      </div>
+      
+    </div>
     <div class="card">
       <div class="card-header">
         <i class="bi bi-receipt me-2"></i> Order Summary
@@ -322,7 +348,7 @@ body {
 
       <div class="col-lg-4 col-md-12">
         <div class="footer-brand mb-3">
-          <img src="C:\Users\infosud\Downloads\image-removebg-preview (1).png" height="60" width="80" alt="Logo" />
+          <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
           <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
         </div>
       </div>
@@ -378,9 +404,7 @@ body {
     </div>
   </div>
 </div>
-</body>
-</html>
-<div class="modal fade" id="receiptModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -440,3 +464,5 @@ body {
         </div>
     </div>
 </div>
+</body>
+</html>

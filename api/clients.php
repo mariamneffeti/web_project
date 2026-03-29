@@ -180,6 +180,58 @@ try {
             
             echo json_encode(['success' => true, 'message' => 'Client deleted successfully']);
             break;
+        case 'churn':
+            // 1. Safety Check: Ensure the ID exists in the URL
+            $clientId = $_GET['id'] ?? null;
+            if (!$clientId) {
+                echo json_encode(['error' => 'No client ID provided']);
+                break;
+            }
+
+            $stmt = $db->prepare("
+                SELECT 
+                    COALESCE(c.total_spent, 0) as total_spent,
+                    COALESCE(DATEDIFF(CURDATE(), c.last_purchase_date), 365) as days_since_last_purchase,
+                    COUNT(s.id) as purchase_count,
+                    COALESCE(AVG(s.total_amount), 0) as avg_order_value
+                FROM clients c
+                LEFT JOIN sales s ON c.id = s.client_id
+                WHERE c.id = :id
+                GROUP BY c.id
+            ");
+
+            $stmt->execute(['id' => $clientId]);
+            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // 2. Safety Check: Ensure the client actually exists in the DB
+            if (!$data) {
+                echo json_encode(['error' => 'Client not found in database']);
+                break;
+            }
+
+            // 3. Convert numbers to proper types for Python
+            $data['total_spent'] = (float)$data['total_spent'];
+            $data['days_since_last_purchase'] = (int)$data['days_since_last_purchase'];
+            $data['purchase_count'] = (int)$data['purchase_count'];
+            $data['avg_order_value'] = (float)$data['avg_order_value'];
+
+            // 4. Send to Python AI
+            $ch = curl_init("https://churnprediction-production-bae9.up.railway.app/predict")
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+
+            $response = curl_exec($ch);
+            
+            // 5. Check if Python API is actually running
+            if(curl_errno($ch)){
+                echo json_encode(['error' => 'AI Service Offline', 'details' => curl_error($ch)]);
+            } else {
+                echo $response;
+            }
+            
+            curl_close($ch);
+            break;
         
         default:
             http_response_code(400);

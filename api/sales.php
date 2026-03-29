@@ -131,7 +131,12 @@ try {
             // Get sale items
             $stmt = $db->prepare("SELECT * FROM sale_items WHERE sale_id = :sale_id");
             $stmt->execute(['sale_id' => $saleId]);
-            $sale['items'] = $stmt->fetchAll();
+            $sale['product_items'] = $stmt->fetchAll();
+            
+            // get service items
+            $stmt = $db->prepare("SELECT * FROM service_sale_items WHERE sale_id = :sale_id");
+            $stmt->execute(['sale_id' => $saleId]);
+            $sale['service_items'] = $stmt->fetchAll();
             
             echo json_encode(['success' => true, 'data' => $sale]);
             break;
@@ -147,7 +152,7 @@ try {
             $data = json_decode(file_get_contents('php://input'), true);
             
             // Validate required fields
-            $required = ['client_id', 'sale_date', 'items', 'payment_method'];
+            $required = ['client_id', 'sale_date', 'payment_method'];
             foreach ($required as $field) {
                 if (!isset($data[$field]) || empty($data[$field])) {
                     http_response_code(400);
@@ -163,12 +168,22 @@ try {
                 $transactionId = 'TX-' . date('Y') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
                 
                 // Calculate totals
-                $subtotal = 0;
-                foreach ($data['items'] as $item) {
-                    $itemTotal = $item['quantity'] * $item['unit_price'];
-                    $discount = $itemTotal * ($item['discount_percent'] / 100);
-                    $subtotal += ($itemTotal - $discount);
+                $productSubtotal = 0;
+                if (isset($data['product_items'])) {
+                    foreach ($data['product_items'] as $item) {
+                        $itemTotal = $item['quantity'] * $item['unit_price'];
+                    $productSubtotal += $itemTotal;
+                    }
                 }
+                $serviceSubtotal = 0;
+                if (isset($data['service_items'])) {
+                    foreach ($data['service_items'] as $service) {
+                        // Services use quantity_hours * unit_price
+                        $serviceTotal = $service['quantity_hours'] * $service['unit_price'];
+                        $serviceSubtotal += $serviceTotal;
+                    }
+                }
+                $subtotal = $productSubtotal + $serviceSubtotal;
                 
                 $discount = $data['discount'] ?? 0;
                 $tax = $data['tax'] ?? ($subtotal * 0.1); // Default 10% tax
@@ -183,55 +198,63 @@ try {
                            :sale_date, :subtotal, :discount, :tax, :total_amount,
                            :payment_method, :payment_status, :notes)
                 ");
-                
                 $stmt->execute([
                     'transaction_id' => $transactionId,
-                    'company_id' => $user['company_id'],
-                    'employee_id' => $user['employee_id'],
-                    'client_id' => $data['client_id'],
-                    'sale_date' => $data['sale_date'],
-                    'subtotal' => $subtotal,
-                    'discount' => $discount,
-                    'tax' => $tax,
-                    'total_amount' => $total,
+                    'company_id'     => $user['company_id'],
+                    'employee_id'    => $user['employee_id'],
+                    'client_id'      => $data['client_id'],
+                    'sale_date'      => $data['sale_date'],
+                    'subtotal'       => $subtotal,
+                    'discount'       => $discount,
+                    'tax'            => $tax,
+                    'total_amount'   => $total,
                     'payment_method' => $data['payment_method'],
-                    'payment_status' => $data['payment_status'] ?? 'Paid',
-                    'notes' => $data['notes'] ?? null
+                    'payment_status' => $data['payment_status'] ?? 'Pending',
+                    'notes'          => $data['notes'] ?? null
                 ]);
-                
                 $saleId = $db->lastInsertId();
                 
-                // Insert sale items
-                $itemStmt = $db->prepare("
-                    INSERT INTO sale_items (sale_id, product_id, product_name, quantity, 
-                                           unit_price, discount_percent, total_price)
-                    VALUES (:sale_id, :product_id, :product_name, :quantity,
-                           :unit_price, :discount_percent, :total_price)
-                ");
-                
-                foreach ($data['items'] as $item) {
-                    $itemTotal = $item['quantity'] * $item['unit_price'];
-                    $itemDiscount = $itemTotal * (($item['discount_percent'] ?? 0) / 100);
-                    $itemFinal = $itemTotal - $itemDiscount;
-                    
-                    $itemStmt->execute([
-                        'sale_id' => $saleId,
-                        'product_id' => $item['product_id'] ?? null,
+                if (!empty($data['product_items'])) {
+                    $productStmt = $db->prepare("
+                        INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price, total_price)
+                        VALUES (:sale_id, :product_id, :product_name, :quantity, :unit_price, :total_price)
+                    ");
+                foreach ($data['product_items'] as $item) {
+                    $productStmt->execute([
+                        'sale_id'      => $saleId, 
+                        'product_id'   => $item['product_id'] ?? null,
                         'product_name' => $item['product_name'],
-                        'quantity' => $item['quantity'],
-                        'unit_price' => $item['unit_price'],
-                        'discount_percent' => $item['discount_percent'] ?? 0,
-                        'total_price' => $itemFinal
+                        'quantity'     => $item['quantity'],
+                        'unit_price'   => $item['unit_price'],
+                        'total_price'  => ($item['quantity'] * $item['unit_price'])
                     ]);
                 }
+                }
+                if (!empty($data['service_items'])) {
+                    $serviceStmt = $db->prepare("
+                        INSERT INTO service_sale_items (sale_id, service_name, quantity_hours, unit_price, total_price)
+                        VALUES (:sale_id, :service_name, :quantity_hours, :unit_price, :total_price)
+                    ");
+
+                    foreach ($data['service_items'] as $service) {
+                        $serviceStmt->execute([
+                            'sale_id'        => $saleId,
+                            'service_name'   => $service['service_name'],
+                            'quantity_hours' => $service['quantity_hours'],
+                            'unit_price'     => $service['unit_price'],
+                            'total_price'    => ($service['quantity_hours'] * $service['unit_price'])
+                        ]);
+                    }
+                }
+
                 
                 // Create invoice
                 $invoiceNumber = 'INV-' . date('Y') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
                 $dueDate = date('Y-m-d', strtotime($data['sale_date'] . ' +30 days'));
                 
                 $db->prepare("
-                    INSERT INTO invoices (invoice_number, sale_id, issue_date, due_date, status)
-                    VALUES (:invoice_number, :sale_id, :issue_date, :due_date, 'Sent')
+                    INSERT INTO invoices (invoice_number, sale_id, issue_date, due_date)
+                    VALUES (:invoice_number, :sale_id, :issue_date, :due_date)
                 ")->execute([
                     'invoice_number' => $invoiceNumber,
                     'sale_id' => $saleId,
@@ -313,6 +336,31 @@ try {
                 $db->rollBack();
                 throw $e;
             }
+            break;
+        case 'update_status':
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                http_response_code(405);
+                echo json_encode(['error' => 'Method not allowed']);
+                exit();
+            }
+            
+            $saleId = $_GET['id'] ?? 0;
+            $data = json_decode(file_get_contents('php://input'), true);
+            $newStatus = $data['payment_status'] ?? 'Pending';
+
+            $stmt = $db->prepare("
+                UPDATE sales 
+                SET payment_status = :status 
+                WHERE id = :id AND company_id = :company_id
+            ");
+            
+            $success = $stmt->execute([
+                'status'     => $newStatus,
+                'id'         => $saleId,
+                'company_id' => $user['company_id']
+            ]);
+
+            echo json_encode(['success' => $success]);
             break;
         
         // GET DASHBOARD STATS
