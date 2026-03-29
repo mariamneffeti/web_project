@@ -1,3 +1,5 @@
+
+<?php include 'cv.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -55,13 +57,13 @@
             >
             <a
               class="nav-link p-2"
-              href="../offre/offre.html"
+              href="../offre/offre.php"
               style="font-family: Inter; font-size: 1.2rem"
               >Offre</a
             >
             <a
               class="nav-link p-2 active"
-              href="../cv/cv.html"
+              href="../cv/cv.php"
               style="font-family: Inter; font-size: 1.2rem"
               >CV</a
             >
@@ -114,13 +116,24 @@
     </nav>
 
     <div class="container" style="margin-top: 150px">
-      <h1 style="font-family: Montserrat; font-size: 50px">Upload your cv</h1>
-      <h2 style="color: #1b4965; font-family: Inter">
-        Applying for [job title] at [company Name]
-      </h2>
-    </div>
+  <h1 style="font-family: Montserrat; font-size: 50px">Upload your CV</h1>
+
+  <?php if ($offre): ?>
+    <h2 style="color: #1b4965; font-family: Inter">
+      Applying for <strong><?= htmlspecialchars($offre['title']) ?></strong>
+      at <strong><?= htmlspecialchars($offre['company_name']) ?></strong>
+    </h2>
+  <?php else: ?>
+    <h2 style="color: red;"><?= $error ?></h2>
+  <?php endif; ?>
+
+  <?php if ($success): ?>
+    <div class="alert alert-success mt-3"><?= $success ?></div>
+  <?php endif; ?>
+</div>
 
     <div class="container mt-5">
+<form action="cv.php?offre_id=<?= $offre_id ?>" method="post" enctype="multipart/form-data">
       <div class="row gx-5">
         <div class="col-md-4 pe-4">
           <div class="mb-3">
@@ -133,7 +146,7 @@
             <input
               type="text"
               class="form-control"
-              id="firstName"
+              name="firstName"
               placeholder="Username"
             />
           </div>
@@ -148,7 +161,7 @@
             <input
               type="text"
               class="form-control"
-              id="lastName"
+              name="lastName"
               placeholder="Family name"
             />
           </div>
@@ -163,7 +176,7 @@
             <input
               type="email"
               class="form-control"
-              id="email"
+              name="email"
               placeholder="Email"
             />
           </div>
@@ -179,7 +192,7 @@
               <input
                 class="form-control"
                 list="nationalityOptions"
-                id="nationality"
+                name="nationality"
                 placeholder="Nationality"
               />
               <datalist id="nationalityOptions">
@@ -205,7 +218,7 @@
               <input
                 type="tel"
                 class="form-control"
-                id="phone"
+                name="phone"
                 placeholder="Phone number"
               />
             </div>
@@ -222,7 +235,7 @@
               type="text"
               class="form-control"
               placeholder="your current position"
-              id="address"
+              name="address"
             />
             <div class="form-text">Adresse doit être précise</div>
           </div>
@@ -237,7 +250,7 @@
             <input
               type="text"
               class="form-control"
-              id="linkedin"
+              name="linkedin"
               placeholder="LinkedIn"
             />
           </div>
@@ -246,7 +259,7 @@
             <input
               class="form-check-input"
               type="checkbox"
-              id="terms"
+              name="terms"
               required
             />
             <label class="form-check-label" for="terms">
@@ -286,8 +299,9 @@
 
               <input
                 type="file"
-                id="fileInput"
+                name="fichier"
                 class="d-none"
+                id="fileInput"
                 accept=".pdf,.docx"
               />
             </div>
@@ -319,7 +333,9 @@
             Submit Application
           </button>
         </div>
+        
       </div>
+      </form>
     </div>
 
     <footer
