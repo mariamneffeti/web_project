@@ -67,6 +67,7 @@
             </ul>
         </div>
     </div>
+
 <main class="container page-content">
 
   <section class="card shadow-sm mb-5">
@@ -77,13 +78,13 @@
 
         <div class="col-md-6">
           <label class="form-label">Name</label>
-          <input id="name" type="text" class="form-control" placeholder="Employee name">
+          <input name="name" type="text" class="form-control" placeholder="Employee name" required>
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Department</label>
-          <select id="department" class="form-select">
-            <option selected>Choose...</option>
+          <select name="department" class="form-select" required>
+            <option value="" selected>Choose...</option>
             <option>IT</option>
             <option>Finance</option>
             <option>Marketing</option>
@@ -93,21 +94,21 @@
 
         <div class="col-md-6">
           <label class="form-label">Position</label>
-          <input id="position" type="text" class="form-control" placeholder="Position">
+          <input name="position" type="text" class="form-control" placeholder="Position">
         </div>
 
         <div class="col-md-6">
           <label class="form-label">Email</label>
-          <input id="email" type="email" class="form-control" placeholder="email@company.com">
+          <input name="email" type="email" class="form-control" placeholder="email@company.com" required>
         </div>
 
         <div class="col-md-12">
           <label class="form-label">CV Link</label>
-          <input type="url" class="form-control" placeholder="https://example.com/cv.pdf">
+          <input name="cv" type="url" class="form-control" placeholder="https://example.com/cv.pdf">
         </div>
 
         <div class="col-12 text-end">
-          <button type="submit" class="btn btn-primary">Add Employee</button>
+          <button name="submit" type="submit" class="btn btn-primary">Add Employee</button>
         </div>
 
       </form>
@@ -151,21 +152,47 @@
           </tr>
         </thead>
 
-        <tbody id="employeeTableBody">
-          <tr>
-            <td>Sara Dh</td>
-            <td>05A</td>
-            <td>Web Developer</td>
-            <td>IT</td>
-            <td>sara@company.com</td>
-            <td><span class="badge bg-success">Active</span></td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary">View</button>
-              <button class="btn btn-sm btn-outline-warning">Edit</button>
-              <button class="btn btn-sm btn-outline-danger btn-delete">Delete</button>
-            </td>
-          </tr>
-        </tbody>
+      <tbody id="employeeTableBody">
+        <?php
+        require '../../config/database.php';
+
+        try {
+            $pdo = getDB();
+            $query = $pdo->query("SELECT * FROM employees ");
+
+            $employees = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($employees) > 0) {
+                foreach ($employees as $row) {
+                    echo "<tr>
+                            <td>" . htmlspecialchars($row['first_name'] ) . "</td>
+                            <td>" . htmlspecialchars($row['id']) . "</td>
+                            <td>" . htmlspecialchars($row['position']) . "</td>
+                            <td>" . htmlspecialchars($row['department']) . "</td>
+                            <td>" . htmlspecialchars($row['email']) . "</td>
+                            <td><span class='badge bg-success'>Active</span></td>
+                            <td>
+                                <button class='btn btn-sm btn-outline-primary'>View</button>
+                                <button class='btn btn-sm btn-outline-warning'>Edit</button>
+                                <button class='btn btn-sm btn-outline-danger btn-delete' >Delete</button>
+                            </td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr>
+                        <td colspan='7' class='text-center'>Aucun employé trouvé</td>
+                      </tr>";
+            }
+
+        } catch (PDOException $e) {
+            echo "<tr>
+                    <td colspan='7' class='text-danger text-center'>
+                        Erreur : " . htmlspecialchars($e->getMessage()) . "
+                    </td>
+                  </tr>";
+        }
+        ?>
+      </tbody>
 
       </table>
     </div>

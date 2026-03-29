@@ -5,33 +5,6 @@ let activeCat = "all";
 let maxSalary = 6000;
 let currentPage = 1;
 const PAGE_SIZE = 9;
-const jobContainer = document.getElementById("jobsGrid");
-const scriptTag = document.querySelector('script[src*="offre"]');
-const scriptPath = scriptTag ? scriptTag.src : window.location.href;
-const baseURL = scriptPath.substring(0, scriptPath.indexOf('/web_project/') + '/web_project/'.length);
-
-fetch(`${baseURL}api/get_offers.php`)
-  .then((res) => res.json())
-  .then((data) => {console.log("Jobs loaded:", data)
-    console.log('Debug info:', data.debug); // ← shows counts
-    JOBS = Array.isArray(data.data)
-     ? data.data : [];
-    console.log("4. jobContainer:", jobContainer);
-    document.getElementById("jobCountall").textContent = JOBS.length;
-    document.getElementById("jobCounttech").textContent = JOBS.filter(j => j.cat === "tech").length;
-    document.getElementById("jobCountdesign").textContent = JOBS.filter(j => j.cat === "design").length;
-    document.getElementById("jobCountfinance").textContent = JOBS.filter(j => j.cat === "finance").length;
-    document.getElementById("jobCountmarketing").textContent = JOBS.filter(j => j.cat === "marketing").length;
-    document.getElementById("jobCounthr").textContent = JOBS.filter(j => j.cat === "hr").length;
-    document.getElementById("jobCountdata").textContent = JOBS.filter(j => j.cat === "data").length;
-
-    renderJobs();
-  })
-  .catch((err) => {
-    console.error("Fetch failed:", err);
-    document.getElementById("jobsGrid").innerHTML =
-      '<p class="text-center text-danger">Failed to load jobs.</p>';
-  });
 
 function renderJobs() {
   const keyword = document.getElementById("searchInput").value.toLowerCase();

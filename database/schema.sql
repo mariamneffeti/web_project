@@ -212,7 +212,13 @@ INSERT INTO products (company_id, product_name, sku, category, price, stock_quan
 (1, 'Premium Support Pack', 'SUP-300', 'Support', 500.00, 100, '24/7 premium support & consulting'),
 (1, 'Enterprise Router', 'HW-450', 'Hardware', 299.00, 50, 'High-speed business router'),
 (1, 'Office Suite License', 'LIC-200', 'License', 450.00, 500, '5-user business license');
-
+-- Insert sample articles
+INSERT INTO articles (company_id, author_name, title, category, date, description, link, image) VALUES
+(1, 'Alice Johnson', 'How Cloud CRM is Revolutionizing Businesses', 'Technology', '2024-01-05', 'An in-depth look at how cloud-based CRM solutions streamline sales and customer management.', 'https://techcorp.com/blog/cloud-crm', "../image/hhh.jpg"),
+(1, 'Bob Smith', 'Top 5 Cybersecurity Tips for SMEs', 'Security', '2024-01-12', 'Practical tips for small and medium enterprises to enhance their cybersecurity posture.', 'https://techcorp.com/blog/cybersecurity-tips', "../image/hhh.jpg"),
+(1, 'Carol Lee', 'Maximizing ROI with Premium Support Packages', 'Business', '2024-01-20', 'Learn how investing in premium support services can increase efficiency and customer satisfaction.', 'https://techcorp.com/blog/premium-support', "../image/hhh.jpg"),
+(1, 'David Nguyen', 'Enterprise Networking: Choosing the Right Router', 'Hardware', '2024-01-25', 'A comprehensive guide to selecting enterprise routers for high-speed business networks.', 'https://techcorp.com/blog/enterprise-router', "../image/hhh.jpg"),
+(1, 'Eva Martinez', 'The Future of Office Software Licenses', 'Software', '2024-02-01', 'Exploring trends in software licensing for businesses and how to optimize costs.', 'https://techcorp.com/blog/office-software-licenses', "../image/hh.jpg");
 -- Insert sample sales
 INSERT INTO sales (transaction_id, company_id, employee_id, client_id, sale_date, subtotal, discount, tax, total_amount, payment_method, payment_status) VALUES 
 ('TX-2024-001', 1, 1, 1, '2024-01-15', 150.00, 15.00, 13.50, 148.50, 'Credit Card', 'Paid'),

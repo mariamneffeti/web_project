@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 const scriptTag = document.querySelector('script[src*="offre"]');
 const scriptPath = scriptTag ? scriptTag.src : window.location.href;
 const baseURL = scriptPath.substring(0, scriptPath.indexOf('/web_project/') + '/web_project/'.length);
 
 fetch(`${baseURL}api/get_articles.php`)
+=======
+fetch('/projectweb/web_project/api/get_articles.php')
+>>>>>>> 6ed985e448b5bb89b4eb92608780ad633455f4cf
   .then(res => res.json())
   .then(data => {
     const grid = document.getElementById('articlesGrid');
