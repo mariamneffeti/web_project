@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 addEntryToTable(result.data);
                 this.reset(); 
             } else {
-                alert("Erreur : " + result.message);
+                alert("Error : " + result.message);
             }
         })
         .catch(error => {
-            console.error("Erreur lors de l'envoi :", error);
+            console.error("Error during submission :", error);
         });
     });
 

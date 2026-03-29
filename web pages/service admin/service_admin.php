@@ -1,5 +1,5 @@
 <?php 
-    $pageTitle = "Services"; 
+    $pageTitle = "Management"; 
     include('../squelettes entreprise/header.php'); 
 ?>
     <div class="container" style="margin-top: 100px; margin-bottom: 100px;">

@@ -113,3 +113,59 @@ body {
 .dropdown-toggle::after {
     display: none !important;
 }
+
+.product-row {
+    position: relative; 
+}
+
+.product-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 4px;
+
+    max-height: 180px;
+    overflow-y: auto;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.product-results button:hover {
+    background-color: #f0f4f8;
+}
+.product-results button {
+    border: none;
+    text-align: left;
+}
+.client-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.explorer-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}

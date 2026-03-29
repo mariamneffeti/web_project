@@ -23,8 +23,8 @@
                 <div class="navbar-nav mx-auto gap-3">
                     <a class="nav-link <?php echo ($pageTitle == 'Employees') ? 'active' : ''; ?>" href="../rh/rh.php">Employees</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Recruitement') ? 'active' : ''; ?>" href="../recruitement/recruitement.php">Recruitment</a>
-                    <a class="nav-link <?php echo ($pageTitle == 'Sales') ? 'active' : ''; ?>" href="../sales company/salesC.php">Sales</a>
-                    <a class="nav-link <?php echo ($pageTitle == 'Services') ? 'active' : ''; ?>" href="../service admin/service_admin.php">Services</a>
+                    <a class="nav-link <?php echo ($pageTitle == 'Sales & Services') ? 'active' : ''; ?>" href="../sales company/salesC.php">Sales & Services</a>
+                    <a class="nav-link <?php echo ($pageTitle == 'Management') ? 'active' : ''; ?>" href="../service admin/service_admin.php">Management</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Articles') ? 'active' : ''; ?>" href="../articles/articles.php">Articles</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Finance') ? 'active' : ''; ?>" href="../finance/finance.php">Finance</a>
                 </div>
@@ -55,8 +55,8 @@
             <ul class="nav flex-column gap-3">
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Employees') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../rh/rh.php"><i class="bi bi-people me-3"></i> Employees</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Recruitement') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../recruitement/recruitement.php"><i class="bi bi-person-plus me-3"></i> Recruitment</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Sales') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../sales company/salesC.php"><i class="bi bi-cart me-3"></i> Sales</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Services') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../service admin/service_admin.php"><i class="bi bi-cash-stack me-3"></i> Services</a></li>
+                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Sales & Services') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../sales company/salesC.php"><i class="bi bi-cart me-3"></i> Sales & Services</a></li>
+                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Management') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../service admin/service_admin.php"><i class="bi bi-cash-stack me-3"></i> Management</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Articles') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../articles/articles.php"><i class="bi bi-gear me-3"></i> Articles</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Finance') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../finance/finance.php"><i class="bi bi-cash-stack me-3"></i> Finance</a></li>
             </ul>
