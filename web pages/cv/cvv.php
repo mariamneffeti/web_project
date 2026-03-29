@@ -133,11 +133,7 @@
 </div>
 
     <div class="container mt-5">
-<<<<<<< HEAD
 <form action="cvv.php?offre_id=<?= $offre_id ?>" method="post" enctype="multipart/form-data">
-=======
-<form action="cv.php?offre_id=<?= $offre_id ?>" method="post" enctype="multipart/form-data">
->>>>>>> 6ed985e448b5bb89b4eb92608780ad633455f4cf
       <div class="row gx-5">
         <div class="col-md-4 pe-4">
           <div class="mb-3">
