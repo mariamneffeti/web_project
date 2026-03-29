@@ -5,7 +5,19 @@
         --dark: #0f172a;
         --bg: #f6f6f2;
       }
-
+.btn-apply {
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-apply:hover {
+  background: var(--teal);
+} 
       .dropdown-toggle::after { display: none !important; }
 
       body {
@@ -131,4 +143,18 @@
         font-weight: 700;
         letter-spacing: 0.05em;
       }
-    
+    .bookmark-btn {
+position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #ccc;
+  transition: color 0.2s;
+  cursor: pointer;
+  padding: 0;
+}
+.bookmark-btn.saved {
+  color: var(--sage);
+}

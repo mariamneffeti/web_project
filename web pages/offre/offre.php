@@ -1,3 +1,4 @@
+<?php require_once 'stat.php';?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -41,7 +42,7 @@
                  style="font-size:1.1rem">Offre</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link px-2" href="../cv/cv.html"
+              <a class="nav-link px-2" href="../cv/cvv.php"
                  style="font-size:1.1rem">CV</a>
             </li>
           </ul>
@@ -132,15 +133,15 @@
       <div class="container text-center px-3 px-md-4">
         <div class="row g-4">
           <div class="col-12 col-md-4">
-            <h2 class="fw-bold" style="color:#8d9b6a">12,482</h2>
+            <h2 class="fw-bold" style="color:#8d9b6a"><?php echo $totaloffre; ?></h2>
             <p class="small text-uppercase opacity-50 m-0">Live Job Offers</p>
           </div>
           <div class="col-12 col-md-4 stat-border border-start border-secondary border-opacity-25">
-            <h2 class="fw-bold" style="color:#8d9b6a">450+</h2>
+            <h2 class="fw-bold" style="color:#8d9b6a"><?php echo $totalcompany; ?></h2>
             <p class="small text-uppercase opacity-50 m-0">Trusted Partners</p>
           </div>
           <div class="col-12 col-md-4 stat-border border-start border-secondary border-opacity-25">
-            <h2 class="fw-bold" style="color:#8d9b6a">2.4M</h2>
+            <h2 class="fw-bold" style="color:#8d9b6a"><?php echo $totalapplications; ?></h2>
             <p class="small text-uppercase opacity-50 m-0">Monthly Candidates</p>
           </div>
         </div>
