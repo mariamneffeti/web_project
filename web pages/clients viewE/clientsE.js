@@ -41,8 +41,8 @@ async function loadclients(){
                 <td></td>
                 <td class="text-end">
                 <div class="d-inline-flex gap-2">
-                    <button class="btn btn-sm btn-outline-secondary onclick="detailClient(${client.id}">Details</button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteClient(${client.id}">🗑️</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="detailClient(${client.id})">Details</button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteClient(${client.id})">🗑️</button>
                     <button class="btn btn-sm btn-outline-warning" onclick="editClient(${client.id})">Edit</button>
                 </div>
                 </td>
@@ -179,8 +179,8 @@ function renderClientRows(data) {
             <td></td>
             <td class="text-end">
             <div class="d-inline-flex gap-2">
-                <button class="btn btn-sm btn-outline-secondary onclick="detailClient(${client.id}">Details</button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteClient(${client.id}">🗑️</button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="detailClient(${client.id})">Details</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteClient(${client.id})">🗑️</button>
                 <button class="btn btn-sm btn-outline-warning" onclick="editClient(${client.id})">Edit</button>
                 </div>
             </td>
@@ -293,12 +293,125 @@ function ExportToExcel() {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Clients");
 
     const wscols = [
-        { wch: 30 }, // Name
-        { wch: 30 }, // Email
-        { wch: 15 }, // Risk
-        { wch: 20 }  // Phone
+        { wch: 30 }, 
+        { wch: 30 }, 
+        { wch: 15 }, 
+        { wch: 20 }
     ];
     worksheet['!cols'] = wscols;
 
     XLSX.writeFile(workbook, `Client_Portfolio_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+async function deleteClient(id) {
+    if (!confirm("Are you sure you want to delete this client?")) return;
+    
+    const clientToDelete = allclients.find(c => c.id == id);
+    const clientName = clientToDelete ? clientToDelete.client_name : "Client";
+
+    try {
+        const response = await fetch(`../../api/clients.php?action=delete&id=${id}`, {
+            method: 'POST' 
+        });
+        
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            allclients = allclients.filter(c => c.id != id);
+            renderClientRows(allclients);
+            
+            const toastElement = document.getElementById('deleteToast');
+            const toastBody = toastElement.querySelector('.toast-body');
+            toastBody.innerHTML = ` <strong>${clientName}</strong> deleted successfully!`;
+            
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show(); 
+            
+            const totalBadge = document.querySelector("#total-clients-count");
+            if (totalBadge) totalBadge.textContent = allclients.length;
+        } else {
+            alert("Error: " + (result.error || "Check sales history"));
+        }
+    } catch (error) {
+        console.error("Delete failed:", error);
+    }
+}
+function editClient(id) {
+    const client = allclients.find(c => c.id == id);
+    if (!client) return;
+
+    document.querySelector("#edit-id-input").value = client.id;
+    document.querySelector("#edit-name-input").value = client.client_name || '';
+    document.querySelector("#edit-email-input").value = client.email || '';
+    document.querySelector("#edit-phone-input").value = client.phone || '';
+
+    const editModal = new bootstrap.Modal(document.getElementById('editClientModal'));
+    editModal.show();
+}
+async function saveClientEdit() {
+    const id = document.querySelector("#edit-id-input").value;
+    
+    const updateData = {
+        client_name: document.querySelector("#edit-name-input").value,
+        email: document.querySelector("#edit-email-input").value,
+        phone: document.querySelector("#edit-phone-input").value,
+        address: "", 
+        client_type: "B2C",
+        status: "Active"
+    };
+
+    try {
+        const response = await fetch(`../../api/clients.php?action=update&id=${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(updateData) 
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            const idx = allclients.findIndex(c => c.id == id);
+            if (idx !== -1) {
+                allclients[idx] = { ...allclients[idx], ...updateData };
+            }
+
+            renderClientRows(allclients);
+            
+            const modalEl = document.getElementById('editClientModal');
+            bootstrap.Modal.getInstance(modalEl).hide();
+
+            const toastEl = document.getElementById('deleteToast');
+            toastEl.querySelector('.toast-body').innerHTML = `✅ <strong>${updateData.client_name}</strong> updated!`;
+            new bootstrap.Toast(toastEl).show();
+            
+        } else {
+            alert("Error: " + (result.error || "Update failed"));
+        }
+    } catch (error) {
+        console.error("Save Error:", error);
+        alert("Failed to reach server.");
+    }
+}
+function detailClient(id) {
+    const client = allclients.find(c => c.id == id);
+    if (!client) {
+        console.error("Client not found for ID:", id);
+        return;
+    }
+
+    document.getElementById('det-name').textContent = client.client_name;
+    document.getElementById('det-email').textContent = client.email || 'N/A';
+    document.getElementById('det-phone').textContent = client.phone || 'N/A';
+    document.getElementById('det-type').textContent = client.client_type || 'B2C';
+    document.getElementById('det-address').textContent = client.address || 'No address on file.';
+    
+    const riskText = client.riskPercent ? client.riskPercent : "Pending Calculation...";
+    document.getElementById('det-risk').textContent = riskText;
+
+    const initials = client.client_name.split(' ').map(n => n[0]).join('').toUpperCase();
+    document.getElementById('det-initials').textContent = initials;
+
+    const detailModal = new bootstrap.Modal(document.getElementById('detailClientModal'));
+    detailModal.show();
 }

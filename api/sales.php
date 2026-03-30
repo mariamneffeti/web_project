@@ -133,7 +133,6 @@ try {
             $stmt->execute(['sale_id' => $saleId]);
             $sale['product_items'] = $stmt->fetchAll();
             
-            // get service items
             $stmt = $db->prepare("SELECT * FROM service_sale_items WHERE sale_id = :sale_id");
             $stmt->execute(['sale_id' => $saleId]);
             $sale['service_items'] = $stmt->fetchAll();
@@ -141,7 +140,6 @@ try {
             echo json_encode(['success' => true, 'data' => $sale]);
             break;
         
-        // CREATE SALE
         case 'create':
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 http_response_code(405);
@@ -151,7 +149,6 @@ try {
             
             $data = json_decode(file_get_contents('php://input'), true);
             
-            // Validate required fields
             $required = ['client_id', 'sale_date', 'payment_method'];
             foreach ($required as $field) {
                 if (!isset($data[$field]) || empty($data[$field])) {
@@ -164,10 +161,8 @@ try {
             $db->beginTransaction();
             
             try {
-                // Generate transaction ID
                 $transactionId = 'TX-' . date('Y') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
                 
-                // Calculate totals
                 $productSubtotal = 0;
                 if (isset($data['product_items'])) {
                     foreach ($data['product_items'] as $item) {
@@ -178,7 +173,6 @@ try {
                 $serviceSubtotal = 0;
                 if (isset($data['service_items'])) {
                     foreach ($data['service_items'] as $service) {
-                        // Services use quantity_hours * unit_price
                         $serviceTotal = $service['quantity_hours'] * $service['unit_price'];
                         $serviceSubtotal += $serviceTotal;
                     }
@@ -248,7 +242,6 @@ try {
                 }
 
                 
-                // Create invoice
                 $invoiceNumber = 'INV-' . date('Y') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
                 $dueDate = date('Y-m-d', strtotime($data['sale_date'] . ' +30 days'));
                 
@@ -290,7 +283,6 @@ try {
             }
             break;
         
-        // DELETE SALE
         case 'delete':
             if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' && $_SERVER['REQUEST_METHOD'] !== 'POST') {
                 http_response_code(405);
@@ -300,7 +292,6 @@ try {
             
             $saleId = $_GET['id'] ?? 0;
             
-            // Verify ownership
             $stmt = $db->prepare("SELECT * FROM sales WHERE id = :id AND company_id = :company_id");
             $stmt->execute(['id' => $saleId, 'company_id' => $user['company_id']]);
             $sale = $stmt->fetch();
@@ -314,7 +305,6 @@ try {
             $db->beginTransaction();
             
             try {
-                // Update client total spent
                 $db->prepare("
                     UPDATE clients 
                     SET total_spent = total_spent - :amount
@@ -363,11 +353,9 @@ try {
             echo json_encode(['success' => $success]);
             break;
         
-        // GET DASHBOARD STATS
         case 'stats':
             $stats = [];
             
-            // Today's sales
             $stmt = $db->prepare("
                 SELECT COUNT(*) as count, COALESCE(SUM(total_amount), 0) as total
                 FROM sales
@@ -377,7 +365,6 @@ try {
             $today = $stmt->fetch();
             $stats['today'] = $today;
             
-            // This month's sales
             $stmt = $db->prepare("
                 SELECT COUNT(*) as count, COALESCE(SUM(total_amount), 0) as total
                 FROM sales
@@ -393,7 +380,6 @@ try {
             $stmt->execute(['company_id' => $user['company_id']]);
             $stats['total_clients'] = $stmt->fetch()['total'];
             
-            // Recent sales (last 7 days)
             $stmt = $db->prepare("
                 SELECT DATE(sale_date) as date, COUNT(*) as count, SUM(total_amount) as total
                 FROM sales
