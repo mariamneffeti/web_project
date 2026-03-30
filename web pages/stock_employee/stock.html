@@ -10,17 +10,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ── Base ─────────────────────────────────────────── */
 body {
   background: #F6F6F2;
   font-family: Inter, system-ui, sans-serif;
   color: #1f2933;
 }
 
-/* ── NAVBAR ───────────────────────────────────────── */
 .navbar { background: #388087; }
 
-/* ── CARDS ────────────────────────────────────────── */
 .card {
   border: none;
   border-radius: 16px;
@@ -29,13 +26,11 @@ body {
 }
 .card:hover { transform: translateY(-4px); }
 
-/* ── KPI CARDS ────────────────────────────────────── */
 .kpi { border-left: 6px solid #102E4A; }
 .kpi.kpi-warning { border-left-color: #f59e0b; }
 .kpi.kpi-danger  { border-left-color: #ef4444; }
 .kpi.kpi-success { border-left-color: #10b981; }
 
-/* ── BUTTONS ──────────────────────────────────────── */
 .btn-primary-custom {
   background: #388087;
   border: none;
@@ -43,14 +38,12 @@ body {
 }
 .btn-primary-custom:hover { background: #2f6f75; color: white; }
 
-/* ── TABLE ────────────────────────────────────────── */
 .table thead {
   background: #102E4A;
   color: white;
 }
 .table thead th { border: none; font-weight: 600; font-size: .85rem; letter-spacing: .04em; }
 
-/* ── STOCK BADGE ──────────────────────────────────── */
 .stock-badge {
   display: inline-flex;
   align-items: center;
@@ -64,11 +57,9 @@ body {
 .stock-low     { background: #fef3c7; color: #92400e; }
 .stock-out     { background: #fee2e2; color: #991b1b; }
 
-/* ── STOCK BAR ────────────────────────────────────── */
 .stock-bar-wrap { min-width: 90px; }
 .stock-bar-wrap .progress { height: 7px; border-radius: 4px; }
 
-/* ── CATEGORY PILL ────────────────────────────────── */
 .cat-pill {
   padding: 2px 10px;
   border-radius: 20px;
@@ -78,11 +69,9 @@ body {
   color: #2f6f75;
 }
 
-/* ── MODAL ────────────────────────────────────────── */
 .modal-header { background: #102E4A; color: white; }
 .modal-header .btn-close { filter: invert(1); }
 
-/* ── SEARCH / FILTER ROW ──────────────────────────── */
 .filter-bar .form-control,
 .filter-bar .form-select {
   border-radius: 10px;
@@ -90,14 +79,12 @@ body {
   font-size: .9rem;
 }
 
-/* ── FOOTER ───────────────────────────────────────── */
 footer { background: linear-gradient(180deg,#388087,#0d1f1b); }
 a.footer-link,
 a.footer-link:link,
 a.footer-link:visited { color: rgba(255,255,255,0.8) !important; text-decoration: none; }
 a.footer-link:hover   { color: white !important; padding-left: 5px; }
 
-/* ── ANIMATIONS ───────────────────────────────────── */
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -111,7 +98,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
 
 <body>
 
-<!-- ───────── NAVBAR ───────── -->
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold" href="#">Employee Dashboard</a>
@@ -133,10 +119,8 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
   </div>
 </nav>
 
-<!-- ───────── MAIN ───────── -->
 <main class="container py-4">
 
-  <!-- Header -->
   <header class="d-flex justify-content-between align-items-center mb-4 animate-in">
     <div>
       <h1 class="h3 fw-bold">Stock Management</h1>
@@ -147,7 +131,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
     </button>
   </header>
 
-  <!-- KPI Cards -->
   <div class="row mb-4 g-3">
     <div class="col-md-3 animate-in">
       <div class="card p-4 kpi kpi-success">
@@ -175,7 +158,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
     </div>
   </div>
 
-  <!-- Filter Bar -->
   <section class="filter-bar d-flex gap-3 mb-4 flex-wrap animate-in">
     <div class="input-group" style="max-width:340px;">
       <input class="form-control" id="searchInput" placeholder="Search by name, SKU, or category…">
@@ -203,7 +185,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
     </button>
   </section>
 
-  <!-- Table -->
   <section class="card animate-in">
     <div class="table-responsive">
       <table class="table table-hover align-middle mb-0" id="stockTable">
@@ -220,7 +201,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
           </tr>
         </thead>
         <tbody id="tableBody">
-          <!-- JS-rendered rows -->
         </tbody>
       </table>
     </div>
@@ -232,11 +212,8 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
 
 </main>
 
-<!-- ────────────────────────────────────────
-     MODALS
-──────────────────────────────────────── -->
 
-<!-- Add Product Modal -->
+
 <div class="modal fade" id="addProductModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 overflow-hidden">
@@ -292,7 +269,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
   </div>
 </div>
 
-<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 overflow-hidden">
@@ -346,7 +322,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
   </div>
 </div>
 
-<!-- Details Modal -->
 <div class="modal fade" id="detailModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 overflow-hidden">
@@ -364,7 +339,6 @@ a.footer-link:hover   { color: white !important; padding-left: 5px; }
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="text-white py-5 mt-5" style="height:auto;">
   <div class="container" style="margin-top:2rem;">
     <div class="row gy-4">

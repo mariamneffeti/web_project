@@ -4,12 +4,17 @@
  Falls back to hardcoded values for local development.
  */
 
-define('DB_HOST',    $_ENV['DB_HOST']    ?? getenv('DB_HOST'));
-define('DB_NAME',    $_ENV['DB_NAME']    ?? getenv('DB_NAME'));
-define('DB_USER',    $_ENV['DB_USER']    ?? getenv('DB_USER'));
-define('DB_PASS',    $_ENV['DB_PASS']    ?? getenv('DB_PASS'));
-define('DB_PORT',    $_ENV['DB_PORT']    ?? getenv('DB_PORT'));
+function get_env_value($key, $default) {
+    $val = $_ENV[$key] ?? getenv($key);
+    return ($val !== false && $val !== '') ? $val : $default;
+}
 
+define('DB_HOST',     get_env_value('DB_HOST',     'localhost'));
+define('DB_NAME',     get_env_value('DB_NAME',     'web_project'));
+define('DB_USER',     get_env_value('DB_USER',     'root'));
+define('DB_PASSWORD', get_env_value('DB_PASSWORD', ''));
+define('DB_PORT',     get_env_value('DB_PORT',     '3306'));
+define('DB_CHARSET',  'utf8mb4');
 /**
  * Database Connection Class
  */
@@ -25,7 +30,7 @@ class Database {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ];
-            $this->connection = new PDO($dsn, DB_USER, DB_PASS, $options);
+            $this->connection = new PDO($dsn, DB_USER, DB_PASSWORD, $options);
         } catch (PDOException $e) {
             header('Content-Type: application/json');
             die(json_encode(["error" => "Database connection failed"]));
@@ -58,7 +63,7 @@ function getDB() {
         $db = new PDO(
             "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME,
             DB_USER,
-            DB_PASS
+            DB_PASSWORD
         );
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $db;

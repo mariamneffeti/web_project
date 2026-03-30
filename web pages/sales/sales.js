@@ -57,7 +57,7 @@ function showToast(message, type = 'info') {
 }
 async function updateChurnKPI() {
     try {
-        const response = await fetch('https://churnprediction-production-bae9.up.railway.app/bulk_predict');
+        const response = await fetch('../../api/clients.php?action=bulk_churn');
         const data = await response.json();
 
         const churnValue = document.getElementById('stat-churn-risk');
@@ -65,19 +65,19 @@ async function updateChurnKPI() {
 
         if (data.success) {
             churnValue.textContent = data.at_risk_count;
-            
+            // Update subtext based on health
             if (data.at_risk_count > 0) {
                 churnSubtext.textContent = "High risk detected";
-                churnSubtext.style.color = "#dc3545"; // Red
+                churnSubtext.style.color = "#dc3545"; 
             } else {
                 churnSubtext.textContent = "Clients are healthy";
-                churnSubtext.style.color = "#198754"; // Green
+                churnSubtext.style.color = "#198754";
             }
         }
     } catch (error) {
-        console.error("AI is offline");
-        document.getElementById('stat-churn-risk').textContent = "??"; 
-        document.querySelector('.text-danger').textContent = "AI Server Offline";
+        console.error("AI Proxy Error:", error);
+        document.getElementById('stat-churn-risk').textContent = "!"; 
+        showToast("AI Prediction Service unreachable", "warning");
     }
 }
 //  KPI CARDS 
@@ -128,59 +128,62 @@ async function loadTransactions() {
 
     if (!salesRes.success) throw new Error(salesRes.error || 'Failed to load sales');
 
-    for (const sale of salesRes.data) {
-      const detail = await api('sales.php', { action: 'get', id: sale.id });
+    const details = await Promise.all(
+      salesRes.data.map(sale => api('sales.php', { action: 'get', id: sale.id }))
+    );
+
+    for (const detail of details) {
       if (!detail.success) continue;
       const d = detail.data;
 
       // Determine initial status: 'Paid' → completed, anything else → pending
-      const status = sale.payment_status === 'Paid' ? 'completed' : 'pending';
+      const status = d.payment_status === 'Paid' ? 'completed' : 'pending';
 
-      //  Product-sale items 
+      //  Product-sale items
       if (d.product_items && d.product_items.length > 0) {
         d.product_items.forEach(item => {
           allTransactions.push({
-            _id:      `sale-${sale.id}-${item.id}`,
-            _saleId:  sale.id,
+            _id:      `sale-${d.id}-${item.id}`,
+            _saleId:  d.id,
             _type:    'sale',
             _status:  status,
             _amount:  item.total_price,
-            date:     sale.sale_date,
-            client:   sale.client_name,
+            date:     d.sale_date,
+            client:   d.client_name,
             name:     item.product_name,
           });
         });
       }
 
-      //  Service items linked to this sale 
+      //  Service items linked to this sale
       if (d.service_items && d.service_items.length > 0) {
         d.service_items.forEach(item => {
           allTransactions.push({
-            _id:      `svc-${sale.id}-${item.id}`,
-            _saleId:  sale.id,
+            _id:      `svc-${d.id}-${item.id}`,
+            _saleId:  d.id,
             _type:    'service',
             _status:  status,
             _amount:  item.total_price,
-            date:     sale.sale_date,
-            client:   sale.client_name,
+            date:     d.sale_date,
+            client:   d.client_name,
             name:     item.service_name,
           });
         });
       }
 
-      //  Fallback: sale with no items 
+      //  Fallback: sale with no items
       if (
         (!d.product_items || d.product_items.length === 0) &&
         (!d.service_items  || d.service_items.length  === 0)
       ) {
         allTransactions.push({
-          _id:     `sale-${sale.id}`,
-          _saleId: sale.id,
+          _id:     `sale-${d.id}`,
+          _saleId: d.id,
           _type:   'sale',
           _status: status,
-          _amount: sale.total_amount,
-          date:    sale.sale_date,
-          client:  sale.client_name,
+          _amount: d.total_amount,
+          date:    d.sale_date,
+          client:  d.client_name,
           name:    '—',
         });
       }
@@ -206,7 +209,7 @@ function renderTable() {
   if (filterType !== 'all') rows = rows.filter(t => t._type === filterType);
 
   if (searchQuery) {
-    const q = searchQuery.toLowerCase();
+    const q = searchQuery.toLowerCase().trim();
     rows = rows.filter(t =>
       (t.client || '').toLowerCase().includes(q) ||
       (t.name   || '').toLowerCase().includes(q)
