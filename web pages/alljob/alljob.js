@@ -3,8 +3,11 @@ let activeCat = "all";
 let maxSalary = 6000;
 let currentPage = 1;
 const PAGE_SIZE = 9;
+const scriptTag = document.querySelector('script[src*="offre"]');
+const scriptPath = scriptTag ? scriptTag.src : window.location.href;
+const baseURL = scriptPath.substring(0, scriptPath.indexOf('/web_project/') + '/web_project/'.length);
 
-fetch("/api/get_offers.php")
+fetch(`${baseURL}api/get_offers.php`)
   .then(res => res.json())
   .then(data => {
     JOBS = Array.isArray(data.data) ? data.data : [];

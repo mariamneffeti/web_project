@@ -131,7 +131,6 @@
     <div class="alert alert-success mt-3"><?= $success ?></div>
   <?php endif; ?>
 </div>
-
     <div class="container mt-5">
 <form action="cvv.php?offre_id=<?= $offre_id ?>" method="post" enctype="multipart/form-data">
       <div class="row gx-5">
