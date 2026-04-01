@@ -99,7 +99,7 @@ CREATE TABLE sales (
     tax DECIMAL(12, 2) DEFAULT 0.00,
     total_amount DECIMAL(12, 2) NOT NULL,
     payment_method ENUM('Cash', 'Credit Card', 'Bank Transfer', 'Mobile Payment') NOT NULL,
-    payment_status ENUM('Paid', 'Pending', 'Overdue') DEFAULT 'Paid',
+    payment_status ENUM('Paid', 'Pending') DEFAULT 'Pending',
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -122,7 +122,26 @@ CREATE TABLE sale_items (
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
 );
-
+-- services management
+CREATE TABLE services (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    service_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    base_price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+CREATE TABLE service_sale_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    sale_id INT NOT NULL,
+    service_id INT,
+    service_name VARCHAR(255) NOT NULL, 
+    quantity_hours DECIMAL(10, 2) NOT NULL DEFAULT 1,
+    unit_price DECIMAL(10, 2) NOT NULL,
+    total_price DECIMAL(12, 2) NOT NULL,
+    FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
+    FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE SET NULL
+);
 -- Invoices
 
 CREATE TABLE invoices (
@@ -131,7 +150,6 @@ CREATE TABLE invoices (
     sale_id INT UNIQUE NOT NULL,
     issue_date DATE NOT NULL,
     due_date DATE,
-    status ENUM('Draft', 'Sent', 'Paid', 'Overdue', 'Cancelled') DEFAULT 'Draft',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE
 );
@@ -231,12 +249,27 @@ INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price,
 (2, 3, 'Premium Support Pack', 1, 500.00, 0.00, 500.00),
 (3, 4, 'Enterprise Router', 2, 299.00, 5.00, 568.10),
 (3, 5, 'Office Suite License', 1, 450.00, 10.00, 405.00);
+-- insert services
+INSERT INTO services (company_id, service_name, description, base_price) VALUES 
+(1, 'Custom Software Development', 'Bespoke coding and feature development.', 120.00),
+(1, 'Network Infrastructure Audit', 'Comprehensive security and performance review.', 500.00),
+(1, 'Cloud Migration Support', 'Assistance moving local data to Azure/AWS.', 85.00),
+(1, 'On-site Technical Training', 'Staff training for new software suites.', 150.00);
 
+-- insert service_sale_items
+INSERT INTO service_sale_items (sale_id, service_id, service_name, quantity_hours, unit_price, total_price) VALUES 
+(1, 3, 'Cloud Migration Support', 4.00, 85.00, 340.00);
+
+INSERT INTO service_sale_items (sale_id, service_id, service_name, quantity_hours, unit_price, total_price) VALUES 
+(2, 4, 'On-site Technical Training', 2.00, 150.00, 300.00);
+
+INSERT INTO service_sale_items (sale_id, service_id, service_name, quantity_hours, unit_price, total_price) VALUES 
+(3, 1, 'Custom Software Development', 10.50, 120.00, 1260.00);
 -- Insert invoices
-INSERT INTO invoices (invoice_number, sale_id, issue_date, due_date, status) VALUES 
-('INV-2024-001', 1, '2024-01-15', '2024-02-15', 'Paid'),
-('INV-2024-002', 2, '2024-01-10', '2024-02-10', 'Paid'),
-('INV-2024-003', 3, '2024-01-20', '2024-02-20', 'Sent');
+INSERT INTO invoices (invoice_number, sale_id, issue_date, due_date) VALUES 
+('INV-2024-001', 1, '2024-01-15', '2024-02-15'),
+('INV-2024-002', 2, '2024-01-10', '2024-02-10'),
+('INV-2024-003', 3, '2024-01-20', '2024-02-20');
 
 -- Insert job icons
 INSERT INTO job_icons (icon_name, bootstrap_class, default_color) VALUES 
