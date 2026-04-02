@@ -1,3 +1,5 @@
+
+<?php include 'cv.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,7 +9,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="cv.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -19,40 +21,7 @@
     />
     <title>Document</title>
   </head>
-  <style>
-    .dropdown-toggle::after {
-      display: none !important;
-    }
-    .form-control {
-      transition: all 0.3s ease;
-    }
-
-    .form-control:focus {
-      transform: translateX(5px);
-      border-color: #102e4a;
-      box-shadow: 0 4px 8px rgba(16, 46, 74, 0.1);
-    }
-    .footer-forest {
-      background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      font-family: "Inter", sans-serif;
-    }
-
-    .footer-link {
-      color: rgba(255, 255, 255, 0.8);
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-    }
-
-    .footer-link:hover {
-      color: #ffffff;
-      padding-left: 5px;
-    }
-
-    .footer-brand i {
-      color: #8d9b6a;
-    }
+  
   </style>
   <body style="height: 1150px; background-color: #f6f6f2">
     <nav
@@ -88,13 +57,13 @@
             >
             <a
               class="nav-link p-2"
-              href="../offre/offre.html"
+              href="../offre/offre.php"
               style="font-family: Inter; font-size: 1.2rem"
               >Offre</a
             >
             <a
               class="nav-link p-2 active"
-              href="../cv/cv.html"
+              href="../cv/cv.php"
               style="font-family: Inter; font-size: 1.2rem"
               >CV</a
             >
@@ -147,13 +116,23 @@
     </nav>
 
     <div class="container" style="margin-top: 150px">
-      <h1 style="font-family: Montserrat; font-size: 50px">Upload your cv</h1>
-      <h2 style="color: #1b4965; font-family: Inter">
-        Applying for [job title] at [company Name]
-      </h2>
-    </div>
+  <h1 style="font-family: Montserrat; font-size: 50px">Upload your CV</h1>
 
+  <?php if ($offre): ?>
+    <h2 style="color: #1b4965; font-family: Inter">
+      Applying for <strong><?= htmlspecialchars($offre['title']) ?></strong>
+      at <strong><?= htmlspecialchars($offre['company_name']) ?></strong>
+    </h2>
+  <?php else: ?>
+    <h2 style="color: red;"><?= $error ?></h2>
+  <?php endif; ?>
+
+  <?php if ($success): ?>
+    <div class="alert alert-success mt-3"><?= $success ?></div>
+  <?php endif; ?>
+</div>
     <div class="container mt-5">
+<form action="cvv.php?offre_id=<?= $offre_id ?>" method="post" enctype="multipart/form-data">
       <div class="row gx-5">
         <div class="col-md-4 pe-4">
           <div class="mb-3">
@@ -166,7 +145,7 @@
             <input
               type="text"
               class="form-control"
-              id="firstName"
+              name="firstName"
               placeholder="Username"
             />
           </div>
@@ -181,7 +160,7 @@
             <input
               type="text"
               class="form-control"
-              id="lastName"
+              name="lastName"
               placeholder="Family name"
             />
           </div>
@@ -196,7 +175,7 @@
             <input
               type="email"
               class="form-control"
-              id="email"
+              name="email"
               placeholder="Email"
             />
           </div>
@@ -212,7 +191,7 @@
               <input
                 class="form-control"
                 list="nationalityOptions"
-                id="nationality"
+                name="nationality"
                 placeholder="Nationality"
               />
               <datalist id="nationalityOptions">
@@ -238,7 +217,7 @@
               <input
                 type="tel"
                 class="form-control"
-                id="phone"
+                name="phone"
                 placeholder="Phone number"
               />
             </div>
@@ -255,7 +234,7 @@
               type="text"
               class="form-control"
               placeholder="your current position"
-              id="address"
+              name="address"
             />
             <div class="form-text">Adresse doit être précise</div>
           </div>
@@ -270,7 +249,7 @@
             <input
               type="text"
               class="form-control"
-              id="linkedin"
+              name="linkedin"
               placeholder="LinkedIn"
             />
           </div>
@@ -279,7 +258,7 @@
             <input
               class="form-check-input"
               type="checkbox"
-              id="terms"
+              name="terms"
               required
             />
             <label class="form-check-label" for="terms">
@@ -319,8 +298,9 @@
 
               <input
                 type="file"
-                id="fileInput"
+                name="fichier"
                 class="d-none"
+                id="fileInput"
                 accept=".pdf,.docx"
               />
             </div>
@@ -352,7 +332,9 @@
             Submit Application
           </button>
         </div>
+        
       </div>
+      </form>
     </div>
 
     <footer
@@ -365,7 +347,7 @@
           <div class="col-lg-4 col-md-12">
             <div class="footer-brand mb-3">
               <img
-                src="C:\Users\infosud\Downloads\image-removebg-preview (1).png"
+                src="../image/logoentreprisa.png"
                 height="60"
                 width="80"
                 alt="Logo"
@@ -440,5 +422,45 @@
         </div>
       </div>
     </footer>
+    <?php if ($success): ?>
+<div id="successOverlay" style="
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;">
+  <div style="
+    background: white; border-radius: 16px; padding: 40px 50px;
+    text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    max-width: 420px; width: 90%;">
+    <div style="font-size: 60px;">✅</div>
+    <h2 style="font-family: Montserrat; color: #1b4965; margin: 15px 0 10px;">Application Received!</h2>
+    <p style="font-family: Inter; color: #555; font-size: 1rem;">
+      Your CV has been submitted successfully.<br>We'll be in touch soon!
+    </p>
+    <div style="
+      margin-top: 20px; height: 6px; border-radius: 99px;
+      background: #e0e0e0; overflow: hidden;">
+      <div id="progressBar" style="
+        height: 100%; width: 0%; border-radius: 99px;
+        background: #8d9b6a; transition: width 3s linear;">
+      </div>
+    </div>
+    <p style="font-family: Inter; color: #aaa; font-size: 0.85rem; margin-top: 10px;">
+      Redirecting in 3 seconds...
+    </p>
+  </div>
+</div>
+
+<script>
+  // Start progress bar
+  setTimeout(() => {
+    document.getElementById('progressBar').style.width = '100%';
+  }, 50);
+
+  // Redirect after 3 seconds
+  setTimeout(() => {
+    window.location.href = '../clienthome/clienthome.html';
+  }, 3000);
+</script>
+<?php endif; ?>
   </body>
 </html>

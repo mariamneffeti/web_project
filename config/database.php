@@ -1,9 +1,8 @@
 <?php
 /*
- Database Configuration — reads from environment variables (Railway)
- Falls back to hardcoded values for local development.
+ Database Configuration
  */
-
+ 
 function get_env_value($key, $default) {
     $val = $_ENV[$key] ?? getenv($key);
     return ($val !== false && $val !== '') ? $val : $default;
@@ -14,7 +13,7 @@ define('DB_NAME',     get_env_value('DB_NAME',     'web_project'));
 define('DB_USER',     get_env_value('DB_USER',     'root'));
 define('DB_PASSWORD', get_env_value('DB_PASSWORD', ''));
 define('DB_PORT',     get_env_value('DB_PORT',     '3306'));
-define('DB_CHARSET',  'utf8mb4');
+define('DB_CHARSET',  get_env_value('DB_CHARSET',  'utf8mb4'));
 /**
  * Database Connection Class
  */

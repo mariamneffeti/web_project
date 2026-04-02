@@ -24,6 +24,10 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
+.custom-navbar {
+  background: linear-gradient(90deg, #388087, #0d1f1b);
+}
+
 .stats-card {
     background: white;
     border: none;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html data-bs-theme="dark" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,67 +13,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
    <title>Document</title>
   </head>
-  <style>
-    .dropdown-toggle::after {
-    display: none !important;
-}
- .dropdown-toggle::after {
-    display: none !important;
-}
-.form-control {
-  transition: all 0.3s ease; 
-}
-
-.form-control:focus {
-  transform: translateX(5px); 
-  border-color: #102E4A;     
-  box-shadow: 0 4px 8px rgba(16, 46, 74, 0.1); 
-}
-@keyframes pulseOverlay {
-  0% {
-    background-color: rgba(42, 41, 41, 0.3); 
-  }
-  50% {
-    background-color: rgba(0, 0, 0, 0.5); 
-  }
-  100% {
-    background-color: rgba(42, 41, 41, 0.3); 
-  }
-}
-a:active{
-    background-color:#F6F6F2;
-    color: black ;
-
-}
-.hero-animated-overlay {
-  animation: pulseOverlay 8s ease-in-out infinite;
-}
-.footer-forest {
-   
-    background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: 'Inter', sans-serif;
-}
-
-.footer-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-}
-
-.footer-link:hover {
-    color: #ffffff;
-    padding-left: 5px; 
-}
-
-.footer-brand i {
-    color: #8D9B6A; 
-}
+ 
 
 
-
-  </style>
+  
   <body  style="height: 1500px; background-color: #F6F6F2 ;">
     
     <nav class="navbar navbar-expand-sm fixed-top" style="background-color: #388087" data-bs-theme="dark">
@@ -88,8 +31,8 @@ a:active{
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
             <a class="nav-link p-2 active " href="clienthome.html" style=" font-family: Inter; font-size: 1.2rem;">Home</a>
-            <a class="nav-link p-2" href="../offre/offre.html" style=" font-family: Inter; font-size: 1.2rem;">Offre</a>
-            <a class="nav-link  p-2" href="../cv/cv.html" style="font-family: Inter; font-size: 1.2rem;">CV</a>
+            <a class="nav-link p-2" href="../offre/offre.php" style=" font-family: Inter; font-size: 1.2rem;">Offre</a>
+            <a class="nav-link  p-2" href="../cv/cvv.php" style="font-family: Inter; font-size: 1.2rem;">CV</a>
           </div>
           <div class="navbar-nav ms-auto">
             <div class="nav-item dropdown">
@@ -128,41 +71,17 @@ a:active{
         </div>
         </div>
     </section>
-    <section class="py-5 text-white text-center" id="explorer" Style="background-color: #F6F6F2;">
+   <section class="py-5" id="explorer" style="background-color: #F6F6F2;">
   <div class="container">
-    <p class="small  mb-5 " style=" color:#1B4965; font-family: 'Roboto Mono'; font-size: 20px; padding-top: 1rem;">Trusted by industry leaders worldwide</p>
-    <div class="row g-3 justify-content-center">
-      <div class="col-5 col-md-3 me-5">
-           <div class=" py-3 rounded d-flex align-items-center justify-content-center" Style=" border: 2px solid   #388087;">
-           <i class="bi bi-box-seam me-3" Style="color:#102E4A ;"></i> <strong Style="color:#102E4A ;">GOO</strong>
-        </div>
-      </div>
-      <div class="col-5 col-md-3 me-5 mb-5">
-         <div class=" py-3 rounded d-flex align-items-center justify-content-center" Style=" border: 2px solid   #388087;">
-           <i class="bi bi-box-seam me-3" Style="color:#102E4A ;"></i> <strong Style="color:#102E4A ;">GOO</strong>
-        </div>
-      </div>
-      <div class="col-5 col-md-3 me-5 mb-5">
-         <div class=" py-3 rounded d-flex align-items-center justify-content-center" Style=" border: 2px solid   #388087;">
-           <i class="bi bi-box-seam me-3" Style="color:#102E4A ;"></i> <strong Style="color:#102E4A ;">GOO</strong>
-        </div>
+    <p class="text-center mb-2" style="color:#388087; font-family:'Roboto Mono'; font-size:0.85rem; text-transform:uppercase; letter-spacing:2px;">From our partners</p>
+    <h2 class="text-center fw-bold mb-5" style="color:#1B4965; font-family:Montserrat;">Latest Articles</h2>
+
+    <div class="row g-4" id="articlesGrid">
+      <!-- cards injected by JS -->
+      <div class="col-12 text-center text-muted py-5">
+        <div class="spinner-border" style="color:#388087" role="status"></div>
       </div>
     </div>
-    <div class="row g-3 justify-content-center">
-      <div class="col-5 col-md-3 me-5 mb-5">
-          <div class=" py-3 rounded d-flex align-items-center justify-content-center" Style=" border: 2px solid   #388087;">
-           <i class="bi bi-box-seam me-3" Style="color:#102E4A ;"></i> <strong Style="color:#102E4A ;">GOO</strong>
-        </div>
-      </div>
-      <div class="col-5 col-md-3 me-5 mb-5">
-          <div class=" py-3 rounded d-flex align-items-center justify-content-center" Style=" border: 2px solid   #388087;">
-           <i class="bi bi-box-seam me-3" Style="color:#102E4A ;"></i> <strong Style="color:#102E4A ;">GOO</strong>
-        </div>
-      </div>
-      <div class="col-5 col-md-3 me-5 mb-5">
-          <div class=" py-3 rounded d-flex align-items-center justify-content-center" Style=" border: 2px solid   #388087;">
-           <i class="bi bi-box-seam me-3" Style="color:#102E4A ;"></i> <strong Style="color:#102E4A ;">GOO</strong>
-        </div>
   </div>
 </section>
 <section class="py-5 bg-dark text-white" >
@@ -205,13 +124,13 @@ a:active{
     </div>
   </div>
 </section>
-<footer  class="footer-forest text-white py-5" id="About" style="height: 400px;">
+<footer  class="footer-forest text-white py-5" id="About" >
   <div  class="container " Style ="margin-top: 5rem ;">
     <div class="row gy-4">
       
       <div class="col-lg-4 col-md-12">
         <div class="footer-brand mb-3">
-          <img src="C:\Users\infosud\Downloads\image-removebg-preview (1).png" height="60" width="80" alt="Logo" />
+          <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
           <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
         </div>
       </div>
@@ -253,5 +172,6 @@ a:active{
     </div>
   </div>
 </footer>
+<script src="clienthome.js"></script>
 </body>
 </html>

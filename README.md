@@ -11,7 +11,6 @@
 * Marwa Boubakri GL2/3
 
 ---
-## Project Structure
 WEB_PROJECT/
 │
 ├── config/
@@ -26,89 +25,82 @@ WEB_PROJECT/
 │   └── clients.php
 │
 ├── fonts/
-│
 ├── palette/
-│
 ├── image/
 │
-├── web pages/
-│   │
-│   ├── home/
-│   │   ├── home.html
-│   │   └── home.css
-│   │
-│   ├── login/
-│   │   ├── login.html
-│   │   ├── login.css
-│   │   └── login.js
-│   │
-│   ├── registration/
-│   │   ├── registration.html
-│   │   ├── registration.css
-│   │   └── registration.js
-│   │
-│   ├── articles/
-│   │   ├── articles.html
-│   │   └── style.css
-│   │
-│   ├── clienthome/
-│   │   ├── clienthome.html
-│   │   └── clienthome.css
-│   │
-│   ├── clients viewE/
-│   │   ├── clientsview.html
-│   │   └── clientsview.css
-│   │
-│   ├── cv/
-│   │   ├── cv.html
-│   │   ├── cv.css
-│   │   └── cv.js
-│   │
-│   ├── offre/
-│   │   ├── offre.html
-│   │   └── offre.css
-│   │
-│   ├── recruitement/
-│   │   ├── recruitement.html
-│   │   ├── recruitement.css
-│   │   └── recruitement.js
-│   │
-│   ├── finance/
-│   │   ├── finance.html
-│   │   ├── finance.css
-│   │   └── finance.js
-│   │
-│   ├── infos/
-│   │   ├── infos.html
-│   │   └── infos.css
-│   │
-│   ├── rh/
-│   │   ├── rh.html
-│   │   └── rh.css
-│   │
-│   ├── sales/
-│   │   ├── sales.html
-│   │   ├── sales.css
-│   │   └── sales.js
-│   │
-│   ├── sales company/
-│   │   ├── salescompany.html
-│   │   ├── salescompany.css
-│   │   └── salescompany.js
-│   │
-│   ├── service admin/
-│   │   ├── serviceadmin.html
-│   │   └── serviceadmin.css
-│   │
-│   └── service employee/
-│       ├── dashboard.html
-│       ├── dashboard.css
-│       └── employee-dashboard.js
-│
-├── .gitignore
-├── package.json
-└── README.md
-
+└── web pages/
+    │
+    ├── home/
+    │   ├── home.html
+    │   └── home.css
+    │
+    ├── login/
+    │   ├── login.html
+    │   ├── login.css
+    │   └── login.js
+    │
+    ├── registration/
+    │   ├── registration.html
+    │   ├── registration.css
+    │   └── registration.js
+    │
+    ├── articles/
+    │   ├── articles.html
+    │   └── style.css
+    │
+    ├── clienthome/
+    │   ├── clienthome.html
+    │   └── clienthome.css
+    │
+    ├── clients viewE/
+    │   ├── clientsview.html
+    │   └── clientsview.css
+    │
+    ├── cv/
+    │   ├── cv.html
+    │   ├── cv.css
+    │   └── cv.js
+    │
+    ├── offre/
+    │   ├── offre.html
+    │   └── offre.css
+    │
+    ├── recruitement/
+    │   ├── recruitement.html
+    │   ├── recruitement.css
+    │   └── recruitement.js
+    │
+    ├── finance/
+    │   ├── finance.html
+    │   ├── finance.css
+    │   └── finance.js
+    │
+    ├── infos/
+    │   ├── infos.html
+    │   └── infos.css
+    │
+    ├── rh/
+    │   ├── rh.html
+    │   └── rh.css
+    │
+    ├── sales/
+    │   ├── sales.html
+    │   ├── sales.css
+    │   └── sales.js
+    │
+    ├── sales company/
+    │   ├── salescompany.html
+    │   ├── salescompany.css
+    │   └── salescompany.js
+    │
+    ├── service admin/
+    │   ├── serviceadmin.html
+    │   └── serviceadmin.css
+    │
+    └── service employee/
+        ├── dashboard.html
+        ├── dashboard.css
+        └── employee-dashboard.js
 ## Project Description
 
 This project is a **web-based ERP-like platform** designed to connect **companies**, **employees**, and **normal users (clients/applicants)** in a single structured system.

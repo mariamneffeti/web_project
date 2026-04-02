@@ -23,6 +23,20 @@ CREATE TABLE companies (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+CREATE TABLE articles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    author_name VARCHAR(255) NOT NULL,
+    title VARCHAR(100),
+    category VARCHAR(100),
+    date DATE,
+    description TEXT,
+    link VARCHAR(250),
+    image VARCHAR(250),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
 
 CREATE TABLE employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -180,8 +194,24 @@ CREATE TABLE IF NOT EXISTS job_offers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
     FOREIGN KEY (icon_id) REFERENCES job_icons(id) ON DELETE SET NULL
+);  
+CREATE TABLE cv_applications (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    offre_id INT,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    nationality VARCHAR(50),
+    address TEXT,
+    linkedin VARCHAR(255),
+    file_path VARCHAR(255) NOT NULL,
+    status ENUM('Pending', 'Reviewed', 'Accepted', 'Rejected') DEFAULT 'Pending',
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
+    FOREIGN KEY (offre_id) REFERENCES job_offers (id) ON DELETE SET NULL
 );
-
 -- Sample Data
 
 
@@ -236,7 +266,13 @@ INSERT INTO products (company_id, product_name, sku, category, price, stock_quan
 (1, 'Premium Support Pack', 'SUP-300', 'Support', 500.00, 100, '24/7 premium support & consulting'),
 (1, 'Enterprise Router', 'HW-450', 'Hardware', 299.00, 50, 'High-speed business router'),
 (1, 'Office Suite License', 'LIC-200', 'License', 450.00, 500, '5-user business license');
-
+-- Insert sample articles
+INSERT INTO articles (company_id, author_name, title, category, date, description, link, image) VALUES
+(1, 'Alice Johnson', 'How Cloud CRM is Revolutionizing Businesses', 'Technology', '2024-01-05', 'An in-depth look at how cloud-based CRM solutions streamline sales and customer management.', 'https://techcorp.com/blog/cloud-crm', "../image/hhh.jpg"),
+(1, 'Bob Smith', 'Top 5 Cybersecurity Tips for SMEs', 'Security', '2024-01-12', 'Practical tips for small and medium enterprises to enhance their cybersecurity posture.', 'https://techcorp.com/blog/cybersecurity-tips', "../image/hhh.jpg"),
+(1, 'Carol Lee', 'Maximizing ROI with Premium Support Packages', 'Business', '2024-01-20', 'Learn how investing in premium support services can increase efficiency and customer satisfaction.', 'https://techcorp.com/blog/premium-support', "../image/hhh.jpg"),
+(1, 'David Nguyen', 'Enterprise Networking: Choosing the Right Router', 'Hardware', '2024-01-25', 'A comprehensive guide to selecting enterprise routers for high-speed business networks.', 'https://techcorp.com/blog/enterprise-router', "../image/hhh.jpg"),
+(1, 'Eva Martinez', 'The Future of Office Software Licenses', 'Software', '2024-02-01', 'Exploring trends in software licensing for businesses and how to optimize costs.', 'https://techcorp.com/blog/office-software-licenses', "../image/hh.jpg");
 -- Insert sample sales
 INSERT INTO sales (transaction_id, company_id, employee_id, client_id, sale_date, subtotal, discount, tax, total_amount, payment_method, payment_status) VALUES 
 ('TX-2024-001', 1, 1, 1, '2024-01-15', 150.00, 15.00, 13.50, 148.50, 'Credit Card', 'Paid'),
@@ -244,11 +280,11 @@ INSERT INTO sales (transaction_id, company_id, employee_id, client_id, sale_date
 ('TX-2024-003', 1, 1, 3, '2024-01-20', 750.00, 50.00, 70.00, 770.00, 'Cash', 'Paid');
 
 -- Insert sample sale items
-INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price, total_price) VALUES 
-(1, 2, 'Security Suite', 1, 150.00, 135.00),
-(2, 3, 'Premium Support Pack', 1, 500.00, 500.00),
-(3, 4, 'Enterprise Router', 2, 299.00, 568.10),
-(3, 5, 'Office Suite License', 1, 450.00, 405.00);
+INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price, discount_percent, total_price) VALUES 
+(1, 2, 'Security Suite', 1, 150.00, 10.00, 135.00),
+(2, 3, 'Premium Support Pack', 1, 500.00, 0.00, 500.00),
+(3, 4, 'Enterprise Router', 2, 299.00, 5.00, 568.10),
+(3, 5, 'Office Suite License', 1, 450.00, 10.00, 405.00);
 -- insert services
 INSERT INTO services (company_id, service_name, description, base_price) VALUES 
 (1, 'Custom Software Development', 'Bespoke coding and feature development.', 120.00),
