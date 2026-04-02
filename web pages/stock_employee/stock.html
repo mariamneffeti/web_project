@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Management – Employee Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="stock.js"></script>
+<style>
+body {
+  background: #F6F6F2;
+  font-family: Inter, system-ui, sans-serif;
+  color: #1f2933;
+}
+
+.navbar { background: #388087; }
+
+.card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  transition: .3s ease;
+}
+.card:hover { transform: translateY(-4px); }
+
+.kpi { border-left: 6px solid #102E4A; }
+.kpi.kpi-warning { border-left-color: #f59e0b; }
+.kpi.kpi-danger  { border-left-color: #ef4444; }
+.kpi.kpi-success { border-left-color: #10b981; }
+
+.btn-primary-custom {
+  background: #388087;
+  border: none;
+  color: white;
+}
+.btn-primary-custom:hover { background: #2f6f75; color: white; }
+
+.table thead {
+  background: #102E4A;
+  color: white;
+}
+.table thead th { border: none; font-weight: 600; font-size: .85rem; letter-spacing: .04em; }
+
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 600;
+}
+.stock-ok      { background: #d1fae5; color: #065f46; }
+.stock-low     { background: #fef3c7; color: #92400e; }
+.stock-out     { background: #fee2e2; color: #991b1b; }
+
+.stock-bar-wrap { min-width: 90px; }
+.stock-bar-wrap .progress { height: 7px; border-radius: 4px; }
+
+.cat-pill {
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: #e0f0f1;
+  color: #2f6f75;
+}
+
+.modal-header { background: #102E4A; color: white; }
+.modal-header .btn-close { filter: invert(1); }
+
+.filter-bar .form-control,
+.filter-bar .form-select {
+  border-radius: 10px;
+  border-color: #d1d5db;
+  font-size: .9rem;
+}
+
+footer { background: linear-gradient(180deg,#388087,#0d1f1b); }
+a.footer-link,
+a.footer-link:link,
+a.footer-link:visited { color: rgba(255,255,255,0.8) !important; text-decoration: none; }
+a.footer-link:hover   { color: white !important; padding-left: 5px; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeSlideIn .4s ease both; }
+.animate-in:nth-child(2) { animation-delay: .05s; }
+.animate-in:nth-child(3) { animation-delay: .10s; }
+.animate-in:nth-child(4) { animation-delay: .15s; }
+</style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">Employee Dashboard</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="nav">
+      <ul class="navbar-nav gap-4 fw-semibold">
+        <li class="nav-item"><a class="nav-link" href="../clients viewE/clientsE.html">Clients</a></li>
+        <li class="nav-item"><a class="nav-link" href="../sales/sales.html">Sales</a></li>
+        <li class="nav-item"><a class="nav-link" href="../service%20employee/service_employee.html">Services</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">Stock</a></li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-center ms-auto">
+      <span class="text-white me-3">Employee #42</span>
+      <button class="btn btn-sm btn-outline-light">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4">
+
+  <header class="d-flex justify-content-between align-items-center mb-4 animate-in">
+    <div>
+      <h1 class="h3 fw-bold">Stock Management</h1>
+      <p class="text-muted mb-0">Monitor inventory levels, restocking alerts, and product catalogue.</p>
+    </div>
+  </header>
+
+  <div class="row mb-4 g-3">
+    <div class="col-md-3 animate-in">
+      <div class="card p-4 kpi kpi-success">
+        <small class="text-muted fw-semibold"><i class="bi bi-box-seam me-1"></i>Total Products</small>
+        <h4 class="fw-bold mb-0" id="kpi-total">5</h4>
+      </div>
+    </div>
+    <div class="col-md-3 animate-in">
+      <div class="card p-4 kpi kpi-success">
+        <small class="text-muted fw-semibold"><i class="bi bi-check-circle me-1"></i>In Stock</small>
+        <h4 class="fw-bold mb-0 text-success" id="kpi-instock">—</h4>
+      </div>
+    </div>
+    <div class="col-md-3 animate-in">
+      <div class="card p-4 kpi kpi-warning">
+        <small class="text-muted fw-semibold"><i class="bi bi-exclamation-triangle me-1"></i>Low Stock</small>
+        <h4 class="fw-bold mb-0 text-warning" id="kpi-low">—</h4>
+      </div>
+    </div>
+    <div class="col-md-3 animate-in">
+      <div class="card p-4 kpi kpi-danger">
+        <small class="text-muted fw-semibold"><i class="bi bi-x-circle me-1"></i>Out of Stock</small>
+        <h4 class="fw-bold mb-0 text-danger" id="kpi-out">—</h4>
+      </div>
+    </div>
+  </div>
+
+  <section class="filter-bar d-flex gap-3 mb-4 flex-wrap animate-in">
+    <div class="input-group" style="max-width:340px;">
+      <input class="form-control" id="searchInput" placeholder="Search by name, SKU, or category…">
+      <button class="btn btn-outline-secondary"><i class="bi bi-search"></i></button>
+    </div>
+
+    <select class="form-select" style="max-width:180px;" id="filterCategory">
+      <option value="">All Categories</option>
+      <option>Software</option>
+      <option>Security</option>
+      <option>Support</option>
+      <option>Hardware</option>
+      <option>License</option>
+    </select>
+
+    <select class="form-select" style="max-width:180px;" id="filterStatus">
+      <option value="">All Stock Levels</option>
+      <option value="ok">In Stock</option>
+      <option value="low">Low Stock</option>
+      <option value="out">Out of Stock</option>
+    </select>
+
+    <button class="btn btn-outline-secondary ms-auto" id="exportBtn" onclick="ExportStockToCSV()">
+      <i class="bi bi-download me-1"></i>Export CSV
+    </button>
+  </section>
+
+  <section class="card animate-in">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" id="stockTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Product</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Unit Price</th>
+            <th>Stock Qty</th>
+            <th>Stock Level</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3 border-top d-flex justify-content-between align-items-center text-muted small">
+      <span id="rowCount">Showing 0 products</span>
+      <span>Data from <strong>products</strong> table · company_id = 1</span>
+    </div>
+  </section>
+
+</main>
+
+
+
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 overflow-hidden">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="bi bi-pencil me-2"></i>Edit Product</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <input type="hidden" id="e-id">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Product Name</label>
+            <input class="form-control" id="e-name">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">SKU</label>
+            <input class="form-control" id="e-sku">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Category</label>
+            <select class="form-select" id="e-category">
+              <option>Software</option><option>Security</option>
+              <option>Support</option><option>Hardware</option><option>License</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Unit Price ($)</label>
+            <input class="form-control" id="e-price" type="number" step="0.01">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Stock Quantity</label>
+            <input class="form-control" id="e-stock" type="number" min="0">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Low-Stock Threshold</label>
+            <input class="form-control" id="e-threshold" type="number" min="0">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-semibold">Description</label>
+            <textarea class="form-control" id="e-desc" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0 px-4 pb-4">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary-custom px-4" id="updateProductBtn">
+          <i class="bi bi-floppy me-1"></i>Update Product
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 overflow-hidden">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="bi bi-info-circle me-2"></i>Product Details</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4" id="detailBody">
+        <!-- populated by JS -->
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer  class="footer-forest text-white py-5" id="About" style="height: 400px;">
+  <div  class="container " Style ="margin-top: 5rem ;">
+    <div class="row gy-4">
+
+      <div class="col-lg-4 col-md-12">
+        <div class="footer-brand mb-3">
+          <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
+          <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">    Start <br>   your busniss</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link"><i class="bi bi-cloud-plus me-2"></i>Join us as a company leader </a></li>
+          <li class="mb-2"><a href="#" class="footer-link"><i class="bi bi-bar-chart me-2"></i>Try Entreprisa</a></li>
+        </ul>
+      </div>
+
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">The Product</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link">Contacts us</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Questions</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link">Terms & Conditions</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Privacy policy</a></li>
+        </ul>
+      </div>
+  <hr class="opacity-25">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3">
+                <p>© 2026 CareerFlow Inc. All rights reserved.</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Privacy</a></li>
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Terms</a></li>
+                    <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Cookies</a></li>
+                </ul>
+            </div>
+    </div>
+  </div>
+</footer>
+
+<button class="btn btn-outline-secondary" onclick="applyFilters()"></button>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

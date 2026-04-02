@@ -40,13 +40,14 @@ CREATE TABLE articles (
 
 CREATE TABLE employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT UNIQUE NOT NULL,
+    user_id INT NOT NULL,
     company_id INT NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     position VARCHAR(100),
     department VARCHAR(100),
     hire_date DATE,
+    email VARCHAR(250),
     salary DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -70,6 +71,20 @@ CREATE TABLE clients (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
     INDEX idx_company_client (company_id, client_name)
+);
+
+CREATE TABLE articles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    author_name VARCHAR(255) NOT NULL,
+    title VARCHAR(100),
+    category VARCHAR(100),
+    date DATE,
+    description TEXT,
+    link VARCHAR(250),
+    image VARCHAR(250),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
 );
 
 -- Sales Management
@@ -117,7 +132,6 @@ CREATE TABLE sale_items (
     product_name VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
     unit_price DECIMAL(10, 2) NOT NULL,
-    discount_percent DECIMAL(5, 2) DEFAULT 0.00,
     total_price DECIMAL(12, 2) NOT NULL,
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
@@ -216,13 +230,35 @@ INSERT INTO users (email, password, role) VALUES
 -- Insert employee
 INSERT INTO employees (user_id, company_id, first_name, last_name, position, department, hire_date, salary) VALUES 
 (2, 1, 'Sarah', 'Connor', 'Sales Manager', 'Sales', '2023-01-15', 45000.00);
-
 -- Insert sample clients
 INSERT INTO clients (company_id, client_name, email, phone, client_type, status, total_spent, last_purchase_date) VALUES 
 (1, 'Acme Corporation', 'contact@acme.com', '+216-71-234-567', 'B2B', 'Active', 15420.00, '2024-01-15'),
 (1, 'John Smith LLC', 'john@company.com', '+216-71-345-678', 'B2B', 'Active', 8750.50, '2024-01-10'),
-(1, 'Global Industries', 'info@global.com', '+216-71-456-789', 'B2B', 'Active', 23100.00, '2024-01-20');
+(1, 'Global Industries', 'info@global.com', '+216-71-456-789', 'B2B', 'Active', 23100.00, '2024-01-20'),
+(1, 'Sincere Risk Corp', 'warning@riskcorp.com', '+216-71-999-000', 'B2B', 'Inactive', 200.00, '2023-10-01');
+-- 🟢 LOW RISK CLIENTS (recent activity)
 
+INSERT INTO clients (company_id, client_name, email, phone, client_type, status, total_spent, last_purchase_date) VALUES
+(1, 'Alpha Tech', 'alpha@tech.com', '+216-70-000-001', 'B2B', 'Active', 25000.00, CURDATE()),
+(1, 'Beta Solutions', 'beta@solutions.com', '+216-70-000-002', 'B2B', 'Active', 18000.00, DATE_SUB(CURDATE(), INTERVAL 5 DAY)),
+(1, 'Gamma Corp', 'gamma@corp.com', '+216-70-000-003', 'B2B', 'Active', 32000.00, DATE_SUB(CURDATE(), INTERVAL 10 DAY)),
+(1, 'Delta Systems', 'delta@systems.com', '+216-70-000-004', 'B2B', 'Active', 14000.00, DATE_SUB(CURDATE(), INTERVAL 3 DAY));
+
+-- 🟡 MEDIUM RISK CLIENTS
+
+INSERT INTO clients (company_id, client_name, email, phone, client_type, status, total_spent, last_purchase_date) VALUES
+(1, 'Epsilon Group', 'epsilon@group.com', '+216-70-000-005', 'B2B', 'Active', 9000.00, DATE_SUB(CURDATE(), INTERVAL 30 DAY)),
+(1, 'Zeta Industries', 'zeta@ind.com', '+216-70-000-006', 'B2B', 'Active', 7000.00, DATE_SUB(CURDATE(), INTERVAL 40 DAY)),
+(1, 'Eta Services', 'eta@services.com', '+216-70-000-007', 'B2C', 'Active', 5000.00, DATE_SUB(CURDATE(), INTERVAL 45 DAY)),
+(1, 'Theta Consulting', 'theta@consult.com', '+216-70-000-008', 'B2B', 'Active', 11000.00, DATE_SUB(CURDATE(), INTERVAL 35 DAY));
+
+-- 🔴 HIGH RISK / CHURNED CLIENTS
+
+INSERT INTO clients (company_id, client_name, email, phone, client_type, status, total_spent, last_purchase_date) VALUES
+(1, 'Iota Holdings', 'iota@hold.com', '+216-70-000-009', 'B2B', 'Inactive', 4000.00, DATE_SUB(CURDATE(), INTERVAL 90 DAY)),
+(1, 'Kappa Ventures', 'kappa@ventures.com', '+216-70-000-010', 'B2B', 'Inactive', 3000.00, DATE_SUB(CURDATE(), INTERVAL 120 DAY)),
+(1, 'Lambda LLC', 'lambda@llc.com', '+216-70-000-011', 'B2C', 'Inactive', 2500.00, DATE_SUB(CURDATE(), INTERVAL 150 DAY)),
+(1, 'Mu Enterprises', 'mu@enterprises.com', '+216-70-000-012', 'B2B', 'Inactive', 6000.00, DATE_SUB(CURDATE(), INTERVAL 80 DAY));
 -- Insert sample products
 INSERT INTO products (company_id, product_name, sku, category, price, stock_quantity, description) VALUES 
 (1, 'Cloud CRM Pro', 'CRM-001', 'Software', 29.99, 999, 'Monthly subscription with full access'),

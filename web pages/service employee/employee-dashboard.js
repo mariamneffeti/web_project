@@ -9,12 +9,8 @@ let receiptModal;
 let currentPage = 1;
 let salesChart = null;
 let saleModal;
-const SERVICE_PRICES = {
-    'Consultation Fee': 150,
-    'Standard Repair': 200,
-    'Software Update': 50
-};
-
+let PRODUCT_DATA = [];
+let SERVICE_DATA = [];
 
 /*/
 initializing the modals and the current page
@@ -43,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load initial data
     loadDashboardStats();
-    initServicesTable();
+    loadInventory();
 
     
     // Set default dates for sales filter
@@ -51,6 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     document.getElementById('sale-start-date').value = weekAgo;
     document.getElementById('sale-end-date').value = today;
+    const processBtn = document.getElementById('btn-process-transaction');
+    if (processBtn) processBtn.addEventListener('click', processTransaction);
+    const addSaleBtn = document.getElementById('btn-add-sale');
+    if (addSaleBtn) addSaleBtn.addEventListener('click', addSaleRow);
+
+    const addServiceBtn = document.getElementById('btn-add-service');
+    if (addServiceBtn) addServiceBtn.addEventListener('click', addServiceRow);
 });
 
 // Dashboard Statistics
@@ -266,49 +269,111 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+// loading service and sale tables
+async function loadInventory() {
+    try {
+        const [prodRes, servRes] = await Promise.all([
+            fetch('../../api/products.php?action=list'),
+            fetch('../../api/services.php?action=list')
+        ]);
+        
+        const products = await prodRes.json();
+        const services = await servRes.json();
 
-// Service Management
-
-function removeServiceRow(button) {
-    const row = button.closest('tr');
-    row.remove();
-    calculateOrderSummary();
+        if (products.success) PRODUCT_DATA = products.data;
+        if (services.success) SERVICE_DATA = services.data;
+        
+        console.log("Inventory Loaded:", { products: PRODUCT_DATA.length, services: SERVICE_DATA.length });
+    } catch (e) {
+        showToast("Failed to sync inventory", "error");
+    }
 }
+
+// Sale Management
+function addSaleRow() {
+    const tbody = document.getElementById('sales-tbody');
+    let options = PRODUCT_DATA.map(p => 
+        `<option value="${p.id}" data-price="${p.price}">${p.product_name}</option>`
+    ).join('');
+    
+    createRow(tbody, options, 'product');
+}
+// Service Management
+function addServiceRow() {
+    const tbody = document.getElementById('services-tbody');
+    let options = SERVICE_DATA.map(s => 
+        `<option value="${s.id}" data-price="${s.base_price}">${s.service_name}</option>`
+    ).join('');
+    
+    createRow(tbody, options, 'service');
+}
+// Sales and Services
+function createRow(tbody, options, type) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-type', type);
+    tr.innerHTML = `
+        <td>
+            <select class="form-select item-select">
+                <option value="">Select ${type === 'product' ? 'Product' : 'Service'}...</option>
+                ${options}
+            </select>
+        </td>
+        <td><input type="number" class="form-control item-qty" value="1" min="1" style="width:80px"></td>
+        <td class="unit-price">$0.00</td>
+        <td class="fw-bold row-total">$0.00</td>
+        <td>
+            <button class="btn btn-outline-danger btn-sm" onclick="removeRow(this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+    
+    tr.querySelector('.item-select').addEventListener('change', (e) => updateRowPrice(e.target));
+    tr.querySelector('.item-qty').addEventListener('input', (e) => calculateRowTotal(e.target));
+    
+    tbody.appendChild(tr);
+}
+
 function updateRowPrice(selectElement) {
     const row = selectElement.closest('tr');
     const selectedOption = selectElement.options[selectElement.selectedIndex];
+    
     const price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
     
-    row.querySelector('.unit-price').textContent = `$${price}`;
-    calculateRowTotal(row.querySelector('.qty-input'));
+    row.querySelector('.unit-price').textContent = formatCurrency(price);
+    
+    const qtyInput = row.querySelector('.item-qty');
+    calculateRowTotal(qtyInput);
 }
+
 function calculateRowTotal(inputElement) {
     const row = inputElement.closest('tr');
     const qty = parseFloat(inputElement.value) || 0;
-    const priceText = row.querySelector('.unit-price').textContent.replace('$', '');
+    
+    const priceText = row.querySelector('.unit-price').textContent.replace(/[$,]/g, '');
     const price = parseFloat(priceText) || 0;
     
     const total = qty * price;
-    row.querySelector('.row-total').textContent = `$${total}`;
+    row.querySelector('.row-total').textContent = formatCurrency(total);
     
     calculateOrderSummary();
+}
+function removeRow(button) {
+    const row = button.closest('tr');
+    row.remove();
+    calculateOrderSummary(); 
 }
 function calculateOrderSummary() {
     let subtotal = 0;
 
-    // Grab every element that has the row-total class
-    const rowTotals = document.querySelectorAll('.row-total');
-    
-    rowTotals.forEach(cell => {
-        // Strip out the '$' and commas to get a clean number
+    document.querySelectorAll('.row-total').forEach(cell => {
         const value = parseFloat(cell.textContent.replace(/[$,]/g, '')) || 0;
         subtotal += value;
     });
 
-    const discount = subtotal * 0.10;
+    const discount = subtotal * 0.10; 
     const total = subtotal - discount;
 
-    // Push the values to the Summary Card IDs we just created
     const subtotalEl = document.getElementById('summary-subtotal');
     const discountEl = document.getElementById('summary-discount');
     const totalEl = document.getElementById('summary-total');
@@ -317,170 +382,109 @@ function calculateOrderSummary() {
     if (discountEl) discountEl.textContent = `-${formatCurrency(discount)}`;
     if (totalEl) totalEl.textContent = formatCurrency(total);
 }
-function initServicesTable() {
-    const tbody = document.getElementById('services-tbody');
-    if (!tbody) return;
 
+// Transaction
 
-    tbody.addEventListener('change', recalcServices);
-    tbody.addEventListener('input', recalcServices);
-
-    
-    const addBtn = document.getElementById('add-service-btn');
-    if (addBtn) {
-        addBtn.onclick = addServiceRow; 
-    }
-
-
-    recalcServices();
-}
-
-function recalcServices() {
-    const tbody = document.getElementById('services-tbody');
-    if (!tbody) return;
-
-    let subtotal = 0;
-
-    tbody.querySelectorAll('tr').forEach(row => {
-        const nameEl  = row.querySelector('.service-name');
-        const qtyEl   = row.querySelector('.service-qty');
-        const unitEl  = row.querySelector('.service-unit-price');
-        const totalEl = row.querySelector('.service-line-total');
-
-        if (!nameEl || !qtyEl) return;
-
-        const serviceName = nameEl.value;
-        const unitPrice   = SERVICE_PRICES[serviceName] || 0;
-        const qty         = Math.max(1, parseInt(qtyEl.value, 10) || 1);
-        const lineTotal   = unitPrice * qty;
-
-        if (unitEl)  unitEl.textContent  = formatCurrency(unitPrice);
-        if (totalEl) totalEl.textContent = formatCurrency(lineTotal);
-
-        subtotal += lineTotal;
-    });
-
-    const discount   = subtotal * 0.10;
-    const grandTotal = subtotal - discount;
-
-    // Update Summary Card
-    const subtotalEl  = document.getElementById('summary-subtotal');
-    const discountEl  = document.getElementById('summary-discount');
-    const grandTotalEl = document.getElementById('summary-total');
-
-    if (subtotalEl)   subtotalEl.textContent  = formatCurrency(subtotal);
-    if (discountEl)   discountEl.textContent  = `-${formatCurrency(discount)}`;
-    if (grandTotalEl) grandTotalEl.textContent = formatCurrency(grandTotal);
-}
-function addServiceRow() {
-    const tbody = document.getElementById('services-tbody');
-    if (!tbody) return;
-
-    let options = `<option value="">Select Service</option>`;
-    options += Object.keys(SERVICE_PRICES)
-        .map(name => `<option value="${name}">${name}</option>`)
-        .join('');
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-        <td><select class="form-select service-name">${options}</select></td>
-        <td><input type="number" class="form-control service-qty" value="1" min="1" style="width:80px"></td>
-        <td class="service-unit-price">$0.00</td>
-        <td class="fw-bold service-line-total">$0.00</td>
-        <td>
-            <button class="btn btn-outline-danger btn-sm remove-service-btn">
-                <i class="bi bi-trash"></i>
-            </button>
-        </td>
-    `;
-
-    tr.querySelector('.remove-service-btn').addEventListener('click', () => {
-        tr.remove();
-        recalcServices();
-    });
-
-    tbody.appendChild(tr);
-    recalcServices();
-}
 async function processTransaction() {
-    const tbody = document.getElementById('services-tbody');
-    const rows = tbody.querySelectorAll('tr');
+    const clientId = document.getElementById('client-id').value;
     const clientName = document.getElementById('client-name').value;
-    const clientId = document.getElementById('client-id')?.value || 1;
 
-    if (!clientName || rows.length === 0) {
-        showToast('Please select a client and add services', 'warning');
+    if (!clientId || !clientName) {
+        showToast('Please search for and select a client first', 'warning');
         return;
     }
 
-    // Capture summary values for the receipt BEFORE clearing them
-    const summaryData = {
-        subtotal: document.getElementById('summary-subtotal').textContent,
-        discount: document.getElementById('summary-discount').textContent,
-        total: document.getElementById('summary-total').textContent,
-        client: clientName,
-        items: []
-    };
-
-    const transactionData = {
+    const payload = {
         client_id: clientId,
         sale_date: new Date().toISOString().split('T')[0],
         payment_method: 'Cash',
-        payment_status: 'Paid',
-        discount: parseFloat(summaryData.discount.replace(/[$-]/g, '')) || 0,
-        items: []
+        payment_status: 'Pending',
+        discount: parseFloat(document.getElementById('summary-discount').textContent.replace(/[$-]/g, '')) || 0,
+        tax: 0, 
+        notes: "Transaction from Employee Dashboard",
+        product_items: [],
+        service_items: []
     };
 
-    rows.forEach(row => {
-        const sName = row.querySelector('.service-name').value;
-        const sPrice = row.querySelector('.service-line-total').textContent;
-        if(sName) {
-            transactionData.items.push({
-                product_name: sName,
-                quantity: parseInt(row.querySelector('.service-qty').value),
-                unit_price: parseFloat(row.querySelector('.service-unit-price').textContent.replace(/[$-]/g, '')),
-                discount_percent: 0
-            });
-            summaryData.items.push({ name: sName, price: sPrice });
+    document.querySelectorAll('.item-select').forEach(select => {
+        const row = select.closest('tr');
+        const itemId = select.value;
+        if (!itemId) return;
+
+        const selectedOption = select.options[select.selectedIndex];
+        const itemName = selectedOption.text;
+        const qty = parseInt(row.querySelector('.item-qty').value) || 0;
+        const price = parseFloat(selectedOption.dataset.price) || 0;
+        const type = row.getAttribute('data-type');
+
+        if (qty > 0) {
+            if (type === 'product') {
+                payload.product_items.push({
+                    product_id: itemId,
+                    product_name: itemName,
+                    quantity: qty,
+                    unit_price: price
+                });
+            } else {
+                payload.service_items.push({
+                    service_name: itemName,
+                    quantity_hours: qty, 
+                    unit_price: price
+                });
+            }
         }
     });
+
+    if (payload.product_items.length === 0 && payload.service_items.length === 0) {
+        showToast('Please add at least one product or service', 'warning');
+        return;
+    }
 
     try {
         const response = await fetch('../../api/sales.php?action=create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(transactionData)
+            body: JSON.stringify(payload)
         });
 
         const result = await response.json();
 
         if (result.success) {
-            showToast('Transaction Processed!', 'success');
+            showToast('Transaction successful!', 'success');
             
-            // --- GENERATE RECEIPT ---
-            document.getElementById('receipt-id').textContent = '#' + (result.transaction_id || 'N/A');
-            document.getElementById('receipt-date').textContent = new Date().toLocaleDateString();
-            document.getElementById('receipt-client-name').textContent = summaryData.client;
-            document.getElementById('receipt-subtotal').textContent = summaryData.subtotal;
-            document.getElementById('receipt-discount').textContent = summaryData.discount;
-            document.getElementById('receipt-total').textContent = summaryData.total;
+            document.getElementById('receipt-id').textContent = '#' + (result.transaction_id || result.sale_id);
+            document.getElementById('receipt-client-name').textContent = clientName;
+            document.getElementById('receipt-total').textContent = document.getElementById('summary-total').textContent;
             
-            const itemsBody = document.getElementById('receipt-items');
-            itemsBody.innerHTML = summaryData.items.map(item => `
-                <tr><td>${item.name}</td><td class="text-end">${item.price}</td></tr>
-            `).join('');
+            const modalEl = document.getElementById('receiptModal');
+            modalEl.removeAttribute('aria-hidden');
+            receiptModal.show();
 
-            receiptModal.show(); // Show the receipt to the user
-            
-            // Reset UI
-            tbody.innerHTML = ''; 
             document.getElementById('client-name').value = '';
-            recalcServices(); 
+            document.getElementById('client-id').value = '';
+            
+            const emailField = document.getElementById('client-email');
+            if (emailField) emailField.value = '';
+            
+            const lastPurchase = document.getElementById('last-purchase-date');
+            if (lastPurchase) lastPurchase.textContent = 'No purchases';
+
+            const totalSpent = document.getElementById('client-total-spent');
+            if (totalSpent) totalSpent.textContent = '$0.00';
+
+            document.getElementById('sales-tbody').innerHTML = '';
+            document.getElementById('services-tbody').innerHTML = '';
+            
+            calculateOrderSummary();
+            
             loadDashboardStats();
+
         } else {
-            showToast('Error: ' + result.error, 'error');
+            showToast('Error: ' + (result.error || result.message), 'error');
+            console.error("Server Error Detail:", result);
         }
     } catch (error) {
-        showToast('Server error', 'error');
+        console.error('Transaction failed:', error);
+        showToast('Server error processing sale. Check console.', 'error');
     }
 }

@@ -7,11 +7,14 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
+<script src="clientsE.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 body{
   background:#F6F6F2;
-  font-family:Inter,system-ui,sans-serif;
+  font-family: Inter, system-ui, sans-serif;
   color:#1f2933;
 }
 
@@ -31,7 +34,7 @@ body{
   transform:translateY(-4px);
 }
 
-/* KPI */
+/* KPI LEFT BORDER */
 .kpi{
   border-left:6px solid #102E4A;
 }
@@ -56,6 +59,16 @@ body{
 footer{
   background:linear-gradient(180deg,#388087,#0d1f1b);
 }
+a.footer-link,
+a.footer-link:link,
+a.footer-link:visited {
+  color: rgba(255,255,255,0.8) !important;
+  text-decoration: none;
+}
+a.footer-link:hover {
+  color: white !important;
+  padding-left: 5px;
+}
 </style>
 </head>
 
@@ -72,8 +85,9 @@ footer{
     <div class="collapse navbar-collapse justify-content-center" id="nav">
       <ul class="navbar-nav gap-4 fw-semibold">
         <li class="nav-item"><a class="nav-link active" href="#">Clients</a></li>
-        <li class="nav-item"><a class="nav-link" href="/web%20pages/sales/sales.html">Sales</a></li>
-        <li class="nav-item"><a class="nav-link" href="/web%20pages/service%20employee/service_employee.html">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="../sales/sales.html">Sales</a></li>
+        <li class="nav-item"><a class="nav-link" href="../service%20employee/service_employee.html">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="../stock_employee/stock.html">Stock</a></li>
       </ul>
     </div>
 
@@ -98,36 +112,36 @@ footer{
   <div class="col-md-4">
     <div class="card p-4 kpi">
       <small class="text-muted fw-semibold">Total Clients</small>
-      <h4 class="fw-bold mb-0">1,204</h4>
+      <h4 class="fw-bold mb-0" id="total-clients-count"></h4>
     </div>
   </div>
   <div class="col-md-4">
     <div class="card p-4 kpi">
       <small class="text-muted fw-semibold">Churn Alerts</small>
-      <h4 class="fw-bold mb-0 text-danger">12</h4>
+      <h4 class="fw-bold mb-0 text-danger" id="stat-churn-risk"></h4>
     </div>
   </div>
   <div class="col-md-4">
     <div class="card p-4 kpi">
       <small class="text-muted fw-semibold">Avg. Revenue</small>
-      <h4 class="fw-bold mb-0">$4,250</h4>
+      <h4 class="fw-bold mb-0" id="stat-month-amount"></h4>
     </div>
   </div>
 </div>
 
 <section class="d-flex gap-3 mb-4">
   <div class="input-group w-50">
-    <input class="form-control" placeholder="Search by name, ID, or company…">
+    <input class="form-control" placeholder="Search by name, ID, or company…" oninput="handleSearch()">
     <button class="btn btn-outline-secondary">🔍</button>
   </div>
 
-  <select class="form-select w-25">
-    <option>All Statuses</option>
-    <option>Active</option>
-    <option>At Risk</option>
-  </select>
 
-  <button class="btn btn-outline-secondary">Export CSV</button>
+  <button class="btn btn-outline-dark" onclick="ExportToCSV()">Export CSV</button>
+  <button class="btn btn-outline-dark" onclick="ExportToPDF()">Export PDF</button>
+  <button class="btn btn-outline-dark" onclick="Copy()">Copy</button>
+  <button class="btn btn-outline-dark" onclick="ExportToExcel()">Excel</button>
+
+
 </section>
 
 <section class="card">
@@ -137,27 +151,30 @@ footer{
         <tr>
           <th>Name</th>
           <th>Email</th>
-          <th>Engagement</th>
-          <th>Churn Status</th>
+          <th>Churn Risk</th>
+          <th>Numero telephone</th>
+          <th></th>
           <th class="text-end">Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="client-table-body">
         <tr>
-          <td class="fw-semibold">John Doe</td>
-          <td>j.doe@email.com</td>
+          <td class="fw-semibold"></td>
+          <td></td>
           <td>
             <div class="progress mb-1" style="height:8px">
-              <div class="progress-bar bg-warning" style="width:24%"></div>
+              <div class="progress-bar ></div>
             </div>
-            <small>24%</small>
+            <small></small>
           </td>
           <td>
-            <span class="badge bg-danger-subtle text-danger">High Risk</span>
+            <span class="badge bg-danger-subtle text-danger"></span>
           </td>
+          <td></td>
           <td class="text-end">
             <button class="btn btn-sm btn-outline-secondary">Details</button>
             <button class="btn btn-sm btn-outline-danger">🗑️</button>
+            <button type="button" class="btn btn-sm btn-outline-warning">Edit</button>
           </td>
         </tr>
       </tbody>
@@ -173,7 +190,7 @@ footer{
 
       <div class="col-lg-4 col-md-12">
         <div class="footer-brand mb-3">
-          <img src="C:\Users\infosud\Downloads\image-removebg-preview (1).png" height="60" width="80" alt="Logo" />
+          <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
           <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
         </div>
       </div>
@@ -215,7 +232,93 @@ footer{
     </div>
   </div>
 </footer>
-
+<style>
+.toast-container {
+    z-index: 1060 !important;
+}
+</style>
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="deleteToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Client deleted successfully!
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editClientModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Client Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editClientForm">
+          <input type="hidden" id="edit-id-input">
+          <div class="mb-3">
+            <label class="form-label">Client Name</label>
+            <input type="text" class="form-control" id="edit-name-input">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="edit-email-input">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="edit-phone-input">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary-custom" onclick="saveClientEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="detailClientModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">Client Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+            <div class="rounded-circle bg-primary-custom text-white d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px; font-size: 24px;">
+                <span id="det-initials">JS</span>
+            </div>
+            <h4 class="mt-2 mb-0" id="det-name">Name</h4>
+            <span class="badge bg-info-subtle text-info" id="det-type">B2B</span>
+        </div>
+        
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Email:</span>
+            <strong id="det-email">-</strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Phone:</span>
+            <strong id="det-phone">-</strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Churn Risk:</span>
+            <strong id="det-risk">-</strong>
+          </li>
+          <li class="list-group-item">
+            <span class="text-muted d-block">Address:</span>
+            <div class="mt-1 p-2 bg-light rounded" id="det-address">No address provided.</div>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
