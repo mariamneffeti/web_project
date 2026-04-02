@@ -143,6 +143,35 @@ body {
     border: none;
     text-align: left;
 }
+.service-row {
+    position: relative; 
+}
+
+.service-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 4px;
+
+    max-height: 180px;
+    overflow-y: auto;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.service-results button:hover {
+    background-color: #f0f4f8;
+}
+.service-results button {
+    border: none;
+    text-align: left;
+}
 .client-results {
     position: absolute;
     top: 100%;
@@ -168,4 +197,57 @@ body {
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
+}
+.switcher-cards {
+    display: flex;
+    gap: 16px;
+}
+
+.card-btn { 
+    border: 1px solid var(--accent-blue); 
+    border-radius: 16px; padding: 12px; 
+    cursor: pointer; transition: all 0.3s ease; 
+    text-align: left; 
+    min-width: 140px; 
+    position: relative; 
+    overflow: hidden; }
+.card-btn h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: var(--accent-blue);
+    transition: color 0.3s ease;
+}
+.card-btn.active {
+    background: var(--accent-blue);
+    border-color: #10b981; 
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+}
+
+.card-btn.active h4 { color: #fff; }
+.card-btn.active::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #10b981;
+}
+
+@media (max-width: 768px) {
+    .switcher-cards {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .card-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+#sales-form, #service-form {
+    transition: all 0.3s ease;
 }

@@ -31,5 +31,5 @@
 
 </body>
 <script src="/js libs/chart.js"></script>
-<script src="<?= htmlspecialchars($pagePath) ?>"></script>
+<script src=<?php echo $pagePath ?>>></script>
 </html>

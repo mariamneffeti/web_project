@@ -94,8 +94,89 @@
 
         <section id="add-sale" class="mb-5">
             <div class="card border-0 shadow-sm p-4 rounded-4">
-                <h2 class="h4 mb-4 fw-bold" style="color: #102E4A;">Record New Sale</h2>
-                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="h4 fw-bold mb-0" style="color: #102E4A;" id="form-title">Record New Sale</h2>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="switcher-cards">
+                            <div class="card-btn sales active">
+                                <h4>Sales</h4>
+                            </div>
+                            <div class="card-btn services">
+                                <h4>Services</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="service-form" class="d-none">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold">Select Client</label>
+                            <div class="position-relative">
+                                <input type="text" class="form-control client-search" placeholder="Search client..." required>
+                                <input type="hidden" name="client_id" class="client-id">
+                                <div class="client-results"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="service-lines">
+                        <div class="row g-2 mb-3 service-row align-items-end">
+
+                            <div class="col-12 col-md-5 position-relative">
+                                <label class="form-label small fw-bold">Service</label>
+                                <input type="text" class="form-control service-search" placeholder="Search service...">
+                                <input type="hidden" name="service_ids[]" class="service-id">
+                                <div class="service-results"></div>
+                            </div>
+
+                            <div class="col-6 col-md-2">
+                                <label class="form-label small fw-bold">Price (DT)</label>
+                                <input type="number" class="form-control price-input" readonly>
+                            </div>
+
+                            <div class="col-6 col-md-2">
+                                <label class="form-label small fw-bold">Hours</label>
+                                <input type="number" name=hours[] class="form-control hour-input" placeholder="0">
+                            </div>
+
+                            <div class="col-12 col-md-2">
+                                <button type="button" class="btn btn-outline-primary w-100 add-line">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label class="form-label small fw-bold">Payment Method</label>
+                        <select name="payment_method" class="form-select" required>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+
+                    <div class="row mt-4 align-items-center">
+                        <div class="col-md-6">
+                            <h4 class="fw-bold mb-0" style="color: #102E4A;">Total: <span id="form-total-service">0.00</span> Dt</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Discount: 
+                                <span id="discountValueService">0%</span>
+                            </label>
+
+                            <input type="range" name="discount" id="discountRangeService" min="0" max="75" step="5" value="0" class="form-range">
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button type="submit" class="btn btn-finance px-5 py-2 rounded-pill">
+                                <i class="bi bi-cart-check me-2"></i>Finalize Sale Service
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
                 <form  id="sales-form">
                     <div class="row g-3 mb-4">
                         <div class="col-md-12">
@@ -110,25 +191,30 @@
 
                     <div id="product-lines">
                         <div class="row g-2 mb-3 product-row align-items-end">
-                            <div class="col-md-5 position-relative">
-                                <label class="form-label small fw-bold d-md-none">Product</label>
+
+                            <div class="col-12 col-md-5 position-relative">
+                                <label class="form-label small fw-bold">Product</label>
                                 <input type="text" class="form-control product-search" placeholder="Search product...">
                                 <input type="hidden" name="product_ids[]" class="product-id">
                                 <div class="product-results"></div>
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label small fw-bold d-md-none">Price (Dt)</label>
-                                <input type="number" class="form-control price-input" readonly>                            
+
+                            <div class="col-6 col-md-2">
+                                <label class="form-label small fw-bold">Price (Dt)</label>
+                                <input type="number" class="form-control price-input" readonly>
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label small fw-bold d-md-none">Quantity</label>
-                                <input type="number" name="quantities[]" class="form-control quantity-input" placeholder="0" step="1" required data-original-quantity="0">
+
+                            <div class="col-6 col-md-2">
+                                <label class="form-label small fw-bold">Quantity</label>
+                                <input type="number" name="quantities[]" class="form-control quantity-input" placeholder="0">
                             </div>
-                            <div class="col-md-2">
+
+                            <div class="col-12 col-md-2">
                                 <button type="button" class="btn btn-outline-primary w-100 add-line">
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
                             </div>
+
                         </div>
                     </div>
 
@@ -200,12 +286,12 @@
                                     ORDER BY s.id DESC";
                             
                             $stmt = $pdo->query($query);
-                            
+
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 $isPending = ($row['payment_status'] == 'Pending');
                                 $badgeClass = $isPending ? 'bg-warning-subtle text-warning status-clickable' : 'bg-success-subtle text-success';
                                 $cursor = $isPending ? 'style="cursor:pointer"' : 'style="cursor:default"';
-
+                                
                                 echo "<tr>
                                         <td class='px-4 fw-bold text-muted'>#{$row['transaction_id']}</td>
                                         <td>{$row['sale_date']}</td>
@@ -229,6 +315,11 @@
                         ?>
                     </tbody>
                 </table>
+                <div class="text-center my-4">
+                    <button id="show-more-sales" class="btn btn-outline-primary rounded-pill px-5">
+                        Show More
+                    </button>
+                </div>
             </div>
         </section>
     </div>

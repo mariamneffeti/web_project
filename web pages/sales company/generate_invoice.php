@@ -18,6 +18,13 @@
     $stmtItems = $pdo->prepare("SELECT * FROM sale_items WHERE sale_id = ?");
     $stmtItems->execute([$sale_id]);
     $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+    $isServiceSale = false;
+    if (!$items) {
+        $stmtItems = $pdo->prepare("SELECT * FROM service_sale_items WHERE sale_id = ?");
+        $stmtItems->execute([$sale_id]);
+        $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+        $isServiceSale = true;
+    }
     
     $society = "My Company"; 
     $orderId = $sale['transaction_id']; 
@@ -68,7 +75,7 @@
                     <thead>
                         <tr>
                             <th>Description</th>
-                            <th class="text-center">Qty</th>
+                            <th class="text-center"><?php echo $isServiceSale ? 'Hours' : 'Qty'; ?></th>
                             <th class="text-end">Unit Price</th>
                             <th class="text-end">Total</th>
                         </tr>
@@ -77,9 +84,9 @@
                         <?php foreach ($items as $item): ?>
                         <tr>
                             <td class="py-3">
-                                <span class="fw-bold text-dark"><?php echo htmlspecialchars($item['product_name']); ?></span>
+                                <span class="fw-bold text-dark"><?php echo htmlspecialchars($isServiceSale ? $item['service_name'] : $item['product_name']); ?></span>
                             </td>
-                            <td class="text-center"><?php echo $item['quantity']; ?></td>
+                            <td class="text-center"><?php echo $isServiceSale ? $item['quantity_hours'] : $item['quantity']; ?></td>
                             <td class="text-end"><?php echo number_format($item['unit_price'], 2); ?> Dt</td>
                             <td class="text-end py-3 fw-bold"><?php echo number_format($item['total_price'], 2); ?> Dt</td>
                         </tr>
