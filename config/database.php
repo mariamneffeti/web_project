@@ -1,19 +1,37 @@
 <?php
 /*
- Database Configuration
+ Database Configuration — reads from environment variables (Railway)
+ Falls back to hardcoded values for local development.
  */
- 
-function get_env_value($key, $default) {
-    $val = $_ENV[$key] ?? getenv($key);
-    return ($val !== false && $val !== '') ? $val : $default;
+function loadEnv($path) {
+    if (!file_exists($path)) return;
+
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        if (strpos($line, '=') !== false) {
+            list($name, $value) = explode('=', $line, 2);
+            $name = trim($name);
+            $value = trim($value);
+            $_ENV[$name] = $value;
+            putenv("$name=$value");
+        }
+    }
 }
 
+function get_env_value($key, $default) {
+    $val = $_ENV[$key] ?? getenv($key);
+    return ($val !== false && $val !== '' && $val !== null) ? $val : $default;
+}
+
+loadEnv(__DIR__ . '/../.env');
+
 define('DB_HOST',     get_env_value('DB_HOST',     'localhost'));
-define('DB_NAME',     get_env_value('DB_NAME',     'web_project'));
+define('DB_PORT',     get_env_value('DB_PORT',     '3306'));
 define('DB_USER',     get_env_value('DB_USER',     'root'));
 define('DB_PASSWORD', get_env_value('DB_PASSWORD', ''));
-define('DB_PORT',     get_env_value('DB_PORT',     '3306'));
-define('DB_CHARSET',  get_env_value('DB_CHARSET',  'utf8mb4'));
+define('DB_NAME',     get_env_value('DB_NAME',     'web_project'));
+define('DB_CHARSET',  'utf8mb4');
 /**
  * Database Connection Class
  */
