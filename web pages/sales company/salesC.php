@@ -3,8 +3,7 @@
     include('../squelettes entreprise/header.php'); 
     require_once __DIR__ . '/../../config/database.php'; 
 
-    $database = Database::getInstance();
-    $pdo = $database->getConnection();
+    $pdo = getDB();
 
 ?>
     <div class="container" style="margin-top: 100px; margin-bottom: 100px;">
@@ -271,6 +270,7 @@
                     <thead>
                         <tr>
                             <th class="py-3 px-4">Order ID</th>
+                            <th>Type</th>
                             <th>Date</th>
                             <th>Client</th>
                             <th>Amount</th>
@@ -291,9 +291,21 @@
                                 $isPending = ($row['payment_status'] == 'Pending');
                                 $badgeClass = $isPending ? 'bg-warning-subtle text-warning status-clickable' : 'bg-success-subtle text-success';
                                 $cursor = $isPending ? 'style="cursor:pointer"' : 'style="cursor:default"';
-                                
+                                $queryType = "SELECT 1
+                                            FROM sale_items
+                                            WHERE sale_id = {$row['id']} 
+                                            LIMIT 1";
+                                $stmtType = $pdo->query($queryType); 
+                                $sale_type = $stmtType->fetch() ? 'Product Sale' : 'Service';
+                                $typeClass = $sale_type == 'Service' ? 'bg-info-subtle text-info' : 'bg-primary-subtle text-primary';
+
                                 echo "<tr>
                                         <td class='px-4 fw-bold text-muted'>#{$row['transaction_id']}</td>
+                                        <td>
+                                            <span class='badge {$typeClass}'>
+                                                {$sale_type}
+                                            </span>
+                                        </td>
                                         <td>{$row['sale_date']}</td>
                                         <td class='fw-bold'>{$row['client_name']}</td>
                                         <td class='fw-bold'>{$row['total_amount']} Dt</td>

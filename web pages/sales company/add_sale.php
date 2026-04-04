@@ -2,8 +2,7 @@
     require_once __DIR__ . '/../../config/database.php';
     header('Content-Type: application/json');
 
-    $database = Database::getInstance();
-    $pdo = $database->getConnection();
+    $pdo = getDB();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $company_id = 1; 

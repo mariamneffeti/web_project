@@ -1,117 +1,32 @@
-.dropdown-toggle::after { display: none !important; }
+.badge-rent { 
+    background-color: #E3F2FD; 
+    color: #1565C0; 
+    border: 1px solid #BBDEFB; }      
+.badge-salary { 
+    background-color: #E8F5E9; 
+    color: #2E7D32; 
+    border: 1px solid #C8E6C9; }   
+.badge-tools { 
+    background-color: #FFF3E0; 
+    color: #EF6C00; 
+    border: 1px solid #FFE0B2; }    
+.badge-marketing { 
+    background-color: #FCE4EC; 
+    color: #C2185B; 
+    border: 1px solid #F8BBD0; }   
+.badge-supplies { 
+    background-color: #F3E5F5; 
+    color: #7B1FA2; 
+    border: 1px solid #E1BEE7; }   
+.badge-other { 
+    background-color: #ECEFF1; 
+    color: #455A64; 
+    border: 1px solid #CFD8DC; }      
 
-.form-control, .form-select {
-    transition: all 0.3s ease;
-    border: 1px solid #ced4da;
-}
-
-.form-control:focus, .form-select:focus {
-    transform: translateX(5px);
-    border-color: #102E4A;
-    box-shadow: 0 4px 8px rgba(16, 46, 74, 0.1);
-    outline: none;
-}
-
-:root {
-    --primary-teal: #388087;
-    --dark-forest: #0d1f1b;
-    --bg-light: #F6F6F2;
-    --accent-blue: #102E4A;
-}
-
-body {
-    background-color: var(--bg-light);
-    font-family: 'Inter', sans-serif;
-}
-
-.custom-navbar {
-  background: linear-gradient(90deg, #388087, #0d1f1b);
-}
-
-.stats-card {
-    background: white;
-    border: none;
-    border-left: 5px solid var(--primary-teal);
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-.stats-card:hover {
-    transform: translateY(-5px);
-}
-
-.table-custom {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.table-custom thead {
-    background-color: var(--accent-blue);
-    color: white;
-}
-
-.btn-finance {
-    background-color: var(--primary-teal);
-    color: white;
-    border: none;
-    transition: opacity 0.3s;
-}
-
-.btn-finance:hover {
-    background-color: var(--dark-forest);
-    color: white;
-}
-
-.footer-forest {
-   
-    background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: 'Inter', sans-serif;
-}
-
-.footer-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-}
-
-.footer-link:hover {
-    color: #ffffff;
-    padding-left: 5px; 
-}
-
-.footer-brand i {
-    color: #8D9B6A; 
-}
-@media (max-width: 991px) {
-    .navbar-nav .dropdown-menu {
-        position: absolute !important; 
-        float: none;
-        right: 0;
-        left: auto;
-        margin-top: 10px;
-        background-color: #212529; 
-        min-width: 160px;
-    }
-}
-
-.dropdown-menu {
-    border-radius: 8px;
-    padding: 8px 0;
-}
-
-.dropdown-item {
-    font-weight: 500;
-    transition: background 0.2s;
-}
-
-.dropdown-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.dropdown-toggle::after {
-    display: none !important;
+.category-badge {
+    font-weight: 600;
+    padding: 0.5em 1em;
+    border-radius: 50px; 
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
 }

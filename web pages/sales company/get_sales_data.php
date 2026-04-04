@@ -3,15 +3,14 @@
     header('Content-Type: application/json');
 
     try {
-        $database = Database::getInstance();
-        $pdo = $database->getConnection();
+        $pdo = getDB();
 
         $year = isset($_GET['year']) ? intval($_GET['year']) : date("Y");
 
         $stmt = $pdo->prepare("
             SELECT MONTH(sale_date) AS month, SUM(total_amount) AS total_sales
             FROM sales
-            WHERE YEAR(sale_date) = :year
+            WHERE YEAR(sale_date) = :year AND payment_status = 'Paid'
             GROUP BY MONTH(sale_date)
             ORDER BY MONTH(sale_date)
         ");

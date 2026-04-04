@@ -10,7 +10,7 @@
             SELECT SUM(total_amount) as total
             FROM sales
             WHERE MONTH(sale_date) = MONTH(CURDATE())
-            AND YEAR(sale_date) = YEAR(CURDATE())
+            AND YEAR(sale_date) = YEAR(CURDATE()) AND payment_status = 'Paid'
         ");
         $monthlyRevenue = $stmt1->fetch()['total'] ?? 0;
 

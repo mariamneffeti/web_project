@@ -73,20 +73,6 @@ CREATE TABLE clients (
     INDEX idx_company_client (company_id, client_name)
 );
 
-CREATE TABLE articles (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    company_id INT NOT NULL,
-    author_name VARCHAR(255) NOT NULL,
-    title VARCHAR(100),
-    category VARCHAR(100),
-    date DATE,
-    description TEXT,
-    link VARCHAR(250),
-    image VARCHAR(250),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
-);
-
 -- Sales Management
 
 CREATE TABLE products (
@@ -136,6 +122,18 @@ CREATE TABLE sale_items (
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
 );
+
+-- expenses management
+CREATE TABLE expenses (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    expense_date DATE NOT NULL,
+    category ENUM('Rent', 'Salary', 'Tools', 'Marketing', 'Supply' , 'Other') NOT NULL default 'Other',
+    amount DECIMAL(12, 2) NOT NULL,
+    description TEXT,
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+
 -- services management
 CREATE TABLE services (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -280,11 +278,34 @@ INSERT INTO sales (transaction_id, company_id, employee_id, client_id, sale_date
 ('TX-2024-003', 1, 1, 3, '2024-01-20', 750.00, 50.00, 70.00, 770.00, 'Cash', 'Paid');
 
 -- Insert sample sale items
-INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price, discount_percent, total_price) VALUES 
-(1, 2, 'Security Suite', 1, 150.00, 10.00, 135.00),
-(2, 3, 'Premium Support Pack', 1, 500.00, 0.00, 500.00),
-(3, 4, 'Enterprise Router', 2, 299.00, 5.00, 568.10),
-(3, 5, 'Office Suite License', 1, 450.00, 10.00, 405.00);
+INSERT INTO sale_items (sale_id, product_id, product_name, quantity, unit_price, total_price) VALUES 
+(1, 2, 'Security Suite', 1, 150.00, 135.00),
+(2, 3, 'Premium Support Pack', 1, 500.00, 500.00),
+(3, 4, 'Enterprise Router', 2, 299.00, 568.10),
+(3, 5, 'Office Suite License', 1, 450.00, 405.00);
+
+-- Insert sample expenses
+INSERT INTO expenses (company_id, expense_date, category, amount, description) VALUES
+(1, '2026-01-05', 'Rent', 1200.00, 'Office rent - January'),
+(1, '2026-01-10', 'Salary', 2500.00, 'Employee salaries'),
+(1, '2026-01-12', 'Tools', 150.00, 'Subscription to design software'),
+(1, '2026-01-15', 'Marketing', 300.00, 'Facebook ads campaign'),
+(1, '2026-01-18', 'Supply', 200.00, 'Office supplies and materials'),
+(1, '2026-02-03', 'Rent', 1200.00, 'Office rent - February'),
+(1, '2026-02-08', 'Salary', 2600.00, 'Employee salaries'),
+(1, '2026-02-11', 'Tools', 180.00, 'Cloud hosting subscription'),
+(1, '2026-02-14', 'Marketing', 400.00, 'Google Ads campaign'),
+(1, '2026-02-20', 'Other', 90.00, 'Miscellaneous expenses'),
+(1, '2026-03-02', 'Rent', 1200.00, 'Office rent - March'),
+(1, '2026-03-07', 'Salary', 2550.00, 'Employee salaries'),
+(1, '2026-03-10', 'Supply', 220.00, 'Printer ink and paper'),
+(1, '2026-03-15', 'Marketing', 350.00, 'Instagram promotion'),
+(1, '2026-03-22', 'Tools', 160.00, 'Project management tool'),
+(1, '2026-04-01', 'Rent', 1200.00, 'Office rent - April'),
+(1, '2026-04-05', 'Salary', 2700.00, 'Employee salaries'),
+(1, '2026-04-09', 'Supply', 180.00, 'Cleaning and office materials'),
+(1, '2026-04-12', 'Other', 120.00, 'Transport and small expenses');
+
 -- insert services
 INSERT INTO services (company_id, service_name, description, base_price) VALUES 
 (1, 'Custom Software Development', 'Bespoke coding and feature development.', 120.00),
