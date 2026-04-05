@@ -9,7 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="sales.js"></script>
 <script src="churn_risk.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body{
@@ -187,7 +187,7 @@ a.footer-link:hover {
           <td></td>
           <td class="text-end">
             <div class="d-flex justify-content-end gap-2">
-            <button class="btn btn-sm btn-outline-secondary">Invoice</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="generateInvoice(1)">Invoice</button>
             <button class="btn btn-sm btn-outline-danger">🗑️</button>
             </div>
           </td>

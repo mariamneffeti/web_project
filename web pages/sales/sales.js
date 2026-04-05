@@ -250,7 +250,7 @@ function renderTable() {
       </td>
       <td class="text-end">
         <div class="d-flex justify-content-end gap-2">
-          <button class="btn btn-sm btn-outline-secondary" onclick="viewInvoice(${t._saleId})">Invoice</button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="generateInvoice(${t._saleId})">Invoice</button>
           <button class="btn btn-sm btn-outline-danger"   onclick="deleteSale(${t._saleId})">🗑️</button>
         </div>
       </td>`;
@@ -322,11 +322,6 @@ async function deleteSale(saleId) {
   } catch (e) {
     alert('Network error while deleting.');
   }
-}
-
-//  INVOICE 
-function viewInvoice(saleId) {
-  window.open(`../invoices/invoice.php?sale_id=${saleId}`, '_blank');
 }
 
 //  FILTERS 
@@ -426,4 +421,109 @@ function updateRevenueChart() {
   revenueChart.data.datasets[0].data = completed;
   revenueChart.data.datasets[1].data = pending;
   revenueChart.update();
+}
+async function generateInvoice(saleId) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    try {
+        const response = await fetch(`../../api/sales.php?action=get&id=${saleId}`);
+        
+        if (!response.ok) {
+            throw new Error(`Server responded with status ${response.status}`);
+        }
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.error);
+        
+        const data = result.data;
+
+
+        doc.setFillColor(56, 128, 135); 
+        doc.rect(0, 0, 210, 40, 'F');
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("ENTREPRISA", 20, 25);
+        
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("SALES INVOICE", 20, 33);
+
+        doc.text(`Transaction: ${data.transaction_id}`, 140, 20);
+        doc.text(`Date: ${data.sale_date}`, 140, 26);
+        doc.text(`Method: ${data.payment_method}`, 140, 32);
+
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.text("BILL TO:", 20, 55);
+        
+        doc.setFont("helvetica", "normal");
+        doc.text(data.client_name, 20, 62);
+        if (data.client_email) doc.text(data.client_email, 20, 68);
+        if (data.client_phone) doc.text(data.client_phone, 20, 74);
+
+        let yPos = 90;
+        doc.setFillColor(240, 240, 240);
+        doc.rect(20, yPos, 170, 8, 'F');
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.text("Description", 25, yPos + 6);
+        doc.text("Qty / Hrs", 110, yPos + 6);
+        doc.text("Unit Price", 140, yPos + 6);
+        doc.text("Total", 170, yPos + 6);
+
+        doc.setFont("helvetica", "normal");
+        yPos += 15;
+
+        data.product_items.forEach(item => {
+            doc.text(item.product_name, 25, yPos);
+            doc.text(item.quantity.toString(), 115, yPos);
+            doc.text(parseFloat(item.unit_price).toFixed(2), 140, yPos);
+            doc.text(parseFloat(item.total_price).toFixed(2), 170, yPos);
+            yPos += 8;
+        });
+
+        data.service_items.forEach(svc => {
+            doc.text(svc.service_name, 25, yPos);
+            doc.text(parseFloat(svc.quantity_hours).toFixed(1), 115, yPos);
+            doc.text(parseFloat(svc.unit_price).toFixed(2), 140, yPos);
+            doc.text(parseFloat(svc.total_price).toFixed(2), 170, yPos);
+            yPos += 8;
+        });
+
+        yPos += 10;
+        doc.line(130, yPos, 190, yPos);
+        yPos += 10;
+        
+        doc.text("Subtotal:", 130, yPos);
+        doc.text(parseFloat(data.subtotal).toFixed(2), 170, yPos);
+        
+        yPos += 7;
+        doc.text(`Discount:`, 130, yPos);
+        doc.text(`-${parseFloat(data.discount).toFixed(2)}`, 170, yPos);
+
+        yPos += 7;
+        doc.text(`Tax:`, 130, yPos);
+        doc.text(parseFloat(data.tax).toFixed(2), 170, yPos);
+
+        yPos += 12;
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("TOTAL PAID:", 130, yPos);
+        doc.text(`$${parseFloat(data.total_amount).toFixed(2)}`, 170, yPos);
+
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "italic");
+        doc.setTextColor(150);
+        doc.text("This is a computer-generated document.", 105, 280, { align: "center" });
+
+        doc.save(`Invoice_${data.transaction_id}.pdf`);
+
+    } catch (error) {
+        console.error("PDF Generation Error:", error);
+        alert("Error: " + error.message);
+    }
 }
