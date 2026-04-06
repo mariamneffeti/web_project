@@ -1,0 +1,160 @@
+
+      :root {
+        --teal: #388087;
+        --olive: #8d9b6a;
+        --dark: #0f172a;
+        --bg: #f6f6f2;
+      }
+.btn-apply {
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-apply:hover {
+  background: var(--teal);
+} 
+      .dropdown-toggle::after { display: none !important; }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+      }
+
+      /* ── Navbar ── */
+      .navbar { background-color: var(--teal) !important; }
+
+      /* ── Hero ── */
+      .job-hero {
+        background-color: var(--bg);
+        padding: 120px 0 60px;
+      }
+
+      /* ── Search bar ── */
+      .search-container {
+        background: white;
+        padding: 10px;
+        border-radius: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      }
+
+      /* On small screens collapse the pill into a vertical stack */
+      @media (max-width: 767.98px) {
+        .search-container {
+          border-radius: 20px;
+          flex-direction: column !important;
+          align-items: stretch !important;
+          gap: 0.5rem;
+          padding: 14px;
+        }
+        .search-container .border-start {
+          border-left: none !important;
+          border-top: 1px solid #e9ecef;
+          padding-top: 0.5rem;
+        }
+        .search-container .btn-find {
+          width: 100% !important;
+          border-radius: 12px !important;
+        }
+      }
+
+      /* ── Tag pills ── */
+      .tag-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.4rem; }
+      .tag-pill {
+        font-size: 0.78rem;
+        padding: 5px 14px;
+        border-radius: 50px;
+        border: 1px solid #d1d5db;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+        font-family: 'Roboto Mono', monospace;
+      }
+      .tag-pill:hover { border-color: var(--teal); color: var(--teal); background: rgba(56,128,135,0.05); }
+
+      /* ── Stats band ── */
+      .stats-divider {
+        border-top: 1px solid rgba(255,255,255,0.1);
+        background: var(--dark);
+      }
+
+      /* Responsive stat borders */
+      @media (max-width: 767.98px) {
+        .stat-border { border-left: none !important; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; }
+      }
+
+      /* ── Job cards ── */
+      .job-card {
+        transition: all 0.3s ease;
+        border-radius: 16px;
+        border: 1px solid #e9ecef;
+        background: white;
+        height: 100%;
+      }
+      .job-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        border-color: var(--dark);
+      }
+      .company-logo {
+        width: 48px; height: 48px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 10px;
+        background: #f1f5f9;
+        flex-shrink: 0;
+      }
+
+      /* ── Footer ── */
+      .footer-forest {
+        background: linear-gradient(180deg, var(--teal) 0%, #0d1f1b 100%);
+        color: white;
+      }
+      .footer-link {
+        color: rgba(255,255,255,0.7);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-block;
+      }
+      .footer-link:hover { color: var(--olive); transform: translateX(4px); }
+
+      /* ── Animations ── */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .fade-up   { animation: fadeUp 0.6s ease both; }
+      .fade-up-1 { animation-delay: 0.10s; }
+      .fade-up-2 { animation-delay: 0.22s; }
+      .fade-up-3 { animation-delay: 0.34s; }
+      .fade-up-4 { animation-delay: 0.46s; }
+
+      /* ── Utility ── */
+      .btn-primary { border-radius: 50px; padding: 10px 25px; font-weight: 600; }
+      .section-label {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.9rem;
+        color: var(--olive);
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+      }
+    .bookmark-btn {
+position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #ccc;
+  transition: color 0.2s;
+  cursor: pointer;
+  padding: 0;
+}
+.bookmark-btn.saved {
+  color: var(--sage);
+}

@@ -1,10 +1,470 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="employee-dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+  background-color: #F6F6F2;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #388087;
+}
+
+/* Remove dropdown arrow */
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+  transition: transform .3s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card-header {
+  background-color: #102E4A;
+  color: white;
+  font-weight: 600;
+  border-radius: 16px 16px 0 0;
+}
+
+/* Inputs animation */
+.form-control, .form-select {
+  transition: all 0.3s ease;
+}
+.form-control:focus, .form-select:focus {
+  transform: translateX(5px);
+  border-color: #102E4A;
+  box-shadow: 0 4px 8px rgba(16,46,74,0.15);
+}
+
+/* Buttons */
+.btn-primary-custom {
+  background-color: #388087;
+  color: white;
+  border: none;
+}
+.btn-primary-custom:hover {
+  background-color: #2f6f75;
+}
+
+/* Soft alert */
+.soft-alert {
+  background-color: rgba(56,128,135,0.12);
+  border-left: 4px solid #388087;
+  border-radius: 12px;
+}
+
+/* Footer */
+.footer-forest {
+  background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
+  font-size: 0.9rem;
+}
+.footer-link {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+}
+.footer-link:hover {
+  color: white;
+  padding-left: 5px;
+}
+.navbar-nav.center-shift {
+  transform: translateX(-90px);
+}
+@media print {
+    body * { visibility: hidden; }
+    #receipt-content, #receipt-content * { visibility: visible; }
+    #receipt-content { 
+        position: absolute; 
+        left: 0; 
+        top: 0; 
+        width: 100%; 
+    }
+    .modal-footer, .btn-close { display: none !important; }
+}
+</style>
 </head>
+
 <body>
 
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+<div class="container-fluid">
+  <a class="navbar-brand fw-bold" href="#">Employee Dashboard</a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <input type="hidden" id="sale-start-date">
+  <input type="hidden" id="sale-end-date">
+  <div class="collapse navbar-collapse justify-content-center" id="nav">
+
+  <ul class="navbar-nav gap-4 fw-semibold center-shift">
+    <li class="nav-item">
+      <a class="nav-link" href="../clients%20viewE/clientsE.html">Clients</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="../sales/sales.html">Sales</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Services</a>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="../stock_employee/stock.html">Stock</a></li>
+
+  </ul>
+
+</div>
+
+<div class="dropdown ms-auto">
+  <a class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+    <img src="../image/profile.png" class="rounded-circle" width="32" height="32">
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li class="dropdown-item">
+      <i class="bi bi-person me-2"></i> Profile
+    </li>
+    <li><hr class="dropdown-divider"></li>
+    <li class="dropdown-item text-danger">
+      <i class="bi bi-box-arrow-right me-2"></i> Logout
+    </li>
+  </ul>
+</div>
+
+</div>
+</nav>
+
+<div class="container-fluid mt-4">
+
+<div class="card mb-4">
+<div class="card-body d-flex justify-content-between align-items-center">
+  <div>
+    <h4 class="mb-1">New Sales Transaction</h4>
+    <small class="text-muted">#TX-2048 • 04 Feb 2026 • Tunis</small>
+  </div>
+  <span class="badge bg-secondary">Sarah Connor</span>
+</div>
+</div>
+<div class="row">
+  <div class="row mb-4 text-center">
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-clock-history fs-4 text-primary"></i>
+      <p class="mb-0 fw-semibold">Today's Sales Count</p>
+      <h3 id="stat-today-count" class="mb-0">0</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-wallet2 fs-4 text-success"></i>
+      <p class="mb-0 fw-semibold">Today's Revenue</p>
+      <h3 id="stat-today-amount" class="mb-0">$0</h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-wallet2 fs-4 text-success"></i>
+      <p class="mb-0 fw-semibold">Monthly Revenue</p>
+      <h3 id="stat-month-amount" class="mb-0">$0</h3>
+      <span id="stat-month-count" class="d-none">0</span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3">
+      <i class="bi bi-star-fill fs-4 text-warning"></i>
+      <p class="mb-0 fw-semibold">Total Clients</p>
+      <h3 id="stat-clients" class="mb-0">0</h3>
+    </div>
+  </div>
+</div>
+  <div class="col-lg-7">
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="bi bi-person me-2"></i> Client Information
+      </div>
+
+      <div class="card-body row g-3">
+
+        <div class="col-md-4">
+          <label class="form-label">Client Name</label>
+          <div class="input-group">
+          <input class="form-control" id="client-name">
+          <input type="hidden" id="client-id" value="1">
+          <br>
+          <button class="btn btn-outline-dark" type="button" id="btn-search-client">
+            <i class="bi bi-search"></i>
+          </button>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Email</label>
+          <input class="form-control" id="client-email">
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Client Type</label>
+          <select class="form-select">
+            <option>B2B</option>
+            <option>B2C</option>
+          </select>
+        </div>
+        <div class="col-12 mt-3">
+          <div class="soft-alert p-3 text-center">
+            <div class="row">
+              <div class="col-md-6">
+                <i class="bi bi-clock-history fs-4"></i>
+                <p class="mb-0 fw-semibold">Last Purchase</p>
+                <small id="last-purchase-date"></small>
+              </div>
+              <div class="col-md-6">
+                <i class="bi bi-wallet2 fs-4"></i>
+                <p class="mb-0 fw-semibold">Total Spent</p>
+                <small id="client-total-spent">$0</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+      
+      <div class="card mb-4">
+  <div class="card-header">
+    <i class="bi bi-graph-up me-2"></i> Sales Overview (Last 7 Days)
+  </div>
+  <div class="card-body">
+    <canvas id="salesChart" width="400" height="200"></canvas>
+  </div>
+</div>
+  </div>
+
+  <div class="col-lg-5">
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="bi bi-cart-plus me-2"></i> Services Rendered
+      </div>
+
+      <div class="card-body">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Service</th>
+              <th>Qty/Hrs</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="services-tbody">
+          </tbody>
+        </table>
+
+        <button class="btn btn-sm btn-outline-secondary" onclick="addServiceRow()" id="add-service-btn">
+          + Add Service
+        </button>
+      </div>
+      
+    </div>
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="bi bi-cart-plus me-2"></i> Sales Rendered
+      </div>
+
+      <div class="card-body">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>sale</th>
+              <th>Qty/Hrs</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="sales-tbody">
+          </tbody>
+        </table>
+
+        <button class="btn btn-sm btn-outline-secondary" onclick="addSaleRow()" id="add-sale-btn">
+          + Add Sale
+        </button>
+      </div>
+      
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <i class="bi bi-receipt me-2"></i> Order Summary
+      </div>
+
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="text-muted">Subtotal</span>
+          <span id="summary-subtotal">$0</span>
+        </div>
+
+        <div class="d-flex justify-content-between mb-2">
+          <span>Discount</span>
+          <span id="summary-discount">-$0</span>
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between fw-bold fs-5 mb-3">
+          <span>Total</span>
+          <span id="summary-total">$0</span>
+        </div>
+
+        <button class="btn btn-primary-custom w-100 py-2" onclick="processTransaction()" id="process-transaction-btn">
+          <i class="bi bi-check-circle me-2"></i> Process Transaction
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+</div>
+<footer  class="footer-forest text-white py-5" id="About" style="height: 400px;">
+  <div  class="container " Style ="margin-top: 5rem ;">
+    <div class="row gy-4">
+
+      <div class="col-lg-4 col-md-12">
+        <div class="footer-brand mb-3">
+          <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
+          <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">    Start <br>   your busniss</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link"><i class="bi bi-cloud-plus me-2"></i>Join us as a company leader </a></li>
+          <li class="mb-2"><a href="#" class="footer-link"><i class="bi bi-bar-chart me-2"></i>Try Entreprisa</a></li>
+        </ul>
+      </div>
+
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">The Product</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link">Contacts us</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Questions</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link">Terms & Conditions</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Privacy policy</a></li>
+        </ul>
+      </div>
+  <hr class="opacity-25">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3">
+                <p>© 2026 CareerFlow Inc. All rights reserved.</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Privacy</a></li>
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Terms</a></li>
+                    <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Cookies</a></li>
+                </ul>
+            </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+      <i class="bi bi-check-circle-fill me-2"></i>
+      <strong class="me-auto">Success</strong>
+      <small>Just now</small>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Transaction processed successfully!
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">Transaction Receipt</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="receipt-content">
+                <div class="text-center mb-4">
+                    <h4 class="fw-bold mb-0">CareerFlow Inc.</h4>
+                    <p class="text-muted small">Official Service Receipt</p>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Transaction ID:</span>
+                    <span id="receipt-id" class="fw-semibold">#0000</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Date:</span>
+                    <span id="receipt-date"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="text-muted">Client:</span>
+                    <span id="receipt-client-name" class="fw-semibold"></span>
+                </div>
+
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receipt-items">
+                        </tbody>
+                </table>
+
+                <div class="border-top pt-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Subtotal</span>
+                        <span id="receipt-subtotal"></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1 text-danger">
+                        <span>Discount (10%)</span>
+                        <span id="receipt-discount"></span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold fs-5 mt-2">
+                        <span>Total Paid</span>
+                        <span id="receipt-total" class="text-success"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i>Print Receipt
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

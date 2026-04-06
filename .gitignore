@@ -1,5 +1,5 @@
 node_modules/
-
+__pycache__
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -11,3 +11,7 @@ package-lock.json
 
 .vscode/
 .idea/
+ml_model_logic/
+.env
+
+d41d8cd9.env

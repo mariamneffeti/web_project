@@ -1,134 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Management</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="sales.js"></script>
+<script src="churn_risk.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body{
+  background:#F6F6F2;
+  font-family: Inter, system-ui, sans-serif;
+  color:#1f2933;
+}
+
+/* NAVBAR */
+.navbar{
+  background:#388087;
+}
+
+/* CARDS */
+.card{
+  border:none;
+  border-radius:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.06);
+  transition:.3s ease;
+}
+.card:hover{
+  transform:translateY(-4px);
+}
+
+/* KPI LEFT BORDER */
+.kpi{
+  border-left:6px solid #102E4A;
+}
+
+/* BUTTONS */
+.btn-primary-custom{
+  background:#388087;
+  border:none;
+  color:white;
+}
+.btn-primary-custom:hover{
+  background:#2f6f75;
+}
+
+/* TABLE */
+.table thead{
+  background:#102E4A;
+  color:white;
+}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(180deg,#388087,#0d1f1b);
+}
+a.footer-link,
+a.footer-link:link,
+a.footer-link:visited {
+  color: rgba(255,255,255,0.8) !important;
+  text-decoration: none;
+}
+a.footer-link:hover {
+  color: white !important;
+  padding-left: 5px;
+}
+</style>
 </head>
-<body style="background-color : #E6CCB2">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Employe Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Clients</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Sales</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../service/service.html">Services</a></li>
-                </ul>
-                <div class="navbar-text d-flex align-items-center">
-                    <span class="me-3">Employee #42</span>
-                    <button class="btn btn-sm btn-outline-danger">Logout</button>
-                </div>
-            </div>
-        </div>
-    </nav>
+<body>
 
-    <main class="container py-4">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">Employee Dashboard</a>
 
-        <header class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="h3">Sales Performance</h1>
-                <p class="text-muted">Track revenue, growth, and client transactions.</p>
-            </div>
-            <div class="d-grid gap-2 d-md-block">
-  <button class="btn btn-outline-dark">Download Report</button>
-                <button class="btn btn-secondary" >+ Record Sale</button>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-center" id="nav">
+      <ul class="navbar-nav gap-4 fw-semibold">
+        <li class="nav-item"><a class="nav-link" href="../clients%20viewE/clientsE.html">Clients</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">Sales</a></li>
+        <li class="nav-item"><a class="nav-link" href="../service%20employee/service_employee.html">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="../stock_employee/stock.html">Stock</a></li>
+      </ul>
+    </div>
+
+    <div class="d-flex align-items-center ms-auto">
+      <span class="text-white me-3">Employee #42</span>
+      <button class="btn btn-sm btn-outline-light">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4">
+
+<header class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 fw-bold">Sales Performance</h1>
+    <p class="text-muted">Track revenue, growth, and client transactions.</p>
+  </div>
+</header>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card p-4 kpi">
+      <small class="text-muted fw-semibold">Monthly Revenue</small>
+      <h5 id="stat-monthly-revenue" class="fw-bold">0</h5>
+      <span class="text-success small"></span>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-4 kpi">
+      <small class="text-muted fw-semibold">Closed Deals</small>
+      <h5 id="stat-closed-deals" class="fw-bold"></h5>
+      <span class="small text-muted">Target: </span>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-4 kpi">
+      <small class="text-muted fw-semibold">Pending Quotes</small>
+      <h5 id="stat-pending-quotes" class="fw-bold"></h5>
+      <span class="text-warning small">Needs follow-up</span>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-4 kpi">
+      <small class="text-muted fw-semibold">Churn Risk</small>
+      <h5 id="stat-churn-risk" class="fw-bold">0</h5>
+      <span id="stat-churn-count" class="text-danger small text-nowrap">Loading AI...</span>
+    </div>
+  </div>
 </div>
-        </header>
 
-        <div class="row g-3 mb-4">
-            <div class="col-md-3">
-                <div class="card p-3 shadow-sm custom">
-                    <small class="text-uppercase fw-bold text-muted">Monthly Revenue</small>
-                    <h3 class="mt-1">$54,230</h3>
-                    <span class="text-success small">↑ 12% vs last month</span>
-                </div>
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="fw-semibold mb-3">Revenue Forecast</h5>
+    <div id="chart-container" class="bg-light rounded p-5 text-center text-muted">
+    </div>
+  </div>
+</div>
+
+<section class="card">
+  <div class="card-header bg-white">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0 fw-semibold">Recent Transactions</h5>
+      <div class="d-flex gap-2">
+        <select class="form-select form-select-sm">
+          <option>Transaction type:</option>
+          <option>Service</option>
+          <option>sale</option>
+        </select>
+        <input class="form-control form-control-sm" placeholder="Search…">
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Client</th>
+          <th>type</th>
+          <th>name</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="transaction-table-body">
+        <tr>
+          <td></td>
+          <td class="fw-semibold"></td>
+          <td></td>
+          <td></td>
+          <td><span class="badge bg-success-subtle text-success"></span></td>
+          <td></td>
+          <td class="text-end">
+            <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-sm btn-outline-secondary" onclick="generateInvoice(1)">Invoice</button>
+            <button class="btn btn-sm btn-outline-danger">🗑️</button>
             </div>
-            <div class="col-md-3">
-                <div class="card p-3 shadow-sm border-0 border-start border-4" style="border-left-color: #28a745 !important;">
-                    <small class="text-uppercase fw-bold text-muted">Closed Deals</small>
-                    <h3 class="mt-1">84</h3>
-                    <span class="text-muted small">Target: 100</span>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card p-3 shadow-sm border-0 border-start border-4" style="border-left-color: #ffc107 !important;">
-                    <small class="text-uppercase fw-bold text-muted">Pending Quotes</small>
-                    <h3 class="mt-1">15</h3>
-                    <span class="text-warning small">Requires follow-up</span>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card p-3 shadow-sm border-0 border-start border-4" style="border-left-color: #dc3545 !important;">
-                    <small class="text-uppercase fw-bold text-muted">Churn Risk Revenue</small>
-                    <h3 class="mt-1">$2,100</h3>
-                    <span class="text-danger small">Linked to 3 clients</span>
-                </div>
-            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer  class="footer-forest text-white py-5" id="About" style="height: 400px;">
+  <div  class="container " Style ="margin-top: 5rem ;">
+    <div class="row gy-4">
+
+      <div class="col-lg-4 col-md-12">
+        <div class="footer-brand mb-3">
+          <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
+          <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
         </div>
+      </div>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Revenue Forecast</h5>
-                <div class="bg-light border rounded d-flex align-items-center justify-content-center" style="height: 250px;">
-                    <p class="text-muted text-center">[ Chart.js Visualization Placeholder ]<br><small>Integrate charts here later</small></p>
-                </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">    Start <br>   your busniss</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link"><i class="bi bi-cloud-plus me-2"></i>Join us as a company leader </a></li>
+          <li class="mb-2"><a href="#" class="footer-link"><i class="bi bi-bar-chart me-2"></i>Try Entreprisa</a></li>
+        </ul>
+      </div>
+
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">The Product</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link">Contacts us</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Questions</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-md-3 col-lg-2">
+        <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="#" class="footer-link">Terms & Conditions</a></li>
+          <li class="mb-2"><a href="#" class="footer-link">Privacy policy</a></li>
+        </ul>
+      </div>
+  <hr class="opacity-25">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3">
+                <p>© 2026 CareerFlow Inc. All rights reserved.</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Privacy</a></li>
+                    <li class="list-inline-item me-3"><a href="#" class="text-white text-decoration-none">Terms</a></li>
+                    <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Cookies</a></li>
+                </ul>
             </div>
-        </div>
+    </div>
+  </div>
+</footer>
 
-
-        <section class="card shadow-sm">
-            <div class="card-header bg-white py-3">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h5 class="mb-0">Recent Transactions</h5>
-                    </div>
-                    <div class="col-auto d-flex gap-2">
-                        <select class="form-select form-select-sm w-auto">
-                            <option>All Products</option>
-                            <option>Software Subscription</option>
-                            <option>Consulting</option>
-                        </select>
-                        <input type="text" class="form-control form-control-sm" placeholder="Search sales...">
-                    </div>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Date</th>
-                            <th>Client</th>
-                            <th>Product/Service</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Feb 03, 2026</td>
-                            <td><strong>TechNova Solutions</strong></td>
-                            <td>Cloud Hosting (Annual)</td>
-                            <td>$1,200.00</td>
-                            <td><span class="badge bg-success-subtle text-success border border-success">Completed</span></td>
-                            <td class="text-end">
-                                <button class="btn btn-sm btn-light">Invoice</button>
-                                <button class="btn btn-sm btn-outline-danger">🗑️</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
