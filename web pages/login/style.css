@@ -13,50 +13,92 @@
   --footer : #212529;
 
 }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-/* Body */
+
 body {
-  background-color: var(--gris);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--gris); 
   font-family: Arial, sans-serif;
+  color: #46462A;
 }
 
-/* Card */
-.card {
-  background-color: var(--gris);
-  border: 2px solid var(--bluegreen);
+
+.container {
+  background-color: --gris; 
+  padding: 30px;
+  width: 360px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Card Title */
-.card-title {
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid var(--black);
+  background: transparent;
   color: var(--blue);
+  font-size: 14px;
 }
 
-/* Labels */
-.form-label {
-  color: var(--black);
+input::placeholder {
+  color:var(--blue);
+  opacity: 0.7;
 }
 
-/* Inputs */
-.form-control {
-  border: 1px solid var(--bluegreen);
+input:focus {
+  outline: none;
+  border-color:var(--blue);
+  box-shadow: 0 0 5px rgba(16, 46, 74, 0.5);
 }
 
-/* Buttons */
-.btn-primary {
-  background-color: var(--blue);
+
+button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  background-color: var(--bluegreen); 
+  color: var(--gris);
   border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
-  background-color: var(--bluegreen);
+button:hover {
+  background-color: var(--blue); 
 }
 
-/* Links */
-a {
-  color: var(--blue);
+
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
 }
 
-a:hover {
-  color: var(--bluegreen);
+.login-link a {
+  color: var(--blue); 
   text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
 }
