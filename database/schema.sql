@@ -266,11 +266,16 @@ INSERT INTO products (company_id, product_name, sku, category, price, stock_quan
 (1, 'Office Suite License', 'LIC-200', 'License', 450.00, 500, '5-user business license');
 -- Insert sample articles
 INSERT INTO articles (company_id, author_name, title, category, date, description, link, image) VALUES
-(1, 'Alice Johnson', 'How Cloud CRM is Revolutionizing Businesses', 'Technology', '2024-01-05', 'An in-depth look at how cloud-based CRM solutions streamline sales and customer management.', 'https://techcorp.com/blog/cloud-crm', "../image/hhh.jpg"),
-(1, 'Bob Smith', 'Top 5 Cybersecurity Tips for SMEs', 'Security', '2024-01-12', 'Practical tips for small and medium enterprises to enhance their cybersecurity posture.', 'https://techcorp.com/blog/cybersecurity-tips', "../image/hhh.jpg"),
-(1, 'Carol Lee', 'Maximizing ROI with Premium Support Packages', 'Business', '2024-01-20', 'Learn how investing in premium support services can increase efficiency and customer satisfaction.', 'https://techcorp.com/blog/premium-support', "../image/hhh.jpg"),
-(1, 'David Nguyen', 'Enterprise Networking: Choosing the Right Router', 'Hardware', '2024-01-25', 'A comprehensive guide to selecting enterprise routers for high-speed business networks.', 'https://techcorp.com/blog/enterprise-router', "../image/hhh.jpg"),
-(1, 'Eva Martinez', 'The Future of Office Software Licenses', 'Software', '2024-02-01', 'Exploring trends in software licensing for businesses and how to optimize costs.', 'https://techcorp.com/blog/office-software-licenses', "../image/hh.jpg");
+(1, 'Alice Johnson', 'How Cloud CRM is Revolutionizing Businesses', 'Technology', '2024-01-05', 'An in-depth look at how cloud-based CRM solutions streamline sales and customer management.', 'https://techcorp.com/blog/cloud-crm
+', "../image/hhh.jpg"),
+(1, 'Bob Smith', 'Top 5 Cybersecurity Tips for SMEs', 'Security', '2024-01-12', 'Practical tips for small and medium enterprises to enhance their cybersecurity posture.', 'https://techcorp.com/blog/cybersecurity-tips
+', "../image/hhh.jpg"),
+(1, 'Carol Lee', 'Maximizing ROI with Premium Support Packages', 'Business', '2024-01-20', 'Learn how investing in premium support services can increase efficiency and customer satisfaction.', 'https://techcorp.com/blog/premium-support
+', "../image/hhh.jpg"),
+(1, 'David Nguyen', 'Enterprise Networking: Choosing the Right Router', 'Hardware', '2024-01-25', 'A comprehensive guide to selecting enterprise routers for high-speed business networks.', 'https://techcorp.com/blog/enterprise-router
+', "../image/hhh.jpg"),
+(1, 'Eva Martinez', 'The Future of Office Software Licenses', 'Software', '2024-02-01', 'Exploring trends in software licensing for businesses and how to optimize costs.', 'https://techcorp.com/blog/office-software-licenses
+', "../image/hh.jpg");
 -- Insert sample sales
 INSERT INTO sales (transaction_id, company_id, employee_id, client_id, sale_date, subtotal, discount, tax, total_amount, payment_method, payment_status) VALUES 
 ('TX-2024-001', 1, 1, 1, '2024-01-15', 150.00, 15.00, 13.50, 148.50, 'Credit Card', 'Paid'),
@@ -378,3 +383,42 @@ INSERT INTO job_offers (company_id, icon_id, title, location, type, category, sa
 (1, 20, 'Cybersecurity Analyst', 'Tunis', 'Urgent', 'tech', 2500, 3500, 'mid', 'SOC, Pentest', 'Defend critical infrastructure.'),
 (1, 21, 'Business Developer', 'Tunis', 'Full-time', 'marketing', 2000, 3000, 'mid', 'B2B, Negotiation', 'Convert new opportunities.'),
 (1, 10, 'Embedded Systems Engineer', 'Sousse', 'Full-time', 'tech', 3200, 4200, 'senior', 'C, RTOS, CAN Bus', 'Develop automotive systems.');
+
+INSERT INTO cv_applications 
+(company_id, offre_id, first_name, last_name, email, phone, nationality, address, linkedin, file_path, status, submitted_at)
+VALUES
+-- 🟡 Pending
+(1, 1, 'Youssef', 'Ben Ali', 'youssef.benali@gmail.com', '+216-55-123-001', 'Tunisian', 'Tunis, Centre Ville', 'https://linkedin.com/in/youssef
+', 'uploads/cv/youssef.pdf', 'Pending', NOW()),
+(1, 4, 'Amira', 'Trabelsi', 'amira.trabelsi@gmail.com', '+216-55-123-002', 'Tunisian', 'Ariana', 'https://linkedin.com/in/amira
+', 'uploads/cv/amira.pdf', 'Pending', NOW()),
+-- 🔵 Reviewed
+(1, 2, 'Karim', 'Gharbi', 'karim.gharbi@gmail.com', '+216-55-123-003', 'Tunisian', 'Sfax', 'https://linkedin.com/in/karim
+', 'uploads/cv/karim.pdf', 'Reviewed', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+(1, 5, 'Salma', 'Jaziri', 'salma.jaziri@gmail.com', '+216-55-123-004', 'Tunisian', 'Sousse', 'https://linkedin.com/in/salma
+', 'uploads/cv/salma.pdf', 'Reviewed', DATE_SUB(NOW(), INTERVAL 3 DAY)),
+-- 🟢 Accepted
+(1, 3, 'Ahmed', 'Bouazizi', 'ahmed.bouazizi@gmail.com', '+216-55-123-005', 'Tunisian', 'Monastir', 'https://linkedin.com/in/ahmed
+', 'uploads/cv/ahmed.pdf', 'Accepted', DATE_SUB(NOW(), INTERVAL 5 DAY)),
+(1, 8, 'Leila', 'Mansouri', 'leila.mansouri@gmail.com', '+216-55-123-006', 'Tunisian', 'Nabeul', 'https://linkedin.com/in/leila
+', 'uploads/cv/leila.pdf', 'Accepted', DATE_SUB(NOW(), INTERVAL 6 DAY)),
+-- 🔴 Rejected
+(1, 6, 'Hatem', 'Kefi', 'hatem.kefi@gmail.com', '+216-55-123-007', 'Tunisian', 'Bizerte', 'https://linkedin.com/in/hatem
+', 'uploads/cv/hatem.pdf', 'Rejected', DATE_SUB(NOW(), INTERVAL 7 DAY)),
+(1, 7, 'Nour', 'Chaari', 'nour.chaari@gmail.com', '+216-55-123-008', 'Tunisian', 'Gabes', 'https://linkedin.com/in/nour
+', 'uploads/cv/nour.pdf', 'Rejected', DATE_SUB(NOW(), INTERVAL 8 DAY)),
+-- 🌍 International candidates
+(1, 1, 'Lucas', 'Martin', 'lucas.martin@gmail.com', '+33-612-000-001', 'French', 'Paris, France', 'https://linkedin.com/in/lucas
+', 'uploads/cv/lucas.pdf', 'Pending', DATE_SUB(NOW(), INTERVAL 1 DAY)),
+(1, 3, 'Sara', 'Lopez', 'sara.lopez@gmail.com', '+34-611-000-002', 'Spanish', 'Madrid, Spain', 'https://linkedin.com/in/sara
+', 'uploads/cv/sara.pdf', 'Reviewed', DATE_SUB(NOW(), INTERVAL 4 DAY)),
+-- 🧠 Tech heavy profiles
+(1, 1, 'Omar', 'Zitouni', 'omar.zitouni@gmail.com', '+216-55-123-009', 'Tunisian', 'Tunis', 'https://linkedin.com/in/omar
+', 'uploads/cv/omar.pdf', 'Pending', NOW()),
+(1, 4, 'Rania', 'Ben Youssef', 'rania.benyoussef@gmail.com', '+216-55-123-010', 'Tunisian', 'La Marsa', 'https://linkedin.com/in/rania
+', 'uploads/cv/rania.pdf', 'Reviewed', DATE_SUB(NOW(), INTERVAL 2 DAY)),
+-- 🎨 Design profiles
+(1, 2, 'Mehdi', 'Hamdi', 'mehdi.hamdi@gmail.com', '+216-55-123-011', 'Tunisian', 'Sousse', 'https://linkedin.com/in/mehdi
+', 'uploads/cv/mehdi.pdf', 'Accepted', DATE_SUB(NOW(), INTERVAL 9 DAY)),
+(1, 9, 'Aya', 'Khlifi', 'aya.khlifi@gmail.com', '+216-55-123-012', 'Tunisian', 'Tunis', 'https://linkedin.com/in/aya
+', 'uploads/cv/aya.pdf', 'Pending', NOW());
