@@ -2,8 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-session_start();
+
  $pageTitle = "Employees"; 
+ require_once __DIR__ . '/../../config/session_check.php';
 ?>
 
 <head>
@@ -46,7 +47,7 @@ session_start();
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
                         <li><a class="dropdown-item text-white" href="../profil/profil.php"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
                         <li><hr class="dropdown-divider border-secondary"></li>
-                        <li><a class="dropdown-item text-danger" href="../login/login.php"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="/webproject/web_project/web%20pages/logout/logout.php"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -167,11 +168,11 @@ session_start();
             if (count($employees) > 0) {
                 foreach ($employees as $row) {
                     echo "<tr>
-                            <td>" . htmlspecialchars($row['first_name'] ) . "</td>
-                            <td>" . htmlspecialchars($row['id']) . "</td>
-                            <td>" . htmlspecialchars($row['position']) . "</td>
-                            <td>" . htmlspecialchars($row['department']) . "</td>
-                            <td>" . htmlspecialchars($row['email']) . "</td>
+                            <td>" . $row['first_name'] . "</td>
+                            <td>" . $row['id'] . "</td>
+                            <td>" . $row['position'] . "</td>
+                            <td>" . $row['department'] . "</td>
+                            <td>" . $row['email'] . "</td>
                             <td><span class='badge bg-success'>Active</span></td>
                             <td>
                                 <button class='btn btn-sm btn-outline-primary'>View</button>

@@ -1,23 +1,5 @@
 <?php
-session_start();
-include('../../config/database.php');
-
-$DEV_MODE = true;
-
-if ($DEV_MODE) {
-    $_SESSION['user_id'] = 1;
-}
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-$pdo = getDB();
-$user_id = $_SESSION['user_id'];
-
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+require_once __DIR__ . '/../../config/session_check.php';
 ?>
 
 <!DOCTYPE html>
@@ -78,12 +60,12 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center active" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                         <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-                        <span class="ms-2 d-none d-sm-inline"><?= $user['first_name'] ?></span>
+                        <span class="ms-2 d-none d-sm-inline"><?= $currentUser['first_name'] ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
                         <li><a class="dropdown-item text-white" href="#"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
                         <li><hr class="dropdown-divider border-secondary"></li>
-                        <li><a class="dropdown-item text-danger" href="#"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="../login/login.php"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -114,16 +96,16 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                     <div class="profile-header"></div>
                     <div class="card-body text-center">
                         <div class="profile-avatar-container shadow-sm">
-                        <img src="<?= !empty($user['image']) ? '../uploads/' . $user['image'] : '../image/profile.png' ?>"  class="rounded-circle mx-auto" width="150" height="150">
+                        <img src="<?= !empty($currentUser['image']) ? '../uploads/' . $currentUser['image'] : '../image/profile.png' ?>"  class="rounded-circle mx-auto" width="150" height="150">
                         </div>
-                        <h4 class="fw-bold mt-3"><?= $user['first_name'] . " _ " . $user['last_name'] ?></h4>
-                        <div class="badge bg-success mb-3"><?= $user['role'] ?></div>
+                        <h4 class="fw-bold mt-3"><?= $currentUser['first_name'] . " _ " . $currentUser['last_name'] ?></h4>
+                        <div class="badge bg-success mb-3"><?= $currentUser['role'] ?></div>
                         <hr class="opacity-25">
                         <div class="text-start px-3">
                             <p class="small mb-1 text-uppercase fw-bold opacity-50">Email</p>
-                            <p class="mb-3"><?= $user['email'] ?></p>
+                            <p class="mb-3"><?= $currentUser['email'] ?></p>
                             <p class="small mb-1 text-uppercase fw-bold opacity-50">Department</p>
-                            <p class="mb-0"><?= $user['role'] ?></p>
+                            <p class="mb-0"><?= $currentUser['role'] ?></p>
                         </div>
                     </div>
                 </div>
@@ -136,19 +118,19 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                     <form id="profileForm" class="row g-3" method="POST" action="edit_profil.php" enctype="multipart/form-data">
                         <div class="col-md-6">
                             <label class="form-label fw-bold">First Name</label>
-                            <input name="first_name" type="text" class="form-control" value="<?= $user['first_name'] ?>" placeholder="first_name">
+                            <input name="first_name" type="text" class="form-control" value="<?= $currentUser['first_name'] ?>" placeholder="first_name">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Last Name</label>
-                            <input name="last_name" type="text" class="form-control" value="<?= $user['last_name'] ?>" placeholder="last_name">
+                            <input name="last_name" type="text" class="form-control" value="<?= $currentUser['last_name'] ?>" placeholder="last_name">
                         </div>
                         <div class="col-md-12">
                             <label class="form-label fw-bold">Email</label>
-                            <input name="email" type="email" class="form-control" value="<?= $user['email'] ?>">
+                            <input name="email" type="email" class="form-control" value="<?= $currentUser['email'] ?>">
                         </div>
                         <div class="col-md-12">
                             <label class="form-label fw-bold">Role</label>
-                            <input name="role" type="text" class="form-control" value="<?= $user['role'] ?>" placeholder="normal/employee/company">
+                            <input name="role" type="text" class="form-control" value="<?= $currentUser['role'] ?>" placeholder="normal/employee/company">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">New Password</label>

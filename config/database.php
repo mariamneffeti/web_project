@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
+define('BASE_URL', '/webproject/web_project/web%20pages/');
 function loadEnv($path) {
     if (!file_exists($path)) return;
 
@@ -72,7 +72,7 @@ class Database {
 
 
 function getDB() {
-    header('Content-Type: application/json');
+   
 
     try {
         $host = DB_HOST;

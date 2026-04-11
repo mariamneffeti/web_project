@@ -3,7 +3,8 @@ session_start();
 include('../../config/database.php');
 
 if (!isset($_SESSION['user_id'])) {
-    die("Unauthorized access");
+    header("Location: login.php");
+    exit();
 }
 $password = null;
 $pdo = getDB();
@@ -19,7 +20,8 @@ $role       = trim($_POST['role'] ?? '');
 
     if (!empty($_POST['password'])) {
         if ($_POST['password'] !== $_POST['confirm_password']) {
-            die("Passwords do not match ❌");
+            header("Location: profil.php?error=password_mismatch");
+            exit();
         }
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     }
@@ -51,5 +53,6 @@ $role       = trim($_POST['role'] ?? '');
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
 
-    header("Location: profil.php");
+    header("Location: profil.php?success=1");
+    exit();
 }

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/../../config/database_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -32,9 +33,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt = $conn->prepare("INSERT INTO users (email, password, role) VALUES (?, ?, ?)");
         $stmt->execute([$email, $hashedPassword, $role]);
+        $newId = $conn->lastInsertId();
+        $_SESSION['user_id'] = $newId;
+        $_SESSION['email']   = $email;
+        $_SESSION['role']    = $role;
 
-        echo "User registered successfully as " . htmlspecialchars($role) . "!";
-
+        
+        switch ($role) {
+            case 'employee':
+                header("Location: ../sales/sales.html");
+                break;
+            case 'company':
+                header("Location: ../rh/rh.php");
+                break;
+            default:
+                header("Location: ../clients viewE/clientsE.php");
+                break;
+        }
+        exit();
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }

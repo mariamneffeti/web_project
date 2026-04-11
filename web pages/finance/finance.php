@@ -1,9 +1,7 @@
 <?php 
     $pageTitle = "Finance"; 
+    require_once __DIR__ . '/../../config/session_check.php';
     include('../squelettes entreprise/header.php'); 
-    require_once __DIR__ . '/../../config/database.php';
-
-    $pdo = getDB();
 ?>
 <div class="container" style="margin-top: 100px; margin-bottom: 100px;">
     <section id="summary" class="mb-5">
