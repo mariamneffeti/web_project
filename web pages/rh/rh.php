@@ -106,9 +106,18 @@
         </div>
 
         <div class="col-md-12">
-          <label class="form-label">CV Link</label>
-          <input name="cv" type="url" class="form-control" placeholder="https://example.com/cv.pdf">
-        </div>
+          <label class="form-label">CV</label>
+              <div class="input-group">
+                  <input name="cv_path" id="cvPathInput" type="text" class="form-control" placeholder="No CV uploaded yet" readonly>
+
+                            <a href="../cv/cvv.php" onclick="openCvPicker(event)" class="btn text-white" style="background:#388087;">
+                                <i class="bi bi-upload me-1"></i> Upload CV
+                            </a>
+                        </div>
+                        <div class="form-text">
+                            Click "Upload CV" to go to the CV upload page and attach a file.
+                        </div>
+                    </div>
 
         <div class="col-12 text-end">
           <button name="submit" type="submit" class="btn btn-primary">Add Employee</button>
@@ -175,9 +184,9 @@
                             <td>" . $row['email'] . "</td>
                             <td><span class='badge bg-success'>Active</span></td>
                             <td>
-                                <button class='btn btn-sm btn-outline-primary'>View</button>
-                                <button class='btn btn-sm btn-outline-warning'>Edit</button>
-                                <button class='btn btn-sm btn-outline-danger btn-delete' >Delete</button>
+                              <button class='btn btn-sm btn-outline-primary btn-view' data-id='" . $row['id'] . "'>View</button>
+                              <button class='btn btn-sm btn-outline-warning btn-edit' data-id='" . $row['id'] . "'>Edit</button>
+                              <button class='btn btn-sm btn-outline-danger btn-delete' data-id='" . $row['id'] . "'>Delete</button>
                             </td>
                           </tr>";
                 }
