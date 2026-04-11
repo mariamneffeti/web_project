@@ -1,8 +1,7 @@
 <?php
-/*
- Database Configuration — reads from environment variables (Railway)
- Falls back to hardcoded values for local development.
- */
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 function loadEnv($path) {
     if (!file_exists($path)) return;
 
@@ -32,27 +31,26 @@ define('DB_USER',     get_env_value('DB_USER',     'root'));
 define('DB_PASSWORD', get_env_value('DB_PASSWORD', ''));
 define('DB_NAME',     get_env_value('DB_NAME',     'web_project'));
 define('DB_CHARSET',  'utf8mb4');
-/**
- * Database Connection Class
- */
+
+
 class Database {
     private static $instance = null;
     private $connection;
 
     private function __construct() {
-        try {
-            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT . ";charset=" . DB_CHARSET;
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
-            $this->connection = new PDO($dsn, DB_USER, DB_PASSWORD, $options);
-        } catch (PDOException $e) {
-            header('Content-Type: application/json');
-            die(json_encode(["error" => "Database connection failed"]));
-        }
+    try {
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=" . DB_PORT . ";charset=" . DB_CHARSET;
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false, 
+        ];
+        $this->connection = new PDO($dsn, DB_USER, DB_PASSWORD, $options);
+    } catch (PDOException $e) {
+        header('Content-Type: application/json');
+        die(json_encode(["error" => "Database connection failed: " . $e->getMessage()]));
     }
+}
 
     public static function getInstance() {
         if (self::$instance === null) {
@@ -72,20 +70,34 @@ class Database {
     }
 }
 
-/**
- * Helper function to get database connection
- */
+
 function getDB() {
+    header('Content-Type: application/json');
+
     try {
-        $db = new PDO(
-            "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME,
-            DB_USER,
-            DB_PASSWORD
-        );
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $db;
+        $host = DB_HOST;
+        $port = DB_PORT; 
+        $dbname = DB_NAME; 
+        $user = DB_USER;
+        $pass = DB_PASSWORD;
+
+        $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+        
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_TIMEOUT => 5,
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        ];
+
+        return new PDO($dsn, $user, $pass, $options);
+
     } catch (PDOException $e) {
-        die("Connection failed: " . $e->getMessage());
+        echo json_encode([
+            "success" => false,
+            "error" => "Connection Failed",
+            "message" => $e->getMessage()
+        ]);
+        exit; 
     }
 }
 ?>

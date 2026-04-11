@@ -2,11 +2,7 @@ let allProducts = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     loadProducts();
-    const updateBtn = document.getElementById('updateProductBtn');
-    if (updateBtn) {
-        updateBtn.onclick = updateProduct;
-    }
-
+    
     document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('filterCategory').addEventListener('change', applyFilters);
     document.getElementById('filterStatus').addEventListener('change', applyFilters);
@@ -42,7 +38,6 @@ function renderTable(data) {
         const qty = parseInt(product.stock_quantity) || 0;
         const threshold = 20; 
 
-        // Determine Status Badge and Style
         let statusClass = "stock-ok";
         let statusText = "In Stock";
         
@@ -66,7 +61,6 @@ function renderTable(data) {
             <td class="text-end">
                 <div class="d-inline-flex gap-2">
                     <button class="btn btn-sm btn-light border" onclick="viewDetails(${product.id})"><i class="bi bi-eye"></i></button>
-                    <button class="btn btn-sm btn-light border" onclick="openEdit(${product.id})"><i class="bi bi-pencil"></i></button>
                 </div>
             </td>
         `;
@@ -139,25 +133,6 @@ async function viewDetails(id) {
     } catch (e) { console.error(e); }
 }
 
-async function openEdit(id) {
-    try {
-        const res = await fetch(`../../api/products.php?action=get&id=${id}`);
-        const result = await res.json();
-        if (result.success) {
-            const p = result.data;
-            document.getElementById('e-id').value = p.id;
-            document.getElementById('e-name').value = p.product_name;
-            document.getElementById('e-sku').value = p.sku;
-            document.getElementById('e-category').value = p.category;
-            document.getElementById('e-price').value = p.price;
-            document.getElementById('e-stock').value = p.stock_quantity;
-            document.getElementById('e-threshold').value = p.min_threshold || 20;
-            document.getElementById('e-desc').value = p.description || '';
-            
-            new bootstrap.Modal(document.getElementById('editModal')).show();
-        }
-    } catch (e) { console.error(e); }
-}
 async function ExportStockToCSV() {
     if (!allProducts || allProducts.length == 0) {
         alert("There are no products to export!");
@@ -198,55 +173,4 @@ async function ExportStockToCSV() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
-async function updateProduct() {
-    const id = document.getElementById('e-id').value;
-    const saveBtn = document.getElementById('updateProductBtn');
-
-    const updateData = {
-        product_name: document.getElementById('e-name').value,
-        sku: document.getElementById('e-sku').value,
-        category: document.getElementById('e-category').value,
-        price: document.getElementById('e-price').value,
-        stock_quantity: document.getElementById('e-stock').value,
-        min_threshold: document.getElementById('e-threshold').value,
-        description: document.getElementById('e-desc').value
-    };
-
-    saveBtn.disabled = true;
-    saveBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Updating...`;
-
-    try {
-        const response = await fetch(`../../api/products.php?action=update&id=${id}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updateData)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            const index = allProducts.findIndex(p => p.id == id);
-            if (index !== -1) {
-                allProducts[index] = { ...allProducts[index], ...updateData };
-            }
-
-            renderTable(allProducts);
-            updateKPIs(allProducts);
-
-            const modalEl = document.getElementById('editModal');
-            const modalInstance = bootstrap.Modal.getInstance(modalEl);
-            modalInstance.hide();
-            
-            alert("Product updated successfully!");
-        } else {
-            alert("Error: " + result.message);
-        }
-    } catch (error) {
-        console.error("Update error:", error);
-        alert("Failed to update product. Check connection.");
-    } finally {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = `<i class="bi bi-floppy me-1"></i>Update Product`;
-    }
 }

@@ -212,7 +212,7 @@ try {
             $data['purchase_count'] = (int)$data['purchase_count'];
             $data['avg_order_value'] = (float)$data['avg_order_value'];
 
-            $ch = curl_init("https://churnprediction-production-bae9.up.railway.app/predict");
+            $ch = curl_init("https://churn-prediction-ydmo.onrender.com/predict");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
@@ -228,7 +228,7 @@ try {
             curl_close($ch);
             break;
         case 'bulk_churn':
-            $url = "https://churnprediction-production-bae9.up.railway.app/bulk_predict";
+            $url = "https://churn-prediction-ydmo.onrender.com/bulk_predict";
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response = curl_exec($ch);
