@@ -1,7 +1,9 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<?php $pageTitle = "Employees"; 
+<?php
+session_start();
+ $pageTitle = "Employees"; 
 ?>
 
 <head>

@@ -1,3 +1,25 @@
+<?php
+session_start();
+include('../../config/database.php');
+
+$DEV_MODE = true;
+
+if ($DEV_MODE) {
+    $_SESSION['user_id'] = 1;
+}
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+$pdo = getDB();
+$user_id = $_SESSION['user_id'];
+
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmt->execute([$user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <?php $pageTitle = "Profil"; ?>
@@ -56,7 +78,7 @@
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center active" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                         <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-                        <span class="ms-2 d-none d-sm-inline">Sara Dh</span>
+                        <span class="ms-2 d-none d-sm-inline"><?= $user['first_name'] ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
                         <li><a class="dropdown-item text-white" href="#"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
@@ -92,17 +114,16 @@
                     <div class="profile-header"></div>
                     <div class="card-body text-center">
                         <div class="profile-avatar-container shadow-sm">
-                            <img src="../image/profile.png" alt="User Avatar" class="profile-avatar">
+                        <img src="<?= !empty($user['image']) ? '../uploads/' . $user['image'] : '../image/profile.png' ?>"  class="rounded-circle mx-auto" width="150" height="150">
                         </div>
-                        <h4 class="fw-bold mt-3">Sara Dh</h4>
-                        <p class="text-muted">Senior Web Developer</p>
-                        <div class="badge bg-success mb-3">Administrator</div>
+                        <h4 class="fw-bold mt-3"><?= $user['first_name'] . " _ " . $user['last_name'] ?></h4>
+                        <div class="badge bg-success mb-3"><?= $user['role'] ?></div>
                         <hr class="opacity-25">
                         <div class="text-start px-3">
                             <p class="small mb-1 text-uppercase fw-bold opacity-50">Email</p>
-                            <p class="mb-3">sara@company.com</p>
+                            <p class="mb-3"><?= $user['email'] ?></p>
                             <p class="small mb-1 text-uppercase fw-bold opacity-50">Department</p>
-                            <p class="mb-0">IT & Digital Strategy</p>
+                            <p class="mb-0"><?= $user['role'] ?></p>
                         </div>
                     </div>
                 </div>
@@ -112,49 +133,49 @@
                 <div class="card shadow-sm p-4 h-100" style="border-left: 4px solid #388087;">
                     <h3 class="mb-4">Account Settings</h3>
                     
-                    <form id="profileForm" class="row g-3">
+                    <form id="profileForm" class="row g-3" method="POST" action="edit_profil.php" enctype="multipart/form-data">
                         <div class="col-md-6">
                             <label class="form-label fw-bold">First Name</label>
-                            <input type="text" class="form-control" value="Sara">
+                            <input name="first_name" type="text" class="form-control" value="<?= $user['first_name'] ?>" placeholder="first_name">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Last Name</label>
-                            <input type="text" class="form-control" value="Dh">
+                            <input name="last_name" type="text" class="form-control" value="<?= $user['last_name'] ?>" placeholder="last_name">
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label fw-bold">Email Address</label>
-                            <input type="email" class="form-control" value="sara@company.com">
+                            <label class="form-label fw-bold">Email</label>
+                            <input name="email" type="email" class="form-control" value="<?= $user['email'] ?>">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Role</label>
+                            <input name="role" type="text" class="form-control" value="<?= $user['role'] ?>" placeholder="normal/employee/company">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">New Password</label>
-                            <input type="password" class="form-control" placeholder="••••••••">
+                            <input name="password" type="password" class="form-control" placeholder="••••••••">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Confirm Password</label>
-                            <input type="password" class="form-control" placeholder="••••••••">
+                            <input name="confirm_password" type="password" class="form-control" placeholder="••••••••">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Image</label>
+                            <input type="file" name="image" class="form-control mb-3">
                         </div>
                         
-                        <div class="col-12 mt-4">
-                            <h5 class="border-bottom pb-2">Preferences</h5>
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="notifyEmail" checked>
-                                <label class="form-check-label" for="notifyEmail">Email notifications for new recruitment</label>
-                            </div>
-                        </div>
+                        <div class="col-12 mt-4"></div>
+                        <div class="col-12 mt-4"></div>
+                        <div class="col-12 mt-4"></div>
 
                         <div class="col-12 text-end mt-4">
-                            <button type="button" class="btn btn-outline-secondary me-2">Cancel</button>
-                            <button type="submit" class="btn btn-primary" style="background-color: #388087; border: none;">Save Changes</button>
+                            <button name="cancel" type="button" class="btn btn-outline-secondary me-2">Cancel</button>
+                            <button type="submit" class="btn btn-primary w-100" style="background-color: #388087; border: none;">Save Changes</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </main>
-
     <footer class="footer-forest text-white py-5 mt-5">
         <div class="container">
             <div class="row gy-4 text-center text-md-start">
