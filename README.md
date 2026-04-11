@@ -11,6 +11,7 @@
 * Marwa Boubakri GL2/3
 
 ---
+```text
 WEB_PROJECT/
 │
 ├── config/
@@ -101,6 +102,7 @@ WEB_PROJECT/
         ├── dashboard.html
         ├── dashboard.css
         └── employee-dashboard.js
+```
 ## Project Description
 
 This project is a **web-based ERP-like platform** designed to connect **companies**, **employees**, and **normal users (clients/applicants)** in a single structured system.
