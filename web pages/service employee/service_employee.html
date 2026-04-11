@@ -11,6 +11,55 @@
 <script src="employee-dashboard.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+#search-results {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background: white;
+}
+
+#search-results .list-group-item {
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+    padding: 10px 15px;
+}
+
+#search-results .list-group-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+.custom-search-container .form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+.toggle-group {
+    border: 1px solid #c8d6d8; 
+    border-radius: 50px;
+    padding: 2px;
+    background-color: #fff;
+    display: inline-flex;
+}
+
+.toggle-group .btn-custom-toggle {
+    border: none;
+    border-radius: 50px;
+    padding: 6px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    color: #102E4A; 
+}
+
+.toggle-group .btn-custom-toggle.active {
+    background-color: #102E4A; 
+    color: white;
+}
+
+.toggle-group .btn-custom-toggle:not(.active):hover {
+    background-color: rgba(16, 46, 74, 0.05);
+}
 body {
   background-color: #F6F6F2;
   font-family: 'Inter', sans-serif;
@@ -44,7 +93,6 @@ body {
   border-radius: 16px 16px 0 0;
 }
 
-/* Inputs animation */
 .form-control, .form-select {
   transition: all 0.3s ease;
 }
@@ -54,7 +102,6 @@ body {
   box-shadow: 0 4px 8px rgba(16,46,74,0.15);
 }
 
-/* Buttons */
 .btn-primary-custom {
   background-color: #388087;
   color: white;
@@ -64,14 +111,12 @@ body {
   background-color: #2f6f75;
 }
 
-/* Soft alert */
 .soft-alert {
   background-color: rgba(56,128,135,0.12);
   border-left: 4px solid #388087;
   border-radius: 12px;
 }
 
-/* Footer */
 .footer-forest {
   background: linear-gradient(180deg, #388087 0%, #0d1f1b 100%);
   font-size: 0.9rem;
@@ -86,6 +131,62 @@ body {
 }
 .navbar-nav.center-shift {
   transform: translateX(-90px);
+}
+.toggle-group {
+    background: #f1f3f5;
+    padding: 4px;
+    border-radius: 12px;
+    display: flex;
+}
+
+.btn-custom-toggle {
+    border: none;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    background: transparent;
+    color: #64748b;
+}
+
+.btn-custom-toggle.active {
+    background: #ffffff;
+    color: #102e4a;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.table thead th {
+    border-top: none;
+    color: #64748b;
+    letter-spacing: 0.5px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#services-tbody tr td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.icon-shape {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+.bg-soft-primary {
+    background-color: rgba(56, 128, 135, 0.1);
+}
+
+.table .form-control-sm {
+    border-color: #e2e8f0;
+    border-radius: 6px;
+}
+.table .form-control-sm:focus {
+    box-shadow: 0 0 0 3px rgba(56, 128, 135, 0.1);
 }
 @media print {
     body * { visibility: hidden; }
@@ -199,18 +300,27 @@ body {
       </div>
 
       <div class="card-body row g-3">
-
-        <div class="col-md-4">
-          <label class="form-label">Client Name</label>
-          <div class="input-group">
-          <input class="form-control" id="client-name">
-          <input type="hidden" id="client-id" value="1">
-          <br>
-          <button class="btn btn-outline-dark" type="button" id="btn-search-client">
-            <i class="bi bi-search"></i>
-          </button>
-          </div>
+<div class="col-md-6 mb-3">
+    <label class="form-label fw-bold text-muted small uppercase">Select Client</label>
+    <div class="custom-search-container position-relative">
+        <div class="input-group">
+            <span class="input-group-text bg-light border-end-0">
+                <i class="bi bi-person-search"></i>
+            </span>
+            <input type="text" 
+                   id="client-search-input" 
+                   class="form-control border-start-0 ps-0" 
+                   placeholder="Type to filter clients..." 
+                   autocomplete="off">
         </div>
+        
+        <div id="search-results" class="list-group shadow-sm position-absolute w-100 mt-1 d-none" 
+             style="z-index: 1000; max-height: 200px; overflow-y: auto;">
+            </div>
+        
+        <input type="hidden" id="client-id">
+    </div>
+</div>
 
         <div class="col-md-4">
           <label class="form-label">Email</label>
@@ -257,58 +367,48 @@ body {
 
   <div class="col-lg-5">
 
-    <div class="card mb-4">
-      <div class="card-header">
-        <i class="bi bi-cart-plus me-2"></i> Services Rendered
-      </div>
-
-      <div class="card-body">
-        <table class="table table-hover align-middle">
-          <thead class="table-light">
-            <tr>
-              <th>Service</th>
-              <th>Qty/Hrs</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="services-tbody">
-          </tbody>
-        </table>
-
-        <button class="btn btn-sm btn-outline-secondary" onclick="addServiceRow()" id="add-service-btn">
-          + Add Service
-        </button>
-      </div>
-      
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <div class="icon-shape bg-soft-primary text-primary me-3">
+                <i class="bi bi-cart-plus fs-5"></i>
+            </div>
+            <h5 class="mb-0 fw-bold text-dark">Rendered Items</h5>
+        </div>
+        
+        <div class="toggle-group" id="sales-toggle-group">
+            <button class="btn btn-custom-toggle active" onclick="setMode('sales')" id="mode-sales">
+                Sales
+            </button>
+            <button class="btn btn-custom-toggle" onclick="setMode('services')" id="mode-services">
+                Services
+            </button>
+        </div>
     </div>
-    <div class="card mb-4">
-      <div class="card-header">
-        <i class="bi bi-cart-plus me-2"></i> Sales Rendered
-      </div>
 
-      <div class="card-body">
-        <table class="table table-hover align-middle">
-          <thead class="table-light">
-            <tr>
-              <th>sale</th>
-              <th>Qty/Hrs</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="sales-tbody">
-          </tbody>
-        </table>
-
-        <button class="btn btn-sm btn-outline-secondary" onclick="addSaleRow()" id="add-sale-btn">
-          + Add Sale
-        </button>
-      </div>
-      
+    <div class="card-body p-0"> <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-uppercase small fw-bold">
+                    <tr>
+                        <th class="ps-4" id="type-header" style="width: 40%;">Product Name</th>
+                        <th style="width: 15%;">Qty/Hrs</th>
+                        <th style="width: 20%;">Price</th>
+                        <th style="width: 15%;">Total</th>
+                        <th class="text-end pe-4" style="width: 10%;"></th>
+                    </tr>
+                </thead>
+                <tbody id="services-tbody">
+                    </tbody>
+            </table>
+        </div>
     </div>
+
+    <div class="card-footer bg-white border-top-0 py-3 ps-4">
+        <button class="btn btn-light btn-sm text-primary fw-semibold d-flex align-items-center" onclick="addRow()">
+            <i class="bi bi-plus-circle-fill me-2"></i> Add New Line
+        </button>
+    </div>
+</div>
     <div class="card">
       <div class="card-header">
         <i class="bi bi-receipt me-2"></i> Order Summary
