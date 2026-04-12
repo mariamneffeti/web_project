@@ -1,7 +1,10 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<?php $pageTitle = "Employees"; 
+<?php
+
+ $pageTitle = "Employees"; 
+ require_once __DIR__ . '/../../config/session_check.php';
 ?>
 
 <head>
@@ -44,7 +47,7 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
                         <li><a class="dropdown-item text-white" href="../profil/profil.php"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
                         <li><hr class="dropdown-divider border-secondary"></li>
-                        <li><a class="dropdown-item text-danger" href="../login/login.php"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="/webproject/web_project/web%20pages/logout/logout.php"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -103,9 +106,18 @@
         </div>
 
         <div class="col-md-12">
-          <label class="form-label">CV Link</label>
-          <input name="cv" type="url" class="form-control" placeholder="https://example.com/cv.pdf">
-        </div>
+          <label class="form-label">CV</label>
+              <div class="input-group">
+                  <input name="cv_path" id="cvPathInput" type="text" class="form-control" placeholder="No CV uploaded yet" readonly>
+
+                            <a href="../cv/cvv.php" onclick="openCvPicker(event)" class="btn text-white" style="background:#388087;">
+                                <i class="bi bi-upload me-1"></i> Upload CV
+                            </a>
+                        </div>
+                        <div class="form-text">
+                            Click "Upload CV" to go to the CV upload page and attach a file.
+                        </div>
+                    </div>
 
         <div class="col-12 text-end">
           <button name="submit" type="submit" class="btn btn-primary">Add Employee</button>
@@ -165,16 +177,16 @@
             if (count($employees) > 0) {
                 foreach ($employees as $row) {
                     echo "<tr>
-                            <td>" . htmlspecialchars($row['first_name'] ) . "</td>
-                            <td>" . htmlspecialchars($row['id']) . "</td>
-                            <td>" . htmlspecialchars($row['position']) . "</td>
-                            <td>" . htmlspecialchars($row['department']) . "</td>
-                            <td>" . htmlspecialchars($row['email']) . "</td>
+                            <td>" . $row['first_name'] . "</td>
+                            <td>" . $row['id'] . "</td>
+                            <td>" . $row['position'] . "</td>
+                            <td>" . $row['department'] . "</td>
+                            <td>" . $row['email'] . "</td>
                             <td><span class='badge bg-success'>Active</span></td>
                             <td>
-                                <button class='btn btn-sm btn-outline-primary'>View</button>
-                                <button class='btn btn-sm btn-outline-warning'>Edit</button>
-                                <button class='btn btn-sm btn-outline-danger btn-delete' >Delete</button>
+                              <button class='btn btn-sm btn-outline-primary btn-view' data-id='" . $row['id'] . "'>View</button>
+                              <button class='btn btn-sm btn-outline-warning btn-edit' data-id='" . $row['id'] . "'>Edit</button>
+                              <button class='btn btn-sm btn-outline-danger btn-delete' data-id='" . $row['id'] . "'>Delete</button>
                             </td>
                           </tr>";
                 }

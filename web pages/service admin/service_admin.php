@@ -1,5 +1,6 @@
 <?php 
     $pageTitle = "Management"; 
+    require_once __DIR__ . '/../../config/session_check.php';
     include('../squelettes entreprise/header.php'); 
 ?>
 <style>

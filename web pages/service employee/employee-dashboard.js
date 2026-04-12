@@ -1,68 +1,94 @@
-/*/
-Global variables : recieptModal : it has the client,the discount and the amount and the service
-current page : useless for now i don't know if we would need it after linking
-saleschart : the chart of 7 days
-/*/ 
-
-// TODO : linking between pages
 let receiptModal;
-let currentPage = 1;
 let salesChart = null;
-let saleModal;
 let PRODUCT_DATA = [];
 let SERVICE_DATA = [];
+let currentMode = 'sales';
 
-/*/
-initializing the modals and the current page
-/*/
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize modals
     const receiptModalEl = document.getElementById('receiptModal');
     if (receiptModalEl) receiptModal = new bootstrap.Modal(receiptModalEl);
-    const searchBtn = document.getElementById('btn-search-client');
-    if (searchBtn) {
-        searchBtn.addEventListener('click', async function() {
-            const searchTerm = nameInput.value.trim();
-            
-            if (!searchTerm) {
-                showToast('Please enter a name to search', 'warning');
-                return;
-            }
-            await performClientSearch(searchTerm);});}
-    const nameInput = document.getElementById('client-name');
-    if (nameInput) {
-        nameInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault(); 
-                document.getElementById('btn-search-client').click();
-            }});}
-    
-    // Load initial data
-    loadDashboardStats();
-    loadInventory();
 
+    const searchBtn = document.getElementById('btn-search-client');
+    const nameInput = document.getElementById('client-name');
     
-    // Set default dates for sales filter
-    const today = new Date().toISOString().split('T')[0];
-    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    document.getElementById('sale-start-date').value = weekAgo;
-    document.getElementById('sale-end-date').value = today;
+    if (searchBtn && nameInput) {
+        searchBtn.addEventListener('click', () => performClientSearch(nameInput.value.trim()));
+        nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); searchBtn.click(); }
+        });
+    }
+
+    loadDashboardData();
+    updateSalesChart();
+
     const processBtn = document.getElementById('btn-process-transaction');
     if (processBtn) processBtn.addEventListener('click', processTransaction);
-    const addSaleBtn = document.getElementById('btn-add-sale');
-    if (addSaleBtn) addSaleBtn.addEventListener('click', addSaleRow);
 
-    const addServiceBtn = document.getElementById('btn-add-service');
-    if (addServiceBtn) addServiceBtn.addEventListener('click', addServiceRow);
+    const addBtn = document.getElementById('btn-add-item'); 
+    if (addBtn) addBtn.addEventListener('click', addRow);
+    
+    ['btn-add-sale', 'btn-add-service'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', addRow);
+    });
+
+    const today = new Date().toISOString().split('T')[0];
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    if (document.getElementById('sale-start-date')) document.getElementById('sale-start-date').value = weekAgo;
+    if (document.getElementById('sale-end-date')) document.getElementById('sale-end-date').value = today;
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('client-search-input');
+    const resultsContainer = document.getElementById('search-results');
+    const clientIdHidden = document.getElementById('client-id');
+    
+    let allClients = [];
 
-// Dashboard Statistics
+    fetch('../../api/clients.php?action=list')
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) allClients = result.data;
+        });
 
+    searchInput.addEventListener('input', function() {
+        const val = this.value.toLowerCase();
+        resultsContainer.innerHTML = '';
+        
+        if (val.length < 1) {
+            resultsContainer.classList.add('d-none');
+            return;
+        }
 
-// Function to update the cards for a SPECIFIC client
+        const filtered = allClients.filter(c => 
+            c.client_name.toLowerCase().includes(val)
+        );
+
+        if (filtered.length > 0) {
+            filtered.forEach(client => {
+                const item = document.createElement('div');
+                item.className = 'list-group-item list-group-item-action';
+                item.innerHTML = `<i class="bi bi-person me-2"></i>${client.client_name}`;
+                
+                item.onclick = () => {
+                    searchInput.value = client.client_name;
+                    clientIdHidden.value = client.id;
+                    resultsContainer.classList.add('d-none');
+                    if(window.updateClientStats) updateClientStats(client.id);
+                };
+                resultsContainer.appendChild(item);
+            });
+            resultsContainer.classList.remove('d-none');
+        } else {
+            resultsContainer.classList.add('d-none');
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target)) resultsContainer.classList.add('d-none');
+    });
+});
 async function updateClientStats(clientId) {
     try {
-        // Fetch data for just ONE client
         const response = await fetch(`../../api/clients.php?action=get&id=${clientId}`);
         const result = await response.json();
         
@@ -79,31 +105,6 @@ async function updateClientStats(clientId) {
         }
     } catch (error) {
         console.error('Error loading client stats:', error);
-    }
-}
-async function loadDashboardStats() {
-    try {
-        const response = await fetch('../../api/sales.php?action=stats');
-        const result = await response.json();
-        
-        if (result.success) {
-            const data = result.data;
-            
-            // Update stat cards
-            document.getElementById('stat-today-count').textContent = data.today.count;
-            document.getElementById('stat-today-amount').textContent = formatCurrency(data.today.total);
-            
-            document.getElementById('stat-month-count').textContent = data.this_month.count;
-            document.getElementById('stat-month-amount').textContent = formatCurrency(data.this_month.total);
-            
-            document.getElementById('stat-clients').textContent = data.total_clients;
-            
-            // Update sales chart
-            updateSalesChart(data.recent_sales);
-        }
-    } catch (error) {
-        console.error('Error loading dashboard stats:', error);
-        showToast('Error loading dashboard statistics', 'error');
     }
 }
 async function performClientSearch(name) {
@@ -123,18 +124,16 @@ async function performClientSearch(name) {
             showToast(`Found: ${foundClient.client_name}`, 'success');
         } else {
             showToast('No client found', 'error');
-            document.getElementById('client-id').value = ''; // Clear ID if not found
+            document.getElementById('client-id').value = '';
         }
     } catch (error) {
         showToast('Error searching for client', 'error');
     }
 }
-
 function updateSalesChart(salesData) {
     const ctx = document.getElementById('salesChart');
     if (!ctx) return;
     
-    // Prepare data for last 7 days
     const labels = [];
     const data = [];
     
@@ -193,27 +192,6 @@ function updateSalesChart(salesData) {
         }
     });
 }
-
-// helper functions
-
-
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    }).format(amount || 0);
-}
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
-}
-
-
 function showToast(message, type = 'info') {
 
     const colors = {
@@ -245,190 +223,167 @@ function showToast(message, type = 'info') {
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
-
-// TODO
-/*/
-add a button afterwards for login and profile
-/*/
-function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        window.location.href = '../auth/logout.php';
-    }
-}
-
-// Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from { transform: translateX(400px); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(400px); opacity: 0; }
-    }
-`;
-document.head.appendChild(style);
-// loading service and sale tables
-async function loadInventory() {
+async function loadDashboardData() {
     try {
-        const [prodRes, servRes] = await Promise.all([
+        const [statsRes, prodRes, servRes] = await Promise.all([
+            fetch('../../api/sales.php?action=stats'),
             fetch('../../api/products.php?action=list'),
             fetch('../../api/services.php?action=list')
         ]);
-        
-        const products = await prodRes.json();
-        const services = await servRes.json();
 
-        if (products.success) PRODUCT_DATA = products.data;
-        if (services.success) SERVICE_DATA = services.data;
-        
-        console.log("Inventory Loaded:", { products: PRODUCT_DATA.length, services: SERVICE_DATA.length });
-    } catch (e) {
-        showToast("Failed to sync inventory", "error");
+        const statsResult = await statsRes.json();
+        const prodResult = await prodRes.json();
+        const servResult = await servRes.json();
+
+        PRODUCT_DATA = prodResult.success ? prodResult.data : [];
+        SERVICE_DATA = servResult.success ? servResult.data : [];
+
+        if (statsResult.success) {
+            updateStatsUI(statsResult.data);
+            if (typeof updateSalesChart === 'function') updateSalesChart(statsResult.data.recent_sales);
+        }
+
+        const tbody = document.getElementById('services-tbody');
+        if (tbody) {
+            tbody.innerHTML = ''; 
+            addRow(); 
+        }
+    } catch (error) {
+        console.error('Initial load failed:', error);
     }
 }
 
-// Sale Management
-function addSaleRow() {
-    const tbody = document.getElementById('sales-tbody');
-    let options = PRODUCT_DATA.map(p => 
-        `<option value="${p.id}" data-price="${p.price}">${p.product_name}</option>`
-    ).join('');
-    
-    createRow(tbody, options, 'product');
-}
-// Service Management
-function addServiceRow() {
+
+function setMode(mode) {
     const tbody = document.getElementById('services-tbody');
-    let options = SERVICE_DATA.map(s => 
-        `<option value="${s.id}" data-price="${s.base_price}">${s.service_name}</option>`
-    ).join('');
+    if (tbody.children.length > 0) {
+        if (!confirm("Switching modes will clear current selections. Continue?")) return;
+    }
+
+    currentMode = mode;
+    tbody.innerHTML = ''; 
     
-    createRow(tbody, options, 'service');
+    document.getElementById('mode-sales').classList.toggle('active', mode === 'sales');
+    document.getElementById('mode-services').classList.toggle('active', mode === 'services');
+    
+    const header = document.getElementById('type-header');
+    if(header) header.innerText = (mode === 'sales') ? "Product Name" : "Service Name";
+
+    addRow();
+    updateTotals();
 }
-// Sales and Services
-function createRow(tbody, options, type) {
-    const tr = document.createElement('tr');
-    tr.setAttribute('data-type', type);
-    tr.innerHTML = `
-        <td>
-            <select class="form-select item-select">
-                <option value="">Select ${type === 'product' ? 'Product' : 'Service'}...</option>
-                ${options}
+
+function addRow() {
+    const tbody = document.getElementById('services-tbody');
+    const row = document.createElement('tr');
+    row.setAttribute('data-type', currentMode === 'sales' ? 'product' : 'service');
+    
+    const items = (currentMode === 'sales') ? PRODUCT_DATA : SERVICE_DATA;
+    
+    let optionsHtml = `<option value="" data-price="0">Select Item...</option>`;
+    
+    items.forEach(item => {
+        const name = (currentMode === 'sales') ? item.product_name : item.service_name;
+        const price = (currentMode === 'sales') ? item.price : item.base_price;
+        const id = item.id;
+
+        optionsHtml += `<option value="${id}" data-name="${name}" data-price="${price}">${name}</option>`;
+    });
+
+    row.innerHTML = `
+        <td class="ps-4">
+            <select class="form-select form-select-sm border-0 bg-light item-select" onchange="handleItemSelect(this)">
+                ${optionsHtml}
             </select>
         </td>
-        <td><input type="number" class="form-control item-qty" value="1" min="1" style="width:80px"></td>
-        <td class="unit-price">$0.00</td>
-        <td class="fw-bold row-total">$0.00</td>
         <td>
-            <button class="btn btn-outline-danger btn-sm" onclick="removeRow(this)">
+            <input type="number" class="form-control form-control-sm text-center item-qty" value="1" min="1" onchange="updateTotals()">
+        </td>
+        <td>
+            <div class="input-group input-group-sm">
+                <span class="input-group-text bg-transparent border-0 text-muted small">$</span>
+                <input type="number" class="form-control form-control-sm border-0 bg-light price-input" value="0" step="0.01" onchange="updateTotals()">
+            </div>
+        </td>
+        <td class="fw-bold text-dark row-total">$0.00</td>
+        <td class="text-end pe-4">
+            <button class="btn btn-link text-danger p-0" onclick="this.closest('tr').remove(); updateTotals();">
                 <i class="bi bi-trash"></i>
             </button>
         </td>
     `;
-    
-    tr.querySelector('.item-select').addEventListener('change', (e) => updateRowPrice(e.target));
-    tr.querySelector('.item-qty').addEventListener('input', (e) => calculateRowTotal(e.target));
-    
-    tbody.appendChild(tr);
+    tbody.appendChild(row);
+}
+function handleItemSelect(select) {
+    const option = select.options[select.selectedIndex];
+    const price = option.getAttribute('data-price') || 0;
+    const row = select.closest('tr');
+    row.querySelector('.price-input').value = price;
+    updateTotals();
 }
 
-function updateRowPrice(selectElement) {
-    const row = selectElement.closest('tr');
-    const selectedOption = selectElement.options[selectElement.selectedIndex];
-    
-    const price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
-    
-    row.querySelector('.unit-price').textContent = formatCurrency(price);
-    
-    const qtyInput = row.querySelector('.item-qty');
-    calculateRowTotal(qtyInput);
-}
-
-function calculateRowTotal(inputElement) {
-    const row = inputElement.closest('tr');
-    const qty = parseFloat(inputElement.value) || 0;
-    
-    const priceText = row.querySelector('.unit-price').textContent.replace(/[$,]/g, '');
-    const price = parseFloat(priceText) || 0;
-    
-    const total = qty * price;
-    row.querySelector('.row-total').textContent = formatCurrency(total);
-    
-    calculateOrderSummary();
-}
-function removeRow(button) {
-    const row = button.closest('tr');
-    row.remove();
-    calculateOrderSummary(); 
-}
-function calculateOrderSummary() {
+function updateTotals() {
     let subtotal = 0;
-
-    document.querySelectorAll('.row-total').forEach(cell => {
-        const value = parseFloat(cell.textContent.replace(/[$,]/g, '')) || 0;
-        subtotal += value;
+    document.querySelectorAll('#services-tbody tr').forEach(row => {
+        const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+        const price = parseFloat(row.querySelector('.price-input').value) || 0;
+        const total = qty * price;
+        row.querySelector('.row-total').innerText = formatCurrency(total);
+        subtotal += total;
     });
 
     const discount = subtotal * 0.10; 
     const total = subtotal - discount;
 
-    const subtotalEl = document.getElementById('summary-subtotal');
-    const discountEl = document.getElementById('summary-discount');
-    const totalEl = document.getElementById('summary-total');
-
-    if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotal);
-    if (discountEl) discountEl.textContent = `-${formatCurrency(discount)}`;
-    if (totalEl) totalEl.textContent = formatCurrency(total);
+    document.getElementById('summary-subtotal').innerText = formatCurrency(subtotal);
+    document.getElementById('summary-discount').innerText = `-${formatCurrency(discount)}`;
+    document.getElementById('summary-total').innerText = formatCurrency(total);
 }
 
-// Transaction
 
 async function processTransaction() {
     const clientId = document.getElementById('client-id').value;
-    const clientName = document.getElementById('client-name').value;
+    const saleDate = new Date().toISOString().split('T')[0];
 
-    if (!clientId || !clientName) {
-        showToast('Please search for and select a client first', 'warning');
+    if (!clientId) {
+        showToast('Please select a client first', 'warning');
         return;
     }
 
     const payload = {
         client_id: clientId,
-        sale_date: new Date().toISOString().split('T')[0],
-        payment_method: 'Cash',
+        sale_date: saleDate,
+        payment_method: 'Cash', 
         payment_status: 'Pending',
         discount: parseFloat(document.getElementById('summary-discount').textContent.replace(/[$-]/g, '')) || 0,
         tax: 0, 
-        notes: "Transaction from Employee Dashboard",
+        notes: "Transaction from Dashboard",
         product_items: [],
         service_items: []
     };
 
-    document.querySelectorAll('.item-select').forEach(select => {
-        const row = select.closest('tr');
-        const itemId = select.value;
-        if (!itemId) return;
+    document.querySelectorAll('#services-tbody tr').forEach(row => {
+        const select = row.querySelector('.item-select');
+        const id = select.value;
+        if (!id) return;
 
-        const selectedOption = select.options[select.selectedIndex];
-        const itemName = selectedOption.text;
         const qty = parseInt(row.querySelector('.item-qty').value) || 0;
-        const price = parseFloat(selectedOption.dataset.price) || 0;
+        const price = parseFloat(row.querySelector('.price-input').value) || 0;
+        const name = select.options[select.selectedIndex].getAttribute('data-name');
         const type = row.getAttribute('data-type');
 
         if (qty > 0) {
             if (type === 'product') {
                 payload.product_items.push({
-                    product_id: itemId,
-                    product_name: itemName,
+                    product_id: id,
+                    product_name: name,
                     quantity: qty,
                     unit_price: price
                 });
             } else {
                 payload.service_items.push({
-                    service_name: itemName,
-                    quantity_hours: qty, 
+                    service_name: name,
+                    quantity_hours: qty,
                     unit_price: price
                 });
             }
@@ -436,7 +391,7 @@ async function processTransaction() {
     });
 
     if (payload.product_items.length === 0 && payload.service_items.length === 0) {
-        showToast('Please add at least one product or service', 'warning');
+        showToast('Please add at least one item', 'warning');
         return;
     }
 
@@ -449,42 +404,28 @@ async function processTransaction() {
 
         const result = await response.json();
 
-        if (result.success) {
+        if (response.ok && result.success) {
             showToast('Transaction successful!', 'success');
-            
-            document.getElementById('receipt-id').textContent = '#' + (result.transaction_id || result.sale_id);
-            document.getElementById('receipt-client-name').textContent = clientName;
-            document.getElementById('receipt-total').textContent = document.getElementById('summary-total').textContent;
-            
-            const modalEl = document.getElementById('receiptModal');
-            modalEl.removeAttribute('aria-hidden');
-            receiptModal.show();
-
-            document.getElementById('client-name').value = '';
-            document.getElementById('client-id').value = '';
-            
-            const emailField = document.getElementById('client-email');
-            if (emailField) emailField.value = '';
-            
-            const lastPurchase = document.getElementById('last-purchase-date');
-            if (lastPurchase) lastPurchase.textContent = 'No purchases';
-
-            const totalSpent = document.getElementById('client-total-spent');
-            if (totalSpent) totalSpent.textContent = '$0.00';
-
-            document.getElementById('sales-tbody').innerHTML = '';
-            document.getElementById('services-tbody').innerHTML = '';
-            
-            calculateOrderSummary();
-            
-            loadDashboardStats();
-
+            if (receiptModal) receiptModal.show();
+            loadDashboardData(); // Refresh stats
         } else {
             showToast('Error: ' + (result.error || result.message), 'error');
-            console.error("Server Error Detail:", result);
+            console.error("Server 400 Detail:", result);
         }
     } catch (error) {
-        console.error('Transaction failed:', error);
-        showToast('Server error processing sale. Check console.', 'error');
+        console.error('Fetch Error:', error);
+        showToast('Server connection failed', 'error');
     }
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount || 0);
+}
+
+function updateStatsUI(data) {
+    document.getElementById('stat-today-count').textContent = data.today.count;
+    document.getElementById('stat-today-amount').textContent = formatCurrency(data.today.total);
+    document.getElementById('stat-month-count').textContent = data.this_month.count;
+    document.getElementById('stat-month-amount').textContent = formatCurrency(data.this_month.total);
+    document.getElementById('stat-clients').textContent = data.total_clients;
 }

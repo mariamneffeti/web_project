@@ -415,3 +415,55 @@ function detailClient(id) {
     const detailModal = new bootstrap.Modal(document.getElementById('detailClientModal'));
     detailModal.show();
 }
+
+function openAddModal() {
+    document.getElementById("addClientForm").reset();
+    const addModal = new bootstrap.Modal(document.getElementById('addClientModal'));
+    addModal.show();
+}
+
+async function saveNewClient() {
+    const name = document.querySelector("#add-name-input").value;
+    const email = document.querySelector("#add-email-input").value;
+    const phone = document.querySelector("#add-phone-input").value;
+
+    if (!name || !email) {
+        alert("Name and Email are required!");
+        return;
+    }
+
+    const newClientData = {
+        client_name: name,
+        email: email,
+        phone: phone,
+        address: "", 
+        client_type: "B2C", 
+        status: "Active"
+    };
+
+    try {
+        const response = await fetch(`../../api/clients.php?action=create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newClientData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            loadclients(); 
+            
+            const modalEl = document.getElementById('addClientModal');
+            bootstrap.Modal.getInstance(modalEl).hide();
+
+            const toastEl = document.getElementById('deleteToast');
+            toastEl.querySelector('.toast-body').innerHTML = `✅ <strong>${name}</strong> added successfully!`;
+            new bootstrap.Toast(toastEl).show();
+        } else {
+            alert("Error: " + (result.error || "Failed to add client"));
+        }
+    } catch (error) {
+        console.error("Save Error:", error);
+        alert("Failed to reach server.");
+    }
+}

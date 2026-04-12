@@ -38,6 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 employeeTableBody.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('btn-view')) {
+        const id = e.target.dataset.id;
+        window.location.href = `view_employee.php?id=${id}`;
+    }
+
+    if (e.target.classList.contains('btn-edit')) {
+        const id = e.target.dataset.id;
+        window.location.href = `edit_employee.php?id=${id}`;
+    }
     if (e.target.classList.contains('btn-delete')) {
 
         if (confirm("Are you sure you want to delete this employee?")) {

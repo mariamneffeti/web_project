@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("Location: ../sales/sales.html");
                     break;
                 case 'company':
-                    header("Location: ../rh/rh.html");
+                    header("Location: ../rh/rh.php");
                     break;
                 default:
                     header("Location: ../clients viewE/clientsE.html");
