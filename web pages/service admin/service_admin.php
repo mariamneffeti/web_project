@@ -127,6 +127,6 @@
         </div>
     </div>
 <?php
-    $pagePath = "../service admin/service_admin.js";
+    $pagePath = '"../service admin/service_admin.js"';
     include('../squelettes entreprise/footer.php'); 
 ?>
