@@ -1,0 +1,63 @@
+.table-custom thead {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+}
+.table-custom th {
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-finance {
+    background-color: #102E4A;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-finance:hover {
+    background-color: #1a4a75;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-outline-secondary:hover {
+    background-color: #8D9B6A;
+    border-color: #8D9B6A;
+    color: white;
+}
+.icon-item:hover {
+    background: #f1f5f9;
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+#iconDropdown {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity:0; transform: translateY(-5px); }
+    to { opacity:1; transform: translateY(0); }
+}
+.btn-light {
+    border: 1px solid #e5e7eb;
+    background: white;
+}
+
+.btn-light:hover {
+    background: #f9fafb;
+}
+
+.btn-light.text-danger:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.btn.rounded-circle {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
