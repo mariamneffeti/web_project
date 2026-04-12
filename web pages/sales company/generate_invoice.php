@@ -1,7 +1,11 @@
 <?php
-    require __DIR__ . '/../../config/database.php';
-    $pdo = Database::getInstance()->getConnection(); 
-
+    require_once __DIR__ . '/../../config/session_check.php';
+    require_once __DIR__ . '/../../config/database.php';
+    $pdo = getDB(); 
+    $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
+    $stmt->execute([$currentUser['id']]);
+    $company_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
+    
     $sale_id = $_GET['sale_id'] ?? null;
 
     if (!$sale_id) die("No Sale ID provided.");
@@ -9,8 +13,8 @@
     $stmt = $pdo->prepare("SELECT s.*, c.client_name 
                         FROM sales s 
                         JOIN clients c ON s.client_id = c.id 
-                        WHERE s.id = ?");
-    $stmt->execute([$sale_id]);
+                        WHERE s.id = ? AND s.company_id = ?");
+    $stmt->execute([$sale_id, $company_id]);
     $sale = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$sale) die("Invoice not found.");

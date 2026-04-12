@@ -1,12 +1,14 @@
 <?php
+    require_once __DIR__ . '/../../config/session_check.php';
     require_once __DIR__ . '/../../config/database.php';
     header('Content-Type: application/json');
 
     $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
+    $stmt->execute([$currentUser['id']]);
+    $company_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $company_id = 1; 
-        $employee_id = 1;
 
         $date = $_POST['date'] ?? '';
         $category = $_POST['type'] ?? '';

@@ -1,6 +1,5 @@
 <?php 
     $pageTitle = "Finance"; 
-    require_once __DIR__ . '/../../config/session_check.php';
     include('../squelettes entreprise/header.php'); 
 ?>
 <div class="container" style="margin-top: 100px; margin-bottom: 100px;">
@@ -141,6 +140,7 @@
                     <?php
                         $query = "SELECT * 
                                 FROM expenses
+                                WHERE company_id = $company_id
                                 ORDER BY id DESC";
                         $stmt = $pdo->query($query); 
 

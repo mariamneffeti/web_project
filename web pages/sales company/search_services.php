@@ -1,16 +1,21 @@
 <?php
+    require_once __DIR__ . '/../../config/session_check.php';
     require_once __DIR__ . '/../../config/database.php';
     header('Content-Type: application/json');
 
-    try {
-        $pdo = Database::getInstance()->getConnection();
+    $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
+    $stmt->execute([$currentUser['id']]);
+    $company_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
+    try {
         $q = $_GET['q'] ?? '';
 
         if ($q === '') {
             $stmt = $pdo->query("
                 SELECT id, service_name, base_price 
                 FROM services 
+                WHERE company_id = $company_id
                 ORDER BY service_name ASC 
                 LIMIT 10
             ");
@@ -18,11 +23,11 @@
             $stmt = $pdo->prepare("
                 SELECT id, service_name, base_price 
                 FROM services 
-                WHERE service_name LIKE ? 
+                WHERE service_name LIKE ? AND company_id = ?
                 ORDER BY service_name ASC 
                 LIMIT 10
             ");
-            $stmt->execute(["%$q%"]);
+            $stmt->execute(["%$q%", $company_id]);
         }
 
         $services = $stmt->fetchAll(PDO::FETCH_ASSOC);

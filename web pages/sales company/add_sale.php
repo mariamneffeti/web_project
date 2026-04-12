@@ -1,12 +1,15 @@
 <?php
+    require_once __DIR__ . '/../../config/session_check.php';
     require_once __DIR__ . '/../../config/database.php';
     header('Content-Type: application/json');
 
     $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
+    $stmt->execute([$currentUser['id']]);
+    $company_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $company_id = 1; 
-        $employee_id = 1; 
+        $employee_id =1;
         
         $client_id = $_POST['client_id'] ?? null; 
         $product_ids = $_POST['product_ids'] ?? [];
@@ -30,8 +33,8 @@
 
                 if ($quantity <= 0) continue;
 
-                $stmtProd = $pdo->prepare("SELECT product_name, price FROM products WHERE id = ?");
-                $stmtProd->execute([$p_id]);
+                $stmtProd = $pdo->prepare("SELECT product_name, price FROM products WHERE id = ? AND company_id = ?");
+                $stmtProd->execute([$p_id, $company_id]);
                 $product = $stmtProd->fetch(PDO::FETCH_ASSOC);
 
                 if (!$product) continue;

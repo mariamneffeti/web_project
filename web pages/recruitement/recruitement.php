@@ -1,11 +1,6 @@
 <?php 
     $pageTitle = "Recruitment"; 
-    require_once __DIR__ . '/../../config/session_check.php';
     include('../squelettes entreprise/header.php'); 
-    require_once __DIR__ . '/../../config/database.php';
-    $pdo = getDB();
-    $company_id = 1; 
-    
 ?>
 
 <div class="container" style="margin-top: 100px; margin-bottom: 100px;">

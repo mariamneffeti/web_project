@@ -1,12 +1,14 @@
 <?php
+    require_once __DIR__ . '/../../config/session_check.php';
     require_once __DIR__ . '/../../config/database.php';
     header('Content-Type: application/json');
 
-    $database = Database::getInstance();
-    $pdo = $database->getConnection();
+    $pdo = getDB();
+    $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
+    $stmt->execute([$currentUser['id']]);
+    $company_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $company_id = 1; 
         $employee_id = 1; 
         
         $client_id = $_POST['client_id'] ?? null; 
@@ -31,8 +33,8 @@
 
                 if ($hours_worked <= 0) continue;
 
-                $stmtService = $pdo->prepare("SELECT service_name, base_price FROM services WHERE id = ?");
-                $stmtService->execute([$s_id]);
+                $stmtService = $pdo->prepare("SELECT service_name, base_price FROM services WHERE id = ? AND company_id = ?");
+                $stmtService->execute([$s_id, $company_id]);
                 $service = $stmtService->fetch(PDO::FETCH_ASSOC);
 
                 if (!$service) continue;

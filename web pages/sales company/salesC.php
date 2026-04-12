@@ -1,6 +1,5 @@
 <?php 
     $pageTitle = "Sales & Services"; 
-    require_once __DIR__ . '/../../config/session_check.php';
     include('../squelettes entreprise/header.php'); 
 
 ?>
@@ -281,6 +280,7 @@
                             $query = "SELECT s.*, c.client_name 
                                     FROM sales s 
                                     JOIN clients c ON s.client_id = c.id 
+                                    WHERE s.company_id = $company_id
                                     ORDER BY s.id DESC";
                             
                             $stmt = $pdo->query($query);

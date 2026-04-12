@@ -4,7 +4,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
         try {
-            $pdo = Database::getInstance()->getConnection();
+            $pdo = getDB();
             $stmt = $pdo->prepare("UPDATE sales SET payment_status = ? WHERE id = ?");
             
             if ($stmt->execute([$_POST['status'], $_POST['id']])) {
