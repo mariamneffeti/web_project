@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("Location: ../rh/rh.php");
                     break;
                 default:
-                    header("Location: ../clients viewE/clientsE.html");
+                    header("Location: ../clienthome/clienthome.html");
                     break;
             }
             exit();
