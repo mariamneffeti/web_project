@@ -3,8 +3,7 @@ require_once __DIR__ . '/../config/database.php';
 header('Content-Type: application/json');
 
 try {
-    $database = Database::getInstance();
-    $db = $database->getConnection();
+    $db = getDB();
     $stmt = $db->query("
         SELECT a.id, a.title, a.category, a.date, a.description, 
                a.link, a.image, a.author_name, c.company_name
