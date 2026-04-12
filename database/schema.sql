@@ -6,9 +6,12 @@ USE web_project;
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('normal', 'employee', 'company') NOT NULL,
+    image VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -214,20 +217,18 @@ CREATE TABLE cv_applications (
 
 
 -- Insert sample company user
-INSERT INTO users (email, password, role) VALUES 
-('company@demo.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'company'); -- password: password
+INSERT INTO users (first_name, last_name, email, password, role, image) VALUES 
+('Yasmine', 'Bouziri', 'admin@techcorp.tn', '$2y$10$ZFsT1Sb/cCT3fiPe35fiD.nWI1DHNky1fwpyy3ko.sWkgDGOkx4Eu', 'company', 'profiles/yasmine.jpg'),
+('Sarah', 'Connor', 'employee@demo.com', '$2y$10$ZFsT1Sb/cCT3fiPe35fiD.nWI1DHNky1fwpyy3ko.sWkgDGOkx4Eu', 'employee', 'profiles/sarah.jpg');
 
--- Insert company
-INSERT INTO companies (user_id, company_name, industry, phone) VALUES 
-(1, 'TechCorp Solutions', 'Technology', '+216-70-123-456');
+-- Insert sample Company
+INSERT INTO companies (user_id, company_name, industry, address, phone) VALUES 
+(1, 'TechCorp Solutions', 'Technology', 'Technopark El Ghazala, Ariana', '+216 71 123 456');
 
--- Insert employee user
-INSERT INTO users (email, password, role) VALUES 
-('employee@demo.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'employee');
-
--- Insert employee
+-- Insert sample Employee
 INSERT INTO employees (user_id, company_id, first_name, last_name, position, department, hire_date, salary) VALUES 
 (2, 1, 'Sarah', 'Connor', 'Sales Manager', 'Sales', '2023-01-15', 45000.00);
+
 -- Insert sample clients
 INSERT INTO clients (company_id, client_name, email, phone, client_type, status, total_spent, last_purchase_date) VALUES 
 (1, 'Acme Corporation', 'contact@acme.com', '+216-71-234-567', 'B2B', 'Active', 15420.00, '2024-01-15'),

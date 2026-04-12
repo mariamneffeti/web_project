@@ -7,7 +7,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: /webproject/web_project/web%20pages/login/login.php");
+    header("Location: /../web pages/login/login.php");
     exit();
 }
 
@@ -18,7 +18,7 @@ $currentUser = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$currentUser) {
     session_destroy();
-    header("Location: /webproject/web_project/web%20pages/login/login.php");
+    header("Location: /../web pages/login/login.php");
     exit();
 }
 ?>
