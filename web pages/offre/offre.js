@@ -3,22 +3,17 @@ console.log("All jobs script loaded.");
 let JOBS = [];
 const jobContainer = document.querySelector("#jobContainer");
 
-const scriptTag = document.querySelector('script[src*="offre"]');
-const scriptPath = scriptTag ? scriptTag.src : window.location.href;
-const baseURL = scriptPath.substring(0, scriptPath.indexOf('/web_project/') + '/web_project/'.length);
-
-fetch(`${baseURL}api/get_offers.php`)
+fetch("/api/get_offers.php")
   .then((res) => res.json())
-  .then((data) => {console.log("Jobs loaded:", data)
-    JOBS = Array.isArray(data.data)
-     ? data.data : []; 
+  .then((data) => {
+    JOBS = Array.isArray(data.data) ? data.data : [];
 
     if (!jobContainer) {
       console.error("Job container not found!");
       return;
     }
 
-    nofiltersdisplay(JOBS); 
+    nofiltersdisplay(JOBS);
   })
   .catch((err) => {
     console.error("Fetch failed:", err);
@@ -52,10 +47,9 @@ function nofiltersdisplay(tab) {
         <p class="text-secondary small mb-4">${tab[i].desc}</p>
         <div class="d-flex justify-content-between align-items-center mt-auto">
           <span class="fw-bold">${tab[i].salaryMin} – ${tab[i].salaryMax} DT</span>
-          <a href="/projectweb/web_project/web%20pages/cv/cvv.php?offre_id=${tab[i].id}"
-             class="btn-apply text-decoration-none text-white">
-            Apply Now <i class="bi bi-arrow-up-right ms-1"></i>
-          </a>
+           <a href="../cv/cvv.php?offre_id=${tab[i].id}" class="btn-apply">
+          Apply
+        </a>
         </div>
       </div>
     `;

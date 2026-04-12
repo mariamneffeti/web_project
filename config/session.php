@@ -26,7 +26,9 @@ function isEmployee() {
 function isCompany() {
     return isLoggedIn() && $_SESSION['role'] === 'company';
 }
-
+function isuser() {
+    return isLoggedIn() && $_SESSION['role'] === 'normal';
+}
 /**
  * Require employee access
  */
@@ -46,7 +48,12 @@ function requireCompany() {
         exit();
     }
 }
-
+function requireuser() {
+    if (!isuser()) {
+        header('Location: ../auth/login.php');
+        exit();
+    }
+}
 /**
  * Get current user data
  */

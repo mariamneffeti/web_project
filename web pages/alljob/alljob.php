@@ -1,3 +1,5 @@
+<?php
+require_once __DIR__ . '/../../config/session_check.php';?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -47,7 +49,7 @@
           <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
             <a
               class="nav-link p-2"
-              href="../clienthome/clienthome.html"
+              href="../clienthome/clienthome.php"
               style="font-size: 1.1rem"
               >Home</a
             >

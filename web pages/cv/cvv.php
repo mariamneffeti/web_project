@@ -51,7 +51,7 @@
           <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
             <a
               class="nav-link p-2"
-              href="../clienthome/clienthome.html"
+              href="../clienthome/clienthome.php"
               style="font-family: Inter; font-size: 1.2rem"
               >Home</a
             >
