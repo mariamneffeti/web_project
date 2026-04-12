@@ -30,8 +30,10 @@
         $isServiceSale = true;
     }
     
-    $society = "My Company"; 
-    $orderId = $sale['transaction_id']; 
+    $stmtCompany = $pdo->prepare("SELECT company_name FROM companies WHERE id = ?");
+    $stmtCompany->execute([$company_id]);
+    $society = $stmtCompany->fetch(PDO::FETCH_ASSOC)['company_name'] ?? "My Company";
+    $orderId = $sale['transaction_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
