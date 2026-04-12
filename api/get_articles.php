@@ -1,9 +1,10 @@
 <?php
-require_once '../config/database.php';
+require_once __DIR__ . '/../config/database.php';
 header('Content-Type: application/json');
 
 try {
-    $db = getDB();
+    $database = Database::getInstance();
+    $db = $database->getConnection();
     $stmt = $db->query("
         SELECT a.id, a.title, a.category, a.date, a.description, 
                a.link, a.image, a.author_name, c.company_name
@@ -16,4 +17,3 @@ try {
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
-?>

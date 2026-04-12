@@ -1,8 +1,4 @@
-const scriptTag = document.querySelector('script[src*="offre"]');
-const scriptPath = scriptTag ? scriptTag.src : window.location.href;
-const baseURL = scriptPath.substring(0, scriptPath.indexOf('/web_project/') + '/web_project/'.length);
-
-fetch(`${baseURL}api/get_articles.php`)
+fetch("/api/get_articles.php")
   .then(res => res.json())
   .then(data => {
     const grid = document.getElementById('articlesGrid');
