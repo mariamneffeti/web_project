@@ -219,7 +219,8 @@ CREATE TABLE cv_applications (
 -- Insert sample company user
 INSERT INTO users (first_name, last_name, email, password, role, image) VALUES 
 ('Yasmine', 'Bouziri', 'admin@techcorp.tn', '$2y$10$ZFsT1Sb/cCT3fiPe35fiD.nWI1DHNky1fwpyy3ko.sWkgDGOkx4Eu', 'company', 'profiles/yasmine.jpg'),
-('Sarah', 'Connor', 'employee@demo.com', '$2y$10$ZFsT1Sb/cCT3fiPe35fiD.nWI1DHNky1fwpyy3ko.sWkgDGOkx4Eu', 'employee', 'profiles/sarah.jpg');
+('Sarah', 'Connor', 'employee@demo.com', '$2y$10$ZFsT1Sb/cCT3fiPe35fiD.nWI1DHNky1fwpyy3ko.sWkgDGOkx4Eu', 'employee', 'profiles/sarah.jpg'),
+('Meriam', 'Cherif', 'meriam.cherif2005@gmail.com', '$2y$10$ZFsT1Sb/cCT3fiPe35fiD.nWI1DHNky1fwpyy3ko.sWkgDGOkx4Eu', 'normal', 'profiles/meriam.jpg');
 
 -- Insert sample Company
 INSERT INTO companies (user_id, company_name, industry, address, phone) VALUES 
@@ -235,6 +236,7 @@ INSERT INTO clients (company_id, client_name, email, phone, client_type, status,
 (1, 'John Smith LLC', 'john@company.com', '+216-71-345-678', 'B2B', 'Active', 8750.50, '2024-01-10'),
 (1, 'Global Industries', 'info@global.com', '+216-71-456-789', 'B2B', 'Active', 23100.00, '2024-01-20'),
 (1, 'Sincere Risk Corp', 'warning@riskcorp.com', '+216-71-999-000', 'B2B', 'Inactive', 200.00, '2023-10-01');
+(1, 'Meriam Company', 'meriam.cherif2005@gmail.com', '+216-71-999-111', 'B2B', 'Inactive', 200.00, '2025-10-01');
 -- 🟢 LOW RISK CLIENTS (recent activity)
 
 INSERT INTO clients (company_id, client_name, email, phone, client_type, status, total_spent, last_purchase_date) VALUES
