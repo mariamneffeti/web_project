@@ -32,10 +32,10 @@ CREATE TABLE articles (
     author_name VARCHAR(255) NOT NULL,
     title VARCHAR(100),
     category VARCHAR(100),
-    date DATE,
-    description TEXT,
+    ar_date DATE,
+    ar_description TEXT,
     link VARCHAR(250),
-    image VARCHAR(250),
+    ar_image VARCHAR(250),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
 );

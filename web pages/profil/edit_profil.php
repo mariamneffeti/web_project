@@ -1,58 +1,73 @@
 <?php
-session_start();
-include('../../config/database.php');
+require_once __DIR__ . '/../../config/session_check.php';
+require_once __DIR__ . '/../../config/database.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-$password = null;
-$pdo = getDB();
-$user_id = $_SESSION['user_id'];
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $pdo        = getDB();
+        $userId     = $_SESSION['user_id'];
+        $first_name = $_POST['first_name'];
+        $last_name  = $_POST['last_name'];
+        $email      = $_POST['email'];
+        $role       = $_POST['role'];
 
-$first_name = trim($_POST['first_name'] ?? '');
-$last_name  = trim($_POST['last_name'] ?? '');
-$email      = trim($_POST['email'] ?? '');
-$role       = trim($_POST['role'] ?? '');
+        $password = $_POST['password'];
+        $confirm  = $_POST['confirm_password'];
 
-
-    if (!empty($_POST['password'])) {
-        if ($_POST['password'] !== $_POST['confirm_password']) {
-            header("Location: profil.php?error=password_mismatch");
-            exit();
+        if (!empty($password)) {
+            if ($password !== $confirm) {
+                echo json_encode(['status' => 'error', 'message' => 'Passwords do not match']);
+                exit;
+            }
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         }
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+        $imageName = null;
+        if (!empty($_FILES['image']['name'])) {
+            $uploadDir = __DIR__ . '/../../uploads/';
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $allowed = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!in_array($_FILES['image']['type'], $allowed)) {
+                echo json_encode(['status' => 'error', 'message' => 'Format non autorisé']);
+                exit;
+            }
+            if ($_FILES['image']['size'] > 2 * 1024 * 1024) {
+                echo json_encode(['status' => 'error', 'message' => 'Image trop lourde (max 2MB)']);
+                exit;
+            }
+
+            $ext       = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $imageName = uniqid('img_') . '.' . $ext;
+            move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $imageName);
+        }
+
+        if ($imageName && !empty($password)) {
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=?, password=?, image=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email, $role, $hashedPassword, $imageName, $userId]);
+
+        } elseif ($imageName) {
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=?, image=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email, $role, $imageName, $userId]);
+
+        } elseif (!empty($password)) {
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=?, password=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email, $role, $hashedPassword, $userId]);
+
+        } else {
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email, $role, $userId]);
+        }
+
+        header('Location: profil.php?success=1');
+        exit;
+
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
-
-
-    $imageName = null;
-    if (!empty($_FILES['image']['name'])) {
-        $imageName = time() . "_" . $_FILES['image']['name'];
-        move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/" . $imageName);
-    }
-
-
-    $sql = "UPDATE users SET first_name=?, last_name=?, email=?, role=?";
-    $params = [$first_name, $last_name, $email, $role];
-
-    if (!empty($password)) {
-        $sql .= ", password=?";
-        $params[] = $password;
-    }
-
-    if ($imageName) {
-        $sql .= ", image=?";
-        $params[] = $imageName;
-    }
-
-    $sql .= " WHERE id=?";
-    $params[] = $user_id;
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-
-    header("Location: profil.php?success=1");
-    exit();
 }

@@ -39,14 +39,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 articleTableBody.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('btn-view')) {
+        const id = e.target.dataset.id;
+        window.location.href = `view_article.php?id=${id}`;
+    }
+
+    if (e.target.classList.contains('btn-edit')) {
+        const id = e.target.dataset.id;
+        window.location.href = `edit_article.php?id=${id}`;
+    }
     if (e.target.classList.contains('btn-delete')) {
-
         if (confirm("Are you sure you want to delete this article?")) {
+        const id = e.target.dataset.id;
+        const row = e.target.closest('tr'); 
 
-                    e.target.closest('tr').remove();
-            
+        try {
+            const res = await fetch(`delete_article.php?id=${id}`, {
+                method: 'POST' 
+            });
+
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                row.remove(); 
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert("Erreur lors de la suppression");
         }
     }
+}
 });
     searchInput.addEventListener('keyup', () => {
         const filter = searchInput.value.toLowerCase();

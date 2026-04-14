@@ -59,7 +59,7 @@ require_once __DIR__ . '/../../config/session_check.php';
             <div class="navbar-nav ms-auto">
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center active" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                        <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+                        <img src="<?= !empty($currentUser['image']) ? '../../uploads/' . $currentUser['image'] : '../../image/profile.png' ?>" alt="Profile" width="32" height="32" class="rounded-circle me-2">
                         <span class="ms-2 d-none d-sm-inline"><?= $currentUser['first_name'] ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
@@ -96,7 +96,7 @@ require_once __DIR__ . '/../../config/session_check.php';
                     <div class="profile-header"></div>
                     <div class="card-body text-center">
                         <div class="profile-avatar-container shadow-sm">
-                        <img src="<?= !empty($currentUser['image']) ? '../uploads/' . $currentUser['image'] : '../image/profile.png' ?>"  class="rounded-circle mx-auto" width="150" height="150">
+                        <img src="<?= !empty($currentUser['image']) ? '../../uploads/' . $currentUser['image'] : '../image/profile.png' ?>"  class="rounded-circle mx-auto" width="150" height="150">
                         </div>
                         <h4 class="fw-bold mt-3"><?= $currentUser['first_name'] . " _ " . $currentUser['last_name'] ?></h4>
                         <div class="badge bg-success mb-3"><?= $currentUser['role'] ?></div>
@@ -158,6 +158,7 @@ require_once __DIR__ . '/../../config/session_check.php';
             </div>
         </div>
     </main>
+
     <footer class="footer-forest text-white py-5 mt-5">
         <div class="container">
             <div class="row gy-4 text-center text-md-start">

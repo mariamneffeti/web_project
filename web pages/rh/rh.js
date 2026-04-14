@@ -42,19 +42,32 @@ employeeTableBody.addEventListener('click', async (e) => {
         const id = e.target.dataset.id;
         window.location.href = `view_employee.php?id=${id}`;
     }
-
     if (e.target.classList.contains('btn-edit')) {
         const id = e.target.dataset.id;
         window.location.href = `edit_employee.php?id=${id}`;
     }
     if (e.target.classList.contains('btn-delete')) {
+        if (confirm("Are you sure you want to delete this employee ?")) {
+        const id = e.target.dataset.id;
+        const row = e.target.closest('tr'); 
 
-        if (confirm("Are you sure you want to delete this employee?")) {
+        try {
+            const res = await fetch(`delete_employee.php?id=${id}`, {
+                method: 'POST' 
+            });
 
-                    e.target.closest('tr').remove();
-                
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                row.remove(); 
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert("Erreur lors de la suppression");
         }
     }
+}
 });
     searchInput.addEventListener('keyup', () => {
         const filter = searchInput.value.toLowerCase();
