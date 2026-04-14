@@ -30,7 +30,7 @@
         
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
-            <a class="nav-link p-2 active " href="clienthome.html" style=" font-family: Inter; font-size: 1.2rem;">Home</a>
+            <a class="nav-link p-2 active " href="clienthome.php" style=" font-family: Inter; font-size: 1.2rem;">Home</a>
             <a class="nav-link p-2" href="../offre/offre.php" style=" font-family: Inter; font-size: 1.2rem;">Offre</a>
             <a class="nav-link  p-2" href="../cv/cvv.php" style="font-family: Inter; font-size: 1.2rem;">CV</a>
           </div>

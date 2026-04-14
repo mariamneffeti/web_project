@@ -34,11 +34,11 @@
           
           <ul class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5 mt-2 mt-sm-0">
             <li class="nav-item">
-              <a class="nav-link px-2" href="../clienthome/clienthome.html"
+              <a class="nav-link px-2" href="../clienthome/clienthome.php"
                  style="font-size:1.1rem">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link px-2 active" href="../offre/offre.html"
+              <a class="nav-link px-2 active" href="../offre/offre.php"
                  style="font-size:1.1rem">Offre</a>
             </li>
             <li class="nav-item">
@@ -159,7 +159,7 @@
             <p class="section-label mb-1">Featured Opportunities</p>
             <h2 class="fw-bold m-0">Recent job openings</h2>
           </div>
-          <a href="../alljob/alljob.html"
+          <a href="../alljob/alljob.php"
              class="btn btn-outline-dark rounded-pill flex-shrink-0">
             View All Jobs <i class="bi bi-arrow-up-right ms-1"></i>
           </a>
