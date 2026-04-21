@@ -42,6 +42,7 @@ async function sendClientEmail() {
   }
 
   const ZAPIER_WEBHOOK =
+    process.env.ZAPIER_WEBHOOK ||
     "https://hooks.zapier.com/hooks/catch/123456/abcdef/"; // Replace with your actual Zapier webhook URL
 
   status.innerHTML = '<div class="alert alert-info">📤 Sending...</div>';

@@ -1,54 +1,15 @@
-<!doctype html>
-<html data-bs-theme="dark" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="clienthome.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-   <title>Document</title>
-  </head>
- 
+
 
 
   
   <body  style="height: 1500px; background-color: #F6F6F2 ;">
     
-    <nav class="navbar navbar-expand-sm fixed-top" style="background-color: #388087" data-bs-theme="dark">
-      <div class="container-fluid">
-        <img src="../image/logoentreprisa.png" height="60" width="80" alt="Logo" />
-        <a class="navbar-brand h1" href="../home/home.html" >Entreprisa</a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
-            <a class="nav-link p-2 active " href="clienthome.php" style=" font-family: Inter; font-size: 1.2rem;">Home</a>
-            <a class="nav-link p-2" href="../offre/offre.php" style=" font-family: Inter; font-size: 1.2rem;">Offre</a>
-            <a class="nav-link  p-2" href="../cv/cvv.php" style="font-family: Inter; font-size: 1.2rem;">CV</a>
-          </div>
-          <div class="navbar-nav ms-auto">
-            <div class="nav-item dropdown">
- <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-  <img src="../image\profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-      </a>
-  <ul class="dropdown-menu dropdown-menu-end">
-    <li><a class="dropdown-item" href="#">
-        <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2"><span >Profil </span></a></li>
-    <li><hr class="dropdown-devider"></li>
-    <li><a class="dropdown-item" href="#"><img src="../image/logout.png" alt="Profile" width="32" height="32" class=" me-2"><span>Logout </span></a></li>
-  </ul>
-</div></div>
-        </div>
-      </div>
-    </nav>
+    <?php 
+        $pageTitle = "Home"; 
+        include('../squelleteuser/header.php');
+      ?>
+      <link rel="stylesheet" href="clienthome.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <section class="hero-fade" Style="  width: 100% ; height :700px ; background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../image/homeclient.png' ) no-repeat center / cover;">
         <div class="hero-animated-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 700px; z-index: 1;">C:\Users\infosud\Downloads\js\web_project\web pages\image\homeclient.png
         <div class="container ">

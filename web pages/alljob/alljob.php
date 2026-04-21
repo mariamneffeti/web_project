@@ -1,124 +1,20 @@
-<?php
-require_once __DIR__ . '/../../config/session_check.php';?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="alljob.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&family=Montserrat:wght@700;800&display=swap"
-      rel="stylesheet"
-    />
-    <title>All Jobs — Entreprisa</title>
-    
-  </head>
+
+<?php 
+    $pageTitle = "All Jobs"; 
+    include('../squelleteuser/header.php'); 
+?>
+
   <body>
     <main>
-    <nav
-      class="navbar navbar-expand-sm fixed-top"
-      style="background-color: #388087"
-      data-bs-theme="dark"
-    >
-      <div class="container-fluid">
-        <img
-          src="../image/logoentreprisa.png"
-          height="60"
-          width="80"
-          alt="Logo"
-        />
-        <a class="navbar-brand h1" href="../home/home.html">Entreprisa</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#nav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="nav">
-          <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
-            <a
-              class="nav-link p-2"
-              href="../clienthome/clienthome.php"
-              style="font-size: 1.1rem"
-              >Home</a
-            >
-            <a
-              class="nav-link p-2 active"
-              href="../offre/offre.php"
-              style="font-size: 1.1rem"
-              >Offre</a
-            >
-            <a
-              class="nav-link p-2"
-              href="../cv/cvv.php"
-              style="font-size: 1.1rem"
-              >CV</a
-            >
-          </div>
-          <div class="navbar-nav ms-auto">
-            <div class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle d-flex align-items-center"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <img
-                  src="../image/profile.png"
-                  alt="Profile"
-                  width="32"
-                  height="32"
-                  class="rounded-circle me-2"
-                />
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><img
-                      src="../image/profile.png"
-                      alt=""
-                      width="32"
-                      height="32"
-                      class="rounded-circle me-2"
-                    />Profil</a
-                  >
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><img
-                      src="../image/logout.png"
-                      alt=""
-                      width="32"
-                      height="32"
-                      class="me-2"
-                    />Logout</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+         <link rel="stylesheet" href="alljob.css">
+
 
     <div class="page-hero">
       <div class="container">
         <p class="lead mb-2">
           ←
           <a
-            href="../clienthome/clienthome.html"
+            href="../clienthome/clienthome.php"
             style="color: rgba(255, 255, 255, 0.6); text-decoration: none"
             >Back to Home</a
           >
@@ -336,92 +232,7 @@ require_once __DIR__ . '/../../config/session_check.php';?>
       </div>
     </div>
     </main>
-    <footer
-      class="footer-forest text-white py-5"
-      id="About"
-   
-    >
-      <div class="container" style="margin-top: 5rem">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-12">
-            <div class="footer-brand mb-3">
-              <img
-                src="../image/logoentreprisa.png"
-                height="60"
-                width="80"
-                alt="Logo"
-              />
-              <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">
-              Start <br />
-              your busniss
-            </h6>
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <a href="#" class="footer-link"
-                  ><i class="bi bi-cloud-plus me-2"></i>Join us as a company
-                  leader
-                </a>
-              </li>
-              <li class="mb-2">
-                <a href="#" class="footer-link"
-                  ><i class="bi bi-bar-chart me-2"></i>Try Entreprisa</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">
-              The Product
-            </h6>
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <a href="#" class="footer-link">Contacts us</a>
-              </li>
-              <li class="mb-2">
-                <a href="#" class="footer-link">Questions</a>
-              </li>
-              <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
-            </ul>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <a href="#" class="footer-link">Terms & Conditions</a>
-              </li>
-              <li class="mb-2">
-                <a href="#" class="footer-link">Privacy policy</a>
-              </li>
-            </ul>
-          </div>
-          <hr class="opacity-25" />
-          <div
-            class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3"
-          >
-            <p>© 2026 CareerFlow Inc. All rights reserved.</p>
-            <ul class="list-inline">
-              <li class="list-inline-item me-3">
-                <a href="#" class="text-white text-decoration-none">Privacy</a>
-              </li>
-              <li class="list-inline-item me-3">
-                <a href="#" class="text-white text-decoration-none">Terms</a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" class="text-white text-decoration-none">Cookies</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-  
+    
   <script src="alljob.js"></script>
-  </body>
+<?php include('../squelleteuser/footeruser.php'); ?>
 </html>

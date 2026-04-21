@@ -1,120 +1,14 @@
 
 <?php include 'cv.php'; ?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="cv.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@700&display=swap"
-      rel="stylesheet"
-    />
-    <title>Document</title>
-  </head>
-  
-  </style>
+<?php 
+    $pageTitle = "Cv"; 
+    include('../squelleteuser/header.php'); 
+?>
+<?php
+require_once __DIR__ . '/../../config/session_check.php';
+?>
   <body style="height: 1150px; background-color: #f6f6f2">
-    <nav
-      class="navbar navbar-expand-sm fixed-top"
-      style="background-color: #388087"
-      data-bs-theme="dark"
-    >
-      <div class="container-fluid">
-        <img
-          src="../image/logoentreprisa.png"
-          height="60"
-          width="80"
-          alt="Logo"
-        />
-        <a class="navbar-brand h1" href="../home/home.html">Entreprisa</a>
-
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5">
-            <a
-              class="nav-link p-2"
-              href="../clienthome/clienthome.php"
-              style="font-family: Inter; font-size: 1.2rem"
-              >Home</a
-            >
-            <a
-              class="nav-link p-2"
-              href="../offre/offre.php"
-              style="font-family: Inter; font-size: 1.2rem"
-              >Offre</a
-            >
-            <a
-              class="nav-link p-2 active"
-              href="../cv/cv.php"
-              style="font-family: Inter; font-size: 1.2rem"
-              >CV</a
-            >
-          </div>
-          <div class="navbar-nav ms-auto">
-            <div class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle d-flex align-items-center"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <img
-                  src="../image\profile.png"
-                  alt="Profile"
-                  width="32"
-                  height="32"
-                  class="rounded-circle me-2"
-                />
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="#">
-                    <img
-                      src="../image/profile.png"
-                      alt="Profile"
-                      width="32"
-                      height="32"
-                      class="rounded-circle me-2"
-                    /><span>Profil </span></a
-                  >
-                </li>
-                <li><hr class="dropdown-devider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"
-                    ><img
-                      src="../image/logout.png"
-                      alt="Profile"
-                      width="32"
-                      height="32"
-                      class="me-2"
-                    /><span>Logout </span></a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-
+    
     <div class="container" style="margin-top: 150px">
   <h1 style="font-family: Montserrat; font-size: 50px">Upload your CV</h1>
 
@@ -337,91 +231,7 @@
       </form>
     </div>
 
-    <footer
-      class="footer-forest text-white py-5"
-      id="About"
-      style="margin-top: 5rem"
-    >
-      <div class="container" style="margin-top: 5rem">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-12">
-            <div class="footer-brand mb-3">
-              <img
-                src="../image/logoentreprisa.png"
-                height="60"
-                width="80"
-                alt="Logo"
-              />
-              <span class="fw-bold fs-4 text-uppercase">Entreprisa</span>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">
-              Start <br />
-              your busniss
-            </h6>
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <a href="#" class="footer-link"
-                  ><i class="bi bi-cloud-plus me-2"></i>Join us as a company
-                  leader
-                </a>
-              </li>
-              <li class="mb-2">
-                <a href="#" class="footer-link"
-                  ><i class="bi bi-bar-chart me-2"></i>Try Entreprisa</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">
-              The Product
-            </h6>
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <a href="#" class="footer-link">Contacts us</a>
-              </li>
-              <li class="mb-2">
-                <a href="#" class="footer-link">Questions</a>
-              </li>
-              <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
-            </ul>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <h6 class="text-uppercase small fw-bold mb-3 opacity-50">Legal</h6>
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <a href="#" class="footer-link">Terms & Conditions</a>
-              </li>
-              <li class="mb-2">
-                <a href="#" class="footer-link">Privacy policy</a>
-              </li>
-            </ul>
-          </div>
-          <hr class="opacity-25" />
-          <div
-            class="d-flex flex-column flex-md-row justify-content-between align-items-center small opacity-50 pt-3"
-          >
-            <p>© 2026 CareerFlow Inc. All rights reserved.</p>
-            <ul class="list-inline">
-              <li class="list-inline-item me-3">
-                <a href="#" class="text-white text-decoration-none">Privacy</a>
-              </li>
-              <li class="list-inline-item me-3">
-                <a href="#" class="text-white text-decoration-none">Terms</a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" class="text-white text-decoration-none">Cookies</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <?php include('../squelleteuser/footeruser.php'); ?>
     <?php if ($success): ?>
 <div id="successOverlay" style="
   position: fixed; inset: 0; background: rgba(0,0,0,0.5);
@@ -449,18 +259,6 @@
     </p>
   </div>
 </div>
-
-<script>
-  // Start progress bar
-  setTimeout(() => {
-    document.getElementById('progressBar').style.width = '100%';
-  }, 50);
-
-  // Redirect after 3 seconds
-  setTimeout(() => {
-    window.location.href = '../clienthome/clienthome.html';
-  }, 3000);
-</script>
 <?php endif; ?>
   </body>
 </html>

@@ -1,84 +1,13 @@
 <?php require_once 'stat.php';?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Molle:ital@1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet" />
-    <title>Entreprisa – Find Your Next Big Move</title>
-   <link rel="stylesheet" href="offre.css" /> 
-  </head>
+<?php 
+    $pageTitle = "Offer"; 
+    include('../squelleteuser/header.php'); 
+?>
 
   <body>
-   
-    <nav class="navbar navbar-expand-sm fixed-top" data-bs-theme="dark">
-      <div class="container-fluid px-3 px-md-4">
+      <link rel="stylesheet" href="offre.css">
 
-        <div class="d-flex align-items-center gap-2">
-          <img src="../image/logoentreprisa.png" height="50" width="66" alt="Logo" />
-          <a class="navbar-brand fw-bold mb-0 h1" href="../home/home.html">Entreprisa</a>
-        </div>
 
-        <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse" data-bs-target="#mainNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="mainNav">
-          
-          <ul class="navbar-nav mx-auto gap-1 gap-md-3 gap-lg-5 mt-2 mt-sm-0">
-            <li class="nav-item">
-              <a class="nav-link px-2" href="../clienthome/clienthome.php"
-                 style="font-size:1.1rem">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link px-2 active" href="../offre/offre.php"
-                 style="font-size:1.1rem">Offre</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link px-2" href="../cv/cvv.php"
-                 style="font-size:1.1rem">CV</a>
-            </li>
-          </ul>
-
-        
-          <ul class="navbar-nav ms-auto mt-2 mt-sm-0">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle d-flex align-items-center gap-2"
-                 href="#" role="button" data-bs-toggle="dropdown">
-                <img src="../image/profile.png" alt="Profile"
-                     width="32" height="32" class="rounded-circle" />
-                <span class="d-sm-none">Account</span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                    <img src="../image/profile.png" width="28" height="28"
-                         class="rounded-circle" alt="Profile" />
-                    Profil
-                  </a>
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                    <img src="../image/logout.png" width="24" height="24" alt="Logout" />
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-   
     <header class="job-hero">
       <div class="container px-3 px-md-4">
 
