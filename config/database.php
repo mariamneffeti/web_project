@@ -4,6 +4,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
 if (!function_exists('loadEnv')) {
     function loadEnv($path) {
         if (!file_exists($path)) return;

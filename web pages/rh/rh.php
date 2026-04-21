@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-
  $pageTitle = "Employees"; 
  require_once __DIR__ . '/../../config/session_check.php';
 ?>
@@ -41,8 +40,8 @@
             <div class="navbar-nav ms-auto">
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                        <img src="../image/profile.png" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-                        <span class="ms-2 d-none d-sm-inline">User</span>
+                        <img src="<?= !empty($currentUser['image']) ? '../../uploads/' . $currentUser['image'] : '../../image/profile.png' ?>" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+                        <span class="ms-2 d-none d-sm-inline"><?= $currentUser['first_name'] ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
                         <li><a class="dropdown-item text-white" href="../profil/profil.php"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
