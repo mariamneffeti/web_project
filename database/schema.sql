@@ -235,7 +235,7 @@ INSERT INTO clients (company_id, client_name, email, phone, client_type, status,
 (1, 'Acme Corporation', 'contact@acme.com', '+216-71-234-567', 'B2B', 'Active', 15420.00, '2024-01-15'),
 (1, 'John Smith LLC', 'john@company.com', '+216-71-345-678', 'B2B', 'Active', 8750.50, '2024-01-10'),
 (1, 'Global Industries', 'info@global.com', '+216-71-456-789', 'B2B', 'Active', 23100.00, '2024-01-20'),
-(1, 'Sincere Risk Corp', 'warning@riskcorp.com', '+216-71-999-000', 'B2B', 'Inactive', 200.00, '2023-10-01');
+(1, 'Sincere Risk Corp', 'warning@riskcorp.com', '+216-71-999-000', 'B2B', 'Inactive', 200.00, '2023-10-01'),
 (1, 'Meriam Company', 'meriam.cherif2005@gmail.com', '+216-71-999-111', 'B2B', 'Inactive', 200.00, '2025-10-01');
 -- 🟢 LOW RISK CLIENTS (recent activity)
 
@@ -268,7 +268,7 @@ INSERT INTO products (company_id, product_name, sku, category, price, stock_quan
 (1, 'Enterprise Router', 'HW-450', 'Hardware', 299.00, 50, 'High-speed business router'),
 (1, 'Office Suite License', 'LIC-200', 'License', 450.00, 500, '5-user business license');
 -- Insert sample articles
-INSERT INTO articles (company_id, author_name, title, category, date, description, link, image) VALUES
+INSERT INTO articles (company_id, author_name, title, category, ar_date, ar_description, link, ar_image) VALUES
 (1, 'Alice Johnson', 'How Cloud CRM is Revolutionizing Businesses', 'Technology', '2024-01-05', 'An in-depth look at how cloud-based CRM solutions streamline sales and customer management.', 'https://techcorp.com/blog/cloud-crm
 ', "../image/hhh.jpg"),
 (1, 'Bob Smith', 'Top 5 Cybersecurity Tips for SMEs', 'Security', '2024-01-12', 'Practical tips for small and medium enterprises to enhance their cybersecurity posture.', 'https://techcorp.com/blog/cybersecurity-tips
