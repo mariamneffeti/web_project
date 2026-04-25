@@ -1,11 +1,23 @@
 <?php
 require_once __DIR__ . '/../../config/session_check.php';
 ?>
-
+   <?php 
+    
+    if($currentUser['role'] === 'employee') {
+        $pageTitle = "Employee Profile";
+        include('../squelettes entreprise/header.php'); 
+    } elseif ($currentUser['role'] === 'normal') {
+        $pageTitle = "User Profile";
+        include('../squelleteuser/header.php'); 
+    }
+    else {
+        $pageTitle = "Company Profile";
+        include('../squelettes entreprise/header.php'); 
+    }
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
-<?php $pageTitle = "Profil"; ?>
-
 
     <style>
         .profile-header {
@@ -27,77 +39,7 @@ require_once __DIR__ . '/../../config/session_check.php';
             border-radius: 50%;
         }
     </style>
-</head>
-<<<<<<< HEAD
-   <?php 
-    $pageTitle = "Profile"; 
-    if($currentUser['role'] === 'employee') {
-        $pageTitle = "Employee Profile";
-        include('../squelettes entreprise/header.php'); 
-    } elseif ($currentUser['role'] === 'normal') {
-        $pageTitle = "User Profile";
-        include('../squelleteuser/header.php'); 
-    }
-    else {
-        $pageTitle = "Company Profile";
-        include('../squelettes entreprise/header.php'); 
-    }
-    
-?>
-=======
 
-<body>
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark custom-navbar" data-bs-theme="dark">
-        <div class="container-fluid">
-            <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <img src="../image/logoentreprisa.png" height="50" width="70" alt="Logo" />
-            <a class="navbar-brand h1 fw-bold" href=""><?php echo $pageTitle; ?> Settings</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav mx-auto gap-3">
-                    <a class="nav-link" href="../rh/rh.php">Employees</a>
-                    <a class="nav-link" href="../recruitement/recruitement.php">Recruitment</a>
-                    <a class="nav-link" href="../sales company/salesC.php">Sales</a>
-                    <a class="nav-link" href="../service admin/service_admin.php">Services</a>
-                    <a class="nav-link" href="../articles/articles.php">Articles</a>
-                    <a class="nav-link" href="../finance/finance.php">Finance</a>
-                </div>
-            </div>
-
-            <div class="navbar-nav ms-auto">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center active" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                        <img src="<?= !empty($currentUser['image']) ? '../../uploads/' . $currentUser['image'] : '../../image/profile.png' ?>" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-                        <span class="ms-2 d-none d-sm-inline"><?= $currentUser['first_name'] ?></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="background-color: #212529;">
-                        <li><a class="dropdown-item text-white" href="#"><img src="../image/profile.png" width="24" class="me-2"> Profil</a></li>
-                        <li><hr class="dropdown-divider border-secondary"></li>
-                        <li><a class="dropdown-item text-danger" href="../login/login.php"><img src="../image/logout.png" width="24" class="me-2"> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" style="background-color: #0d1f1b; color: white;">
-        <div class="offcanvas-header border-bottom border-secondary">
-            <h5 class="offcanvas-title fw-bold">ENTREPRISA MENU</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body">
-            <ul class="nav flex-column gap-3">
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center" href="../rh/rh.php"><i class="bi bi-people me-3"></i> Employees</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center" href="../recruitement/recruitement.php"><i class="bi bi-person-plus me-3"></i> Recruitment</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center" href="../sales company/salesC.php"><i class="bi bi-cart me-3"></i> Sales</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center" href="../service admin/service_admin.php"><i class="bi bi-cash-stack me-3"></i> Services</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center" href="../articles/articles.php"><i class="bi bi-gear me-3"></i> Articles</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center" href="../finance/finance.php"><i class="bi bi-cash-stack me-3"></i> Finance</a></li>
-            </ul>
-        </div>
-    </div>
->>>>>>> 954deec9c019ab5a0deb4971e169d8e3ddcf09df
 
     <main class="container page-content mt-5 pt-5">
         <div class="row">
