@@ -1,3 +1,4 @@
+drop database web_project;
 CREATE DATABASE IF NOT EXISTS web_project;
 USE web_project;
 
@@ -213,6 +214,27 @@ CREATE TABLE cv_applications (
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
     FOREIGN KEY (offre_id) REFERENCES job_offers (id) ON DELETE SET NULL
 );
+
+-- Meetings & Calendar
+CREATE TABLE meetings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    meeting_date DATE NOT NULL,
+    meeting_time TIME NOT NULL,
+    meet_link VARCHAR(255),
+    notes TEXT,
+    status ENUM('scheduled','done','cancelled') DEFAULT 'scheduled',
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+);
+CREATE TABLE meeting_employees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    meeting_id INT NOT NULL,
+    employee_id INT NOT NULL,
+    FOREIGN KEY (meeting_id) REFERENCES meetings(id) ON DELETE CASCADE,
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
+);
+
 -- Sample Data
 
 
@@ -425,3 +447,62 @@ VALUES
 ', 'uploads/cv/mehdi.pdf', 'Accepted', DATE_SUB(NOW(), INTERVAL 9 DAY)),
 (1, 9, 'Aya', 'Khlifi', 'aya.khlifi@gmail.com', '+216-55-123-012', 'Tunisian', 'Tunis', 'https://linkedin.com/in/aya
 ', 'uploads/cv/aya.pdf', 'Pending', NOW());
+
+-- Insert sample meetings
+INSERT INTO meetings (company_id, title, meeting_date, meeting_time, meet_link, notes, status) VALUES
+
+-- 🟢 Upcoming meetings
+(1, 'Weekly Team Sync', DATE_ADD(CURDATE(), INTERVAL 1 DAY), '10:00:00',
+'https://meet.google.com/team-sync',
+'Discuss weekly progress and blockers',
+'scheduled'),
+
+(1, 'Client Strategy Meeting', DATE_ADD(CURDATE(), INTERVAL 2 DAY), '14:30:00',
+'https://zoom.us/client-strategy',
+'Presentation for Acme Corporation',
+'scheduled'),
+
+(1, 'Backend Architecture Review', DATE_ADD(CURDATE(), INTERVAL 3 DAY), '09:00:00',
+'https://teams.microsoft.com/backend',
+'Review API structure and DB optimization',
+'scheduled'),
+
+(1, 'Sales Pipeline Review', DATE_ADD(CURDATE(), INTERVAL 4 DAY), '11:00:00',
+'https://meet.google.com/sales-review',
+'Analyze leads and conversions',
+'scheduled'),
+
+-- 🟡 Today
+(1, 'Urgent Client Call', CURDATE(), '15:00:00',
+'https://zoom.us/urgent-call',
+'Client reported an issue with delivery',
+'scheduled'),
+
+-- 🔵 Completed meetings
+(1, 'Marketing Campaign Review', DATE_SUB(CURDATE(), INTERVAL 1 DAY), '10:00:00',
+'https://meet.google.com/marketing-review',
+'Review campaign performance',
+'done'),
+
+(1, 'HR Interview - Developer', DATE_SUB(CURDATE(), INTERVAL 2 DAY), '16:00:00',
+'https://teams.microsoft.com/hr-interview',
+'Candidate evaluation',
+'done'),
+
+(1, 'Finance Audit Meeting', DATE_SUB(CURDATE(), INTERVAL 4 DAY), '13:00:00',
+'https://zoom.us/finance-audit',
+'Quarterly financial review',
+'done'),
+
+-- 🔴 Cancelled
+(1, 'Project Kickoff', DATE_SUB(CURDATE(), INTERVAL 3 DAY), '11:30:00',
+'https://meet.google.com/project-kickoff',
+'Initial kickoff postponed',
+'cancelled');
+
+INSERT INTO meeting_employees (meeting_id, employee_id) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1);
