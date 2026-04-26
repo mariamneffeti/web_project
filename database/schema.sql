@@ -87,6 +87,7 @@ CREATE TABLE products (
     category VARCHAR(100),
     price DECIMAL(10, 2) NOT NULL,
     stock_quantity INT DEFAULT 0,
+    min_threshold INT DEFAULT 20,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
