@@ -16,6 +16,8 @@ WEB_PROJECT/
 │
 ├── config/
 │   ├── database.php
+│   ├── database_connection.php
+│   ├── session_check.php
 │   └── session.php
 │
 ├── database/
@@ -23,85 +25,156 @@ WEB_PROJECT/
 │
 ├── api/
 │   ├── sales.php
+│   ├── get_articles.php
+│   ├── get_offers.php
+│   ├── invoices.php
+│   ├── products.php
+│   ├── services.php
 │   └── clients.php
 │
 ├── fonts/
+│   └── fonts
 ├── palette/
-├── image/
+│   └── palette.txt
+├── uploads/
 │
 └── web pages/
     │
     ├── home/
-    │   ├── home.html
-    │   └── home.css
+    │   ├── home.php
+    │   └── style.css
     │
     ├── login/
-    │   ├── login.html
-    │   ├── login.css
-    │   └── login.js
+    │   ├── login.php
+    │   └── style.css
     │
-    ├── registration/
-    │   ├── registration.html
-    │   ├── registration.css
-    │   └── registration.js
+    ├── logout/
+    │    └── logout.php
     │
+    ├── register/
+    │   ├── register.php
+    │   └── style.css
+    │
+    ├── alljob/
+    │   ├── alljob.php
+    │   ├── alljob.js
+    │   └── alljob.css
+    |
     ├── articles/
-    │   ├── articles.html
+    │   ├── articles.php
+    │   ├── add_articles.php
+    │   ├── articles.js
+    │   ├── delete_article.php
+    │   ├── edit_article.php
+    │   ├── update_article.php
+    │   ├── view_article.php
     │   └── style.css
     │
     ├── clienthome/
     │   ├── clienthome.html
+    │   ├── clienthome.js
     │   └── clienthome.css
     │
+    ├── image/
+    |
+    ├── home admin/
+    │   ├── home.php
+    │   └── style.css
+    |
     ├── clients viewE/
-    │   ├── clientsview.html
-    │   └── clientsview.css
+    │   ├── clientsE.html
+    │   └── clientsE.js
+    │
+    ├── clients admin/
+    │   ├── clients.php
+    │   ├── handle_clients.php
+    │   ├── style.css
+    │   └── clients.js
     │
     ├── cv/
-    │   ├── cv.html
+    │   ├── cv.php
     │   ├── cv.css
-    │   └── cv.js
+    │   └── cvv.php
     │
     ├── offre/
-    │   ├── offre.html
+    │   ├── offre.php
+    │   ├── offre.js
+    │   ├── stat.php
     │   └── offre.css
     │
     ├── recruitement/
-    │   ├── recruitement.html
-    │   ├── recruitement.css
+    │   ├── recruitement.php
+    │   ├── style.css
+    │   ├── handle_candidates.php
+    │   ├── posts_actions.php
     │   └── recruitement.js
     │
     ├── finance/
-    │   ├── finance.html
-    │   ├── finance.css
+    │   ├── finance.php
+    │   ├── style.css
+    │   ├── add_transaction.php
+    │   ├── get_finance_chart.php
+    │   ├── get_finance_kpis.php
     │   └── finance.js
     │
-    ├── infos/
-    │   ├── infos.html
-    │   └── infos.css
+    ├── stock admin/
+    │   ├── stock.php
+    │   ├── products.php
+    │   ├── stock.js
+    │   └── style.css
     │
     ├── rh/
-    │   ├── rh.html
-    │   └── rh.css
+    │   ├── rh.php
+    │   ├── add_employee.php
+    │   ├── delete_employee.php
+    │   ├── edit_employee.php
+    │   ├── update_employee.php
+    │   ├── view_employee.php
+    │   ├── rh.js
+    │   └── style.css
     │
     ├── sales/
     │   ├── sales.html
-    │   ├── sales.css
+    │   ├── churn_risk.js
+    │   ├── style.css
     │   └── sales.js
     │
     ├── sales company/
-    │   ├── salescompany.html
-    │   ├── salescompany.css
-    │   └── salescompany.js
+    │   ├── salesC.php
+    │   ├── add_sale.php
+    │   ├── add_service_sale.php
+    │   ├── api.php
+    │   ├── generate_invoice.php
+    │   ├── style.css
+    │   └── salesC.js
     │
     ├── service admin/
-    │   ├── serviceadmin.html
-    │   └── serviceadmin.css
+    │   ├── service_admin.php
+    │   ├── style.css
+    │   ├── management_api.php
+    │   └── service_admin.js
     │
-    └── service employee/
-        ├── dashboard.html
-        ├── dashboard.css
-        └── employee-dashboard.js
+    ├── service employee/
+    │    ├── service_employee.html
+    │    └── employee-dashboard.js
+    │
+    ├── profil/
+    │    ├── edit_profil.php
+    │    ├── style.css
+    │    └── profil.php
+    │
+    ├── squelettes entreprise/
+    │    ├── footer.php
+    │    └── header.php
+    │
+    ├── squelleteuser/
+    │    ├── footeruser.php
+    │    └── header.php
+    │
+    └── stock_employee/
+         ├── stock.html
+         └── stock.js
+    
 ```
 ## Project Description
 
