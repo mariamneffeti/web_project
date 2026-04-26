@@ -1,469 +1,312 @@
-let allclients=[];
-let searchQuery     = '';
-document.addEventListener("DOMContentLoaded",() =>{
-    loadclients();
-    updateChurnKPI();
-    Monthly_load();
+let allClients = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadClients();
 });
-async function loadclients(){
-    
-    const tbody = document.querySelector("#client-table-body")
-    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Loading…</td></tr>`;
-    try{
-        const response = await fetch("../../api/clients.php?action=list");
-        if (!response.ok) throw new Error("Network response was not ok");
-        const result = await response.json();
-        if (result.success){
-            allclients = result.data;
-            renderClientRows(allclients);
-        const totalBadge = document.querySelector("#total-clients-count");
-        if (totalBadge) {
-            totalBadge.textContent = allclients.length;
-        }
-        if (allclients.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center">No clients found.</td></tr>`;
-            return;
-        }
-        allclients.forEach(client => {
-            const score = client.engagement_score || 0;
-            let barColor = "bg-success";
-            if (score < 30) barColor = "bg-danger";
-            else if (score < 70) barColor = "bg-warning";
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${client.client_name}</td>
-                <td>${client.email}</td>
-                <td id="churn-container-${client.id}">
-                    <div class="spinner-border spinner-border-sm text-muted" role="status"></div>
-                </td>
-                <td>${client.phone || 'N/A'}</td>
-                <td></td>
-                <td class="text-end">
-                <div class="d-inline-flex gap-2">
-                    <button class="btn btn-sm btn-outline-secondary" onclick="detailClient(${client.id})">Details</button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteClient(${client.id})">🗑️</button>
-                    <button class="btn btn-sm btn-outline-warning" onclick="editClient(${client.id})">Edit</button>
-                </div>
-                </td>
-            `;
-            tbody.appendChild(row);
-            fetchChurnScore(client.id);})
-            
-        };
-        } catch (error) {
-        console.error("Fetch error:", error);
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Failed to load clients.</td></tr>`;
-    }
 
-    }
-async function fetchChurnScore(id) {
+async function loadClients() {
+    const tbody = document.querySelector("#client-table-body");
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">Loading…</td></tr>`;
+
     try {
-        const res = await fetch(`../../api/clients.php?action=churn&id=${id}`);
-        const result = await res.json();
-        
-        const client = allclients.find(c => c.id == id);
-        if (client) {
-            client.isAtRisk = (result.churn === true || result.risk_score > 0.7);
-            client.riskPercent = (result.risk_score * 100).toFixed(0) + '%';
-        }
-        if (!allclients.find(c => c.id == id)) return;
-        const container = document.querySelector(`#churn-container-${id}`);
-        if (!container) return; // Exit if row was filtered out during search
+        const [clientsRes, statsRes] = await Promise.all([
+            fetch("handle_clients.php?action=list"),
+            fetch("handle_clients.php?action=stats")
+        ]);
 
-        const probability = (result.risk_score * 100).toFixed(0); 
-        let color = "bg-success";
-        if (probability > 70) color = "bg-danger";
-        else if (probability > 30) color = "bg-warning";
+        const clientsResult = await clientsRes.json();
+        const statsResult   = await statsRes.json();
 
-        container.innerHTML = `
-            <div class="progress" style="height: 10px;">
-                <div class="progress-bar ${color}" style="width: ${probability}%"></div>
-            </div>
-            <small>${probability}% Risk</small>
-        `;
-    } catch (e) {
-        const container = document.querySelector(`#churn-container-${id}`);
-        if (container) container.innerHTML = "N/A";
-    }
-}
-async function updateChurnKPI(){
-    const churnBadge = document.querySelector("#stat-churn-risk");
-    try{
-        const res = await fetch(`../../api/clients.php?action=bulk_churn`);
-        if (!res.ok) {
-            const errorText = await res.text();
-            console.error("Server Error Output:", errorText);
-            throw new Error("Network response was not ok");
-        }
-        const result = await res.json();
-        if (result.success){
-            if (churnBadge){
-                churnBadge.textContent = result.at_risk_count;
-            }
-        }
-    }
-    catch(error){
-        console.error('Error loading client stats:', error);
-    }
-}
-async function Monthly_load() {
-    const monthly = document.querySelector("#stat-month-amount");
-    try{
-        res = await fetch(`../../api/sales.php?action=stats`);
-        response = await res.json();
-        if (!res.ok) {
-                console.error("Server error status:", res.status);
-                return;
-        }
-        if(response.success){
-            if (monthly){
-                monthly.textContent = response.data.this_month.total;
-            }
-        }
-    }
-    catch (error) {
-        console.error("Network or Parsing error:", error);
-        if (monthly) monthly.textContent = "$0";
-    }
-}
+        if (!clientsResult.success) throw new Error("Failed to load clients");
 
-function handleSearch() {
-    const searchInput = document.querySelector('input[placeholder*="Search"]');
-    if (!searchInput) return;
-    
-    const query = searchInput.value.toLowerCase().trim();
+        allClients = clientsResult.data;
 
-    const filteredResults = allclients.filter(client => {
-        const name = (client.client_name || "").toLowerCase();
-        const email = (client.email || "").toLowerCase();
-        const phone = (client.phone || "").toLowerCase();
-        
-        return name.includes(query) || 
-               email.includes(query) || 
-               phone.includes(query);
-    });
+        renderClientRows(allClients);
 
-    renderClientRows(filteredResults);
+        const totalBadge = document.querySelector("#total-clients-count");
+        if (totalBadge) totalBadge.textContent = allClients.length;
+
+        const monthlyBadge = document.querySelector("#stat-month-amount");
+        if (monthlyBadge && statsResult.success) {
+            monthlyBadge.textContent = parseFloat(statsResult.data.avg_revenue || 0).toFixed(2) + ' Dt';
+        }
+
+        allClients.forEach(client => fetchChurnScore(client.id));
+
+    } catch (err) {
+        console.error("Load error:", err);
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Failed to load clients.</td></tr>`;
+    }
 }
 
 function renderClientRows(data) {
     const tbody = document.querySelector("#client-table-body");
-    const churnBadge = document.querySelector("#stat-churn-risk");
     if (!tbody) return;
-    let currentBatchRiskCount = 0;
-
-    tbody.innerHTML = "";
 
     if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No clients found matching that search.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No clients found.</td></tr>`;
         return;
     }
 
-    data.forEach(client => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${client.client_name}</td>
-            <td>${client.email}</td>
+    tbody.innerHTML = data.map(client => `
+        <tr>
+            <td class="fw-semibold">${client.client_name}</td>
+            <td>${client.email || 'N/A'}</td>
             <td id="churn-container-${client.id}">
                 <div class="spinner-border spinner-border-sm text-muted" role="status"></div>
             </td>
             <td>${client.phone || 'N/A'}</td>
             <td></td>
             <td class="text-end">
-            <div class="d-inline-flex gap-2">
-                <button class="btn btn-sm btn-outline-secondary" onclick="detailClient(${client.id})">Details</button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteClient(${client.id})">🗑️</button>
-                <button class="btn btn-sm btn-outline-warning" onclick="editClient(${client.id})">Edit</button>
+                <div class="d-inline-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="detailClient(${client.id})">Details</button>
+                    <button class="btn btn-sm btn-outline-danger"    onclick="deleteClient(${client.id})">🗑️</button>
+                    <button class="btn btn-sm btn-outline-warning"   onclick="editClient(${client.id})">Edit</button>
                 </div>
             </td>
+        </tr>
+    `).join('');
+}
+
+async function fetchChurnScore(id) {
+    try {
+        const res    = await fetch(`handle_clients.php?action=churn&id=${id}`);
+        const result = await res.json();
+
+        const client = allClients.find(c => c.id == id);
+        if (client) {
+            client.riskScore   = result.risk_score ?? 0;
+            client.riskPercent = Math.round((result.risk_score ?? 0) * 100) + '%';
+            client.isAtRisk    = result.churn === true || result.risk_score > 0.7;
+        }
+
+        const churnBadge = document.querySelector("#stat-churn-risk");
+        if (churnBadge) {
+            churnBadge.textContent = allClients.filter(c => c.isAtRisk).length;
+        }
+
+        const container = document.querySelector(`#churn-container-${id}`);
+        if (!container) return;
+
+        if (result.error) {
+            container.innerHTML = `<small class="text-muted">N/A</small>`;
+            return;
+        }
+
+        const pct   = Math.round((result.risk_score ?? 0) * 100);
+        const color = pct > 70 ? 'bg-danger' : pct > 30 ? 'bg-warning' : 'bg-success';
+        container.innerHTML = `
+            <div class="progress" style="height:10px;">
+                <div class="progress-bar ${color}" style="width:${pct}%"></div>
+            </div>
+            <small>${pct}% Risk</small>
         `;
-        tbody.appendChild(row);
-        
-        fetchChurnScore(client.id);
-    });
-}
-async function ExportToCSV(){
-    if (!allclients || allclients.length==0){
-        alert("there are no clients to export!");
-        return;
+    } catch (e) {
+        const container = document.querySelector(`#churn-container-${id}`);
+        if (container) container.innerHTML = `<small class="text-muted">N/A</small>`;
     }
-    const headers = ["Name","Email","Churn Risk Percentage","Numero telephone"];
-    const rows = allclients.map(client =>[
-        `"${client.client_name || ''}"`, 
-        `"${client.email || ''}"`,
-        `"${client.riskPercent || 'Pending'}"`,
-        `"${client.phone || 'N/A'}"`
-    ])
-    const csvContent = [
-        headers.join(","), 
-        ...rows.map(row => row.join(","))
-    ].join("\n");
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    
-    link.setAttribute("href", url);
-    link.setAttribute("download", `client_portfolio_${new Date().toISOString().slice(0,10)}.csv`);
-    link.style.visibility = 'hidden';
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
 }
-function ExportToPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
 
-    doc.setFontSize(18);
-    doc.text("Client Portfolio Report", 14, 22);
-    doc.setFontSize(11);
-    doc.setTextColor(100);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
-
-    const tableColumn = ["Name", "Email", "Churn Risk", "Phone"];
-    const tableRows = allclients.map(client => [
-        client.client_name || '',
-        client.email || '',
-        client.riskPercent || 'Pending',
-        client.phone || 'N/A'
-    ]);
-    doc.autoTable({
-        head: [tableColumn],
-        body: tableRows,
-        startY: 35,
-        theme: 'striped',
-        headStyles: { fillColor: [44, 62, 80] }, 
-        styles: { fontSize: 9 },
-        columnStyles: {
-            2: { fontStyle: 'bold' } 
-        }
-    });
-    doc.save(`Client_Report_${new Date().toISOString().slice(0,10)}.pdf`);
-}
-async function Copy() {
-    if (!allclients || allclients.length === 0) {
-        alert("No data available to copy.");
-        return;
-    }
-
-    const headers = ["Name", "Email", "Churn Risk", "Phone"];
-    
-    const rows = allclients.map(client => [
-        client.client_name || '',
-        client.email || '',
-        client.riskPercent || 'Pending',
-        client.phone || 'N/A'
-    ].join("\t"));
-
-    const content = [headers.join("\t"), ...rows].join("\n");
-
+async function updateChurnBadge() {
+    const churnBadge = document.querySelector("#stat-churn-risk");
     try {
-        await navigator.clipboard.writeText(content);
-        
-        alert("Client data copied to clipboard! You can now paste it into Excel.");
-    } catch (err) {
-        console.error("Failed to copy: ", err);
-        alert("Failed to copy data. Please try again.");
-    }
-}
-function ExportToExcel() {
-    if (!allclients || allclients.length === 0) {
-        alert("No data available to export.");
-        return;
-    }
-
-    const excelData = allclients.map(client => ({
-        "Client Name": client.client_name || '',
-        "Email Address": client.email || '',
-        "Churn Risk (%)": client.riskPercent || 'Pending',
-        "Phone Number": client.phone || 'N/A'
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    const workbook = XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Clients");
-
-    const wscols = [
-        { wch: 30 }, 
-        { wch: 30 }, 
-        { wch: 15 }, 
-        { wch: 20 }
-    ];
-    worksheet['!cols'] = wscols;
-
-    XLSX.writeFile(workbook, `Client_Portfolio_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
-async function deleteClient(id) {
-    if (!confirm("Are you sure you want to delete this client?")) return;
-    
-    const clientToDelete = allclients.find(c => c.id == id);
-    const clientName = clientToDelete ? clientToDelete.client_name : "Client";
-
-    try {
-        const response = await fetch(`../../api/clients.php?action=delete&id=${id}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-            allclients = allclients.filter(c => c.id != id);
-            renderClientRows(allclients);
-            
-            const toastElement = document.getElementById('deleteToast');
-            if (toastElement) {
-                const toast = new bootstrap.Toast(toastElement);
-                toast.show();
-            }
-            const toastBody = toastElement.querySelector('.toast-body');
-            toastBody.innerHTML = ` <strong>${clientName}</strong> deleted successfully!`;
-            
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show(); 
-            
-            const totalBadge = document.querySelector("#total-clients-count");
-            if (totalBadge) totalBadge.textContent = allclients.length;
-        } else {
-            alert("Error: " + (result.error || "Check sales history"));
+        const res    = await fetch("handle_clients.php?action=bulk_churn");
+        const result = await res.json();
+        console.log("BULK CHURN:", result);
+        if (churnBadge) {
+            churnBadge.textContent = result.at_risk_count ?? '—';
         }
-    } catch (error) {
-        console.error("Delete failed:", error);
+    } catch (e) {
+        if (churnBadge) churnBadge.textContent = '—';
     }
-    updateChurnKPI();
 }
-function editClient(id) {
-    const client = allclients.find(c => c.id == id);
-    if (!client) return;
 
-    document.querySelector("#edit-id-input").value = client.id;
-    document.querySelector("#edit-name-input").value = client.client_name || '';
-    document.querySelector("#edit-email-input").value = client.email || '';
-    document.querySelector("#edit-phone-input").value = client.phone || '';
-
-    const editModal = new bootstrap.Modal(document.getElementById('editClientModal'));
-    editModal.show();
+function handleSearch() {
+    const input = document.querySelector('input[placeholder*="Search"]');
+    if (!input) return;
+    const q = input.value.toLowerCase().trim();
+    const filtered = allClients.filter(c =>
+        (c.client_name || '').toLowerCase().includes(q) ||
+        (c.email || '').toLowerCase().includes(q) ||
+        (c.phone || '').toLowerCase().includes(q)
+    );
+    renderClientRows(filtered);
 }
-async function saveClientEdit() {
-    const id = document.querySelector("#edit-id-input").value;
-    
-    const updateData = {
-        client_name: document.querySelector("#edit-name-input").value,
-        email: document.querySelector("#edit-email-input").value,
-        phone: document.querySelector("#edit-phone-input").value,
-        address: "", 
-        client_type: "B2C",
-        status: "Active"
-    };
 
-    try {
-        const response = await fetch(`../../api/clients.php?action=update&id=${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify(updateData) 
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            const idx = allclients.findIndex(c => c.id == id);
-            if (idx !== -1) {
-                allclients[idx] = { ...allclients[idx], ...updateData };
-            }
-
-            renderClientRows(allclients);
-            
-            const modalEl = document.getElementById('editClientModal');
-            bootstrap.Modal.getInstance(modalEl).hide();
-
-            const toastEl = document.getElementById('deleteToast');
-            toastEl.querySelector('.toast-body').innerHTML = `✅ <strong>${updateData.client_name}</strong> updated!`;
-            new bootstrap.Toast(toastEl).show();
-            
-        } else {
-            alert("Error: " + (result.error || "Update failed"));
-        }
-    } catch (error) {
-        console.error("Save Error:", error);
-        alert("Failed to reach server.");
-    }
-    updateChurnKPI();
-}
-function detailClient(id) {
-    const client = allclients.find(c => c.id == id);
-    if (!client) {
-        console.error("Client not found for ID:", id);
-        return;
-    }
-
-    document.getElementById('det-name').textContent = client.client_name;
-    document.getElementById('det-email').textContent = client.email || 'N/A';
-    document.getElementById('det-phone').textContent = client.phone || 'N/A';
-    document.getElementById('det-type').textContent = client.client_type || 'B2C';
-    document.getElementById('det-address').textContent = client.address || 'No address on file.';
-    
-    const riskText = client.riskPercent ? client.riskPercent : "Pending Calculation...";
-    document.getElementById('det-risk').textContent = riskText;
-
-    const initials = client.client_name.split(' ').map(n => n[0]).join('').toUpperCase();
-    document.getElementById('det-initials').textContent = initials;
-
-    const detailModal = new bootstrap.Modal(document.getElementById('detailClientModal'));
-    detailModal.show();
-    updateChurnKPI();
-}
+// ── CRUD ────────────────────────────────────────────────────────────────────
 
 function openAddModal() {
     document.getElementById("addClientForm").reset();
-    const addModal = new bootstrap.Modal(document.getElementById('addClientModal'));
-    addModal.show();
+    new bootstrap.Modal(document.getElementById('addClientModal')).show();
 }
 
 async function saveNewClient() {
-    const name = document.querySelector("#add-name-input").value;
-    const email = document.querySelector("#add-email-input").value;
-    const phone = document.querySelector("#add-phone-input").value;
+    const name    = document.querySelector("#add-name-input").value.trim();
+    const email   = document.querySelector("#add-email-input").value.trim();
+    const phone   = document.querySelector("#add-phone-input").value.trim();
+    const address = document.querySelector("#add-address-input").value.trim();
+    const type    = document.querySelector("#add-type-input").value;
+    const status  = document.querySelector("#add-status-input").value;
 
-    if (!name || !email) {
-        alert("Name and Email are required!");
-        return;
-    }
-
-    const newClientData = {
-        client_name: name,
-        email: email,
-        phone: phone,
-        address: "", 
-        client_type: "B2C", 
-        status: "Active"
-    };
+    if (!name || !email) { alert("Name and Email are required!"); return; }
 
     try {
-        const response = await fetch(`../../api/clients.php?action=create`, {
+        const res    = await fetch("handle_clients.php?action=create", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newClientData)
+            body: JSON.stringify({ 
+                client_name: name, email, phone, 
+                address, client_type: type, status 
+            })
         });
-
-        const result = await response.json();
-
+        const result = await res.json();
         if (result.success) {
-            loadclients(); 
-            
-            const modalEl = document.getElementById('addClientModal');
-            bootstrap.Modal.getInstance(modalEl).hide();
-
-            const toastEl = document.getElementById('deleteToast');
-            toastEl.querySelector('.toast-body').innerHTML = `✅ <strong>${name}</strong> added successfully!`;
-            new bootstrap.Toast(toastEl).show();
+            bootstrap.Modal.getInstance(document.getElementById('addClientModal')).hide();
+            showToast(`<strong>${name}</strong> added successfully!`);
+            loadClients();
         } else {
             alert("Error: " + (result.error || "Failed to add client"));
         }
-    } catch (error) {
-        console.error("Save Error:", error);
-        alert("Failed to reach server.");
-    }
+    } catch (e) { console.error(e); alert("Failed to reach server."); }
+}
+
+function editClient(id) {
+    const client = allClients.find(c => c.id == id);
+    if (!client) return;
+    document.querySelector("#edit-id-input").value      = client.id;
+    document.querySelector("#edit-name-input").value    = client.client_name || '';
+    document.querySelector("#edit-email-input").value   = client.email || '';
+    document.querySelector("#edit-phone-input").value   = client.phone || '';
+    document.querySelector("#edit-address-input").value = client.address || '';
+    document.querySelector("#edit-type-input").value    = client.client_type || 'B2C';
+    document.querySelector("#edit-status-input").value  = client.status || 'Active';
+    new bootstrap.Modal(document.getElementById('editClientModal')).show();
+}
+
+async function saveClientEdit() {
+    const id   = document.querySelector("#edit-id-input").value;
+    const data = {
+        client_name: document.querySelector("#edit-name-input").value,
+        email:       document.querySelector("#edit-email-input").value,
+        phone:       document.querySelector("#edit-phone-input").value,
+        address:     document.querySelector("#edit-address-input").value,
+        client_type: document.querySelector("#edit-type-input").value,
+        status:      document.querySelector("#edit-status-input").value,
+    };
+    try {
+        const res    = await fetch(`handle_clients.php?action=update&id=${id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+            const idx = allClients.findIndex(c => c.id == id);
+            if (idx !== -1) allClients[idx] = { ...allClients[idx], ...data };
+            renderClientRows(allClients);
+            bootstrap.Modal.getInstance(document.getElementById('editClientModal')).hide();
+            showToast(`<strong>${data.client_name}</strong> updated!`);
+        } else {
+            alert("Error: " + (result.error || "Update failed"));
+        }
+    } catch (e) { console.error(e); alert("Failed to reach server."); }
+}
+
+function detailClient(id) {
+    const client = allClients.find(c => c.id == id);
+    if (!client) return;
+    document.getElementById('det-name').textContent         = client.client_name;
+    document.getElementById('det-email').textContent        = client.email || 'N/A';
+    document.getElementById('det-phone').textContent        = client.phone || 'N/A';
+    document.getElementById('det-type').textContent         = client.client_type || 'N/A';
+    document.getElementById('det-status').textContent       = client.status || 'N/A';
+    document.getElementById('det-spent').textContent        = parseFloat(client.total_spent || 0).toFixed(2) + ' Dt';
+    document.getElementById('det-last-purchase').textContent = client.last_purchase_date || 'N/A';
+    document.getElementById('det-address').textContent      = client.address || 'No address on file.';
+    document.getElementById('det-risk').textContent         = client.riskPercent ?? 'Pending';
+    document.getElementById('det-initials').textContent     =
+        client.client_name.split(' ').map(n => n[0]).join('').toUpperCase();
+    new bootstrap.Modal(document.getElementById('detailClientModal')).show();
+}
+
+async function deleteClient(id) {
+    if (!confirm("Are you sure you want to delete this client?")) return;
+    const client = allClients.find(c => c.id == id);
+    try {
+        const res    = await fetch(`handle_clients.php?action=delete&id=${id}`, { method: 'POST' });
+        const result = await res.json();
+        if (result.success) {
+            allClients = allClients.filter(c => c.id != id);
+            renderClientRows(allClients);
+            document.querySelector("#total-clients-count").textContent = allClients.length;
+            showToast(`<strong>${client?.client_name}</strong> deleted!`);
+        } else {
+            alert("Error: " + (result.error || "Delete failed"));
+        }
+    } catch (e) { console.error(e); }
+}
+
+
+
+function ExportToCSV() {
+    if (!allClients.length) { alert("No clients to export!"); return; }
+    const rows = [
+        ["Name","Email","Churn Risk","Phone"],
+        ...allClients.map(c => [
+            `"${c.client_name||''}"`, `"${c.email||''}"`,
+            `"${c.riskPercent||'Pending'}"`, `"${c.phone||'N/A'}"`
+        ])
+    ];
+    const blob = new Blob([rows.map(r => r.join(",")).join("\n")], { type: 'text/csv;charset=utf-8;' });
+    const a = Object.assign(document.createElement("a"), {
+        href: URL.createObjectURL(blob),
+        download: `clients_${new Date().toISOString().slice(0,10)}.csv`
+    });
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+function ExportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(18); doc.text("Client Portfolio Report", 14, 22);
+    doc.setFontSize(11); doc.setTextColor(100);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 30);
+    doc.autoTable({
+        head: [["Name","Email","Churn Risk","Phone"]],
+        body: allClients.map(c => [c.client_name||'', c.email||'', c.riskPercent||'Pending', c.phone||'N/A']),
+        startY: 35, theme: 'striped',
+        headStyles: { fillColor: [16, 46, 74] },
+        styles: { fontSize: 9 }
+    });
+    doc.save(`Client_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+async function Copy() {
+    if (!allClients.length) { alert("No data to copy."); return; }
+    const rows = [
+        ["Name","Email","Churn Risk","Phone"].join("\t"),
+        ...allClients.map(c => [c.client_name||'', c.email||'', c.riskPercent||'Pending', c.phone||'N/A'].join("\t"))
+    ];
+    await navigator.clipboard.writeText(rows.join("\n"));
+    alert("Copied to clipboard!");
+}
+
+function ExportToExcel() {
+    if (!allClients.length) { alert("No data to export."); return; }
+    const ws = XLSX.utils.json_to_sheet(allClients.map(c => ({
+        "Client Name": c.client_name||'', "Email": c.email||'',
+        "Churn Risk": c.riskPercent||'Pending', "Phone": c.phone||'N/A'
+    })));
+    ws['!cols'] = [{wch:30},{wch:30},{wch:15},{wch:20}];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Clients");
+    XLSX.writeFile(wb, `Clients_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+
+function showToast(html) {
+    const el = document.getElementById('deleteToast');
+    if (!el) return;
+    el.querySelector('.toast-body').innerHTML = html;
+    new bootstrap.Toast(el).show();
 }
