@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //KPI
     async function loadKPIs() {
         try {
-            const res = await fetch('get_kpis.php');
+            const res = await fetch('api.php?action=get_kpis');
             const result = await res.json();
             if (result.status !== 'success') {
                 console.error(result.message);
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!ctx) return;
 
         try {
-            const res = await fetch(`get_sales_data.php?year=${year}`);
+            const res = await fetch(`api.php?action=get_sales_data&year=${year}`);
             const result = await res.json();
 
             if (result.status !== 'success') {
@@ -180,14 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateTotalServices() {
         let total = 0;
-
-        document.querySelectorAll('.price-input').forEach(input => {
+        document.querySelectorAll('#service-lines .price-input').forEach(input => {
             total += parseFloat(input.value) || 0;
         });
-
         const discountRate = parseFloat(document.getElementById('discountRangeService').value) || 0;
         total = total * (1 - discountRate / 100);
-
         document.getElementById('form-total-service').innerText = total.toFixed(2);
     }
 
@@ -207,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsBox = row.querySelector('.service-results');
 
         try {
-            const res = await fetch(`search_services.php?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`api.php?action=search_services&q=${encodeURIComponent(query)}`);
             const services = await res.json();
 
             resultsBox.innerHTML = "";
@@ -229,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsBox = row.querySelector('.service-results');
 
         try {
-            const res = await fetch(`search_services.php?q=`);
+            const res = await fetch(`api.php?action=search_services&q=`);
             const services = await res.json();
 
             resultsBox.innerHTML = "";
@@ -377,14 +374,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateTotal() {
         let total = 0;
-
-        document.querySelectorAll('.price-input').forEach(input => {
+        document.querySelectorAll('#product-lines .price-input').forEach(input => {
             total += parseFloat(input.value) || 0;
         });
-
         const discountRate = parseFloat(document.getElementById('discountRange').value) || 0;
         total = total * (1 - discountRate / 100);
-
         document.getElementById('form-total').innerText = total.toFixed(2);
     }
 
@@ -404,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsBox = row.querySelector('.product-results');
 
         try {
-            const res = await fetch(`search_products.php?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`api.php?action=search_products&q=${encodeURIComponent(query)}`);
             const products = await res.json();
 
             resultsBox.innerHTML = "";
@@ -426,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsBox = row.querySelector('.product-results');
 
         try {
-            const res = await fetch(`search_products.php?q=`);
+            const res = await fetch(`api.php?action=search_products&q=`);
             const products = await res.json();
 
             resultsBox.innerHTML = "";
@@ -449,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsBox = container.querySelector('.client-results');
 
         try {
-            const res = await fetch(`search_clients.php?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`api.php?action=search_clients&q=${encodeURIComponent(query)}`);
             const clients = await res.json();
 
             resultsBox.innerHTML = "";
@@ -482,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsBox = container.querySelector('.client-results');
 
         try {
-            const res = await fetch(`search_clients.php?q=`);
+            const res = await fetch(`api.php?action=search_clients&q=`);
             const clients = await res.json();
 
             resultsBox.innerHTML = "";
@@ -599,10 +593,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const badge = e.target; 
 
             if (confirm("Mark this sale as paid?")) { 
-                fetch('update_status.php', { 
+                fetch('api.php?action=update_status', { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
-                    body: `id=${encodeURIComponent(saleId)}&status=Paid` 
+                    body: `action=update_status&id=${encodeURIComponent(saleId)}&status=Paid` 
                 }) 
                 .then(res => res.json()) 
                 .then(result => { 
@@ -628,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = e.target.closest('.position-relative');
         const resultsBox = container.querySelector('.explorer-results');
 
-        const res = await fetch(`search_clients.php?q=`);
+        const res = await fetch(`api.php?action=search_clients&q=`);
         const clients = await res.json();
 
         resultsBox.innerHTML = "";
@@ -646,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = e.target.closest('.position-relative');
         const resultsBox = container.querySelector('.explorer-results');
 
-        const res = await fetch(`search_clients.php?q=${encodeURIComponent(query)}`);
+        const res = await fetch(`api.php?action=search_clients&q=${encodeURIComponent(query)}`);
         const clients = await res.json();
 
         resultsBox.innerHTML = "";
@@ -675,7 +669,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadClientDetails(clientName) {
-        fetch(`get_client.php?name=${encodeURIComponent(clientName)}`)
+        fetch(`api.php?action=get_client&name=${encodeURIComponent(clientName)}`)
             .then(res => res.json())
             .then(result => {
                 if (result.status === 'success') {
