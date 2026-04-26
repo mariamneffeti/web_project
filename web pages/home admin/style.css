@@ -1,0 +1,91 @@
+.hero {
+  background-color: var(--gris);
+}
+
+.hero h1 {
+  color: var(--blue);
+}
+
+.hero p {
+  color: var(--black);
+}
+
+.btn-primary {
+  background-color: var(--bluegreen);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--bluegreen);
+}
+
+.btn-outline-primary {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--blue);
+  color: var(--vanilla);
+  border-color: var(--blue);
+}
+
+.card {
+  background-color: var(--gris);
+  border: 2px solid var(--bluegreen);
+  color: var(--bean);
+}
+
+
+#services {
+  padding: 60px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.highlight {
+  animation: highlightAnim 1s ease;
+}
+
+@keyframes highlightAnim {
+  0% {
+    background-color: transparent;
+  }
+  30% {
+    background-color: rgba(255, 200, 0, 0.3);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.service-card {
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+}
+
+
+.service-card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+
+#backToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}

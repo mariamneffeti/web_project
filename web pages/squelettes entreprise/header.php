@@ -146,7 +146,7 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav mx-auto gap-3">
-                    <a class="nav-link <?php echo ($pageTitle == 'Home') ? 'active' : ''; ?>" href="../home/home.php">Home</a>
+                    <a class="nav-link <?php echo ($pageTitle == 'Home') ? 'active' : ''; ?>" href="../home admin/home.php">Home</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Employees') ? 'active' : ''; ?>" href="../rh/rh.php">Employees</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Clients') ? 'active' : ''; ?>" href="../clients admin/clients.php">Clients</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Recruitement') ? 'active' : ''; ?>" href="../recruitement/recruitement.php">Recruitment</a>
@@ -181,7 +181,7 @@
         </div>
         <div class="offcanvas-body">
             <ul class="nav flex-column gap-3">
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Home') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../home/home.php"><i class="bi bi-house me-3"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Home') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../home admin/home.php"><i class="bi bi-house me-3"></i> Home</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Employees') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../rh/rh.php"><i class="bi bi-people me-3"></i> Employees</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Clients') ?  'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../clients admin/clients.php"><i class="bi bi-people-fill me-3"></i> Clients</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Recruitement') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../recruitement/recruitement.php"><i class="bi bi-person-plus me-3"></i> Recruitment</a></li>
