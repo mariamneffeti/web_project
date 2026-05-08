@@ -1,9 +1,9 @@
 <?php 
-    $pageTitle = "Recruitment"; 
+    $pageTitle = "Recruitement"; 
     include('../squelettes entreprise/header.php'); 
 ?>
 
-<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
+<div class="container py-4" style="margin-top: 100px; margin-bottom: 100px;">
     
     <section id="candidates" class="mb-5">
         <h2 class="h4 mb-4 fw-bold" style="color: #102E4A;">Recent Candidates</h2>

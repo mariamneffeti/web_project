@@ -20,7 +20,7 @@
   #employeeCheckboxList label:hover { background: #f0f4f8; border-radius: 6px; }
 </style>
 
-<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
+<div class="container py-4" style="margin-top: 100px; margin-bottom: 100px;">
 
   <section id="calendar" class="mb-5">
     <div class="d-flex justify-content-between align-items-center mb-3">

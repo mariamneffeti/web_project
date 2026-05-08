@@ -150,7 +150,7 @@
                     <a class="nav-link <?php echo ($pageTitle == 'Home') ? 'active' : ''; ?>" href="../home admin/home.php">Home</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Employees') ? 'active' : ''; ?>" href="../rh/rh.php">Employees</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Clients') ? 'active' : ''; ?>" href="../clients admin/clients.php">Clients</a>
-                    <a class="nav-link <?php echo ($pageTitle == 'Recruitement') ? 'active' : ''; ?>" href="../recruitement/recruitement.php">Recruitment</a>
+                    <a class="nav-link <?php echo ($pageTitle == 'Recruitement') ? 'active' : ''; ?>" href="../recruitement/recruitement.php">Recruitement</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Stock') ? 'active' : ''; ?>" href="../stock admin/stock.php">Stock</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Sales & Services') ? 'active' : ''; ?>" href="../sales company/salesC.php">Sales & Services</a>
                     <a class="nav-link <?php echo ($pageTitle == 'Management') ? 'active' : ''; ?>" href="../service admin/service_admin.php">Management</a>
@@ -175,7 +175,7 @@
         </div>
     </nav>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" style="background-color: #0d1f1b; color: white;">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" style="background: linear-gradient(90deg, #388087, #0d1f1b); color: white;">
         <div class="offcanvas-header border-bottom border-secondary">
             <h5 class="offcanvas-title fw-bold">ENTREPRISA MENU</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
@@ -185,7 +185,7 @@
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Home') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../home admin/home.php"><i class="bi bi-house me-3"></i> Home</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Employees') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../rh/rh.php"><i class="bi bi-people me-3"></i> Employees</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Clients') ?  'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../clients admin/clients.php"><i class="bi bi-people-fill me-3"></i> Clients</a></li>
-                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Recruitement') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../recruitement/recruitement.php"><i class="bi bi-person-plus me-3"></i> Recruitment</a></li>
+                <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Recruitement') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../recruitement/recruitement.php"><i class="bi bi-person-plus me-3"></i> Recruitement</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Stock') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../stock admin/stock.php"><i class="bi bi-box-seam me-3"></i> Stock</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Sales & Services') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../sales company/salesC.php"><i class="bi bi-cart me-3"></i> Sales & Services</a></li>
                 <li class="nav-item"><a class="nav-link text-white d-flex align-items-center <?php echo ($pageTitle == 'Management') ? 'active "style="background: rgba(56, 128, 135, 0.2); border-radius: 8px;"' : ''; ?>" href="../service admin/service_admin.php"><i class="bi bi-calendar-check me-3"></i> Management</a></li>

@@ -134,7 +134,7 @@
         </div>
     </nav>
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" style="background-color: #0d1f1b; color: white;">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" style="background: linear-gradient(90deg, #388087, #0d1f1b); color: white;">
         <div class="offcanvas-header border-bottom border-secondary">
             <h5 class="offcanvas-title fw-bold">ENTREPRISA MENU</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
