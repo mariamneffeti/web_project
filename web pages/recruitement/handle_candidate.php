@@ -26,6 +26,9 @@
         $stmt = $pdo->prepare("SELECT * FROM cv_applications WHERE id = ?");
         $stmt->execute([$cv_id]);
         $cv = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmtoffre = $pdo->prepare("SELECT * FROM job_offers WHERE id = ?");
+        $stmtoffre->execute([$cv['offer_id']]);
+        $jobOffer = $stmtoffre->fetch(PDO::FETCH_ASSOC);
 
         if (!$cv) {
             echo json_encode(['status' => 'error', 'message' => 'Candidate not found']);
@@ -59,7 +62,13 @@
 
         $status = null;
 
-        if ($action === "accept") $status = "Accepted";
+        if ($action === "accept"){
+            $status = "Accepted";
+            $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$cv['first_name'], $cv['last_name'], $cv['email'], password_hash('password123', PASSWORD_DEFAULT), 'employee']);
+            $stmt = $pdo->prepare("INSERT INTO employees (user_id, company_id, first_name, last_name, email, hire_date, salary) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$pdo->lastInsertId(), $company_id, $cv['first_name'], $cv['last_name'], $cv['email'], date('Y-m-d'), $jobOffer['salary_min']]);
+        } 
         if ($action === "reject") $status = "Rejected";
         if ($action === "contact") $status = "Reviewed";
 

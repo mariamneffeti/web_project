@@ -447,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (action === "accept") {
             newStatus = "Accepted";
             subject = "Application Accepted 🎉";
-            body = `Hello ${name},\n\nWe are happy to inform you that your application has been accepted.`;
+            body = `Hello ${name},\n\nWe are happy to inform you that your application has been accepted.\nYou can login in Entreprisa website as an employee using your email and the password: password123 that you have to change!`;
 
         } else if (action === "reject") {
             newStatus = "Rejected";
