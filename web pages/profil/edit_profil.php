@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $first_name = $_POST['first_name'];
         $last_name  = $_POST['last_name'];
         $email      = $_POST['email'];
-        $role       = $_POST['role'];
 
         $password = $_POST['password'];
         $confirm  = $_POST['confirm_password'];
@@ -48,20 +47,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($imageName && !empty($password)) {
-            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=?, password=?, image=? WHERE id=?");
-            $stmt->execute([$first_name, $last_name, $email, $role, $hashedPassword, $imageName, $userId]);
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?,password=?, image=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email,$hashedPassword, $imageName, $userId]);
 
         } elseif ($imageName) {
-            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=?, image=? WHERE id=?");
-            $stmt->execute([$first_name, $last_name, $email, $role, $imageName, $userId]);
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, password=?, image=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email, $hashedPassword, $imageName, $userId]);
 
         } elseif (!empty($password)) {
-            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=?, password=? WHERE id=?");
-            $stmt->execute([$first_name, $last_name, $email, $role, $hashedPassword, $userId]);
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, password=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email, $hashedPassword, $userId]);
 
         } else {
-            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=?, role=? WHERE id=?");
-            $stmt->execute([$first_name, $last_name, $email, $role, $userId]);
+            $stmt = $pdo->prepare("UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?");
+            $stmt->execute([$first_name, $last_name, $email, $userId]);
         }
 
         header('Location: profil.php?success=1');

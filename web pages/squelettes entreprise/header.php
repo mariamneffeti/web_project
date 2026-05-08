@@ -5,6 +5,7 @@
     $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
     $stmt->execute([$currentUser['id']]);
     $company_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
+    requireRole('company');
 ?>
 <!DOCTYPE html>
 <html lang="en">

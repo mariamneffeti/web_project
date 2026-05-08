@@ -35,4 +35,12 @@ if (!$currentUser) {
 if (!defined('BASE_URL')) {
     define('BASE_URL', $basePath . '/');
 }
+
+function requireRole($role) {
+    global $currentUser, $basePath;
+    if (!in_array($currentUser['role'], $role)) {
+        header("Location: " . $basePath . "/home/home.php");
+        exit();
+    }
+}
 ?>
