@@ -67,15 +67,6 @@
       <input id="searchInput" type="text" class="form-control" placeholder="Search by name or ID">
     </div>
 
-    <div class="col-md-4 mb-2">
-      <select id="filterSelect" class="form-select">
-        <option selected>Filter by...</option>
-        <option>Department</option>
-        <option>Position</option>
-        <option>Status</option>
-      </select>
-    </div>
-
     <div class="col-md-2">
       <button id="applyBtn" type="button" class="btn btn-secondary w-100">Apply</button>
     </div>

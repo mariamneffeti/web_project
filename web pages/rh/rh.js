@@ -78,6 +78,7 @@ employeeTableBody.addEventListener('click', async (e) => {
             row.style.display = text.includes(filter) ? "" : "none";
         }
     });
+});
 
 });
 

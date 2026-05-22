@@ -68,14 +68,6 @@
       <button class="btn btn-secondary w-100">Search</button>
     </div>
   </section>
-  <section class="row mb-4">
-    <div class="col-md-4 mb-2">
-      <input type="text" class="form-control" placeholder="Filter by category">
-    </div>
-    <div class="col-md-2">
-      <button class="btn btn-secondary w-100">Filter</button>
-    </div>
-  </section>
 
   <section class="card shadow-sm">
     <div class="card p-4 stats-card h-100" style="border-left: 4px solid #388087;">
