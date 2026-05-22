@@ -6,8 +6,6 @@
  require_once __DIR__ . '/../../config/session_check.php';
  include('../squelettes entreprise/header.php');
 ?>
-
-
 <main class="container page-content">
 
   <section class="card shadow-sm mb-5">

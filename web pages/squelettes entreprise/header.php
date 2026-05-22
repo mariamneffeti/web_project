@@ -4,19 +4,20 @@
     $pdo = getDB();
     $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
     $stmt->execute([$currentUser['id']]);
-    $company_id = $stmt->fetch(PDO::FETCH_ASSOC)['id'];
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $company_id = $result ? $result['id'] : null;
     requireRole('company');
-?>
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entreprisa - <?php echo $pageTitle; ?></title>
-    <link rel="stylesheet" href="/../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
-    <script src="/../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
         .dropdown-toggle::after { display: none !important; }
