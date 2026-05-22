@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
 
             if (data.status === "success") {
-                const ZAPIER_WEBHOOK ="///"; // Replace with actual Zapier
+                const ZAPIER_WEBHOOK = process.env.ZAPIER_URL; 
 
                 let badge = row.querySelector("td:nth-child(3) .badge");
 
