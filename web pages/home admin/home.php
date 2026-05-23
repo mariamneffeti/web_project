@@ -2,68 +2,136 @@
     $pageTitle = "Home";
     include '../squelettes entreprise/header.php';
 ?>
-
-<section class="hero text-center py-5">
-  <div class="container py-4" style="margin-top: 100px; margin-bottom: 100px;">
-    <h1 class="mb-3">Welcome to Our Website</h1>
-    <p class="lead mb-4">
-      Our website aims to create a structured platform that connects companies,
-      employees, and users in one system.
-    </p>
-    <div class="d-flex justify-content-center gap-3">
-      <a href="../logout/logout.php" class="btn btn-outline-danger btn-lg">Logout</a>
-      <a href="../profil/profil.php" class="btn btn-outline-primary btn-lg">View Profile</a>
+ <section class="hero-section" style="margin-top:56px;">
+  <div class="hero-animated-overlay">
+    <div class="container">
+      <div class="hero-info">
+        <h1>Welcome to <?php echo $companyName; ?></h1>
+        <h2>Experience the future of business using ENTREPRISA</h2>
+        <div class="row mb-3 pt-3">
+          <div class="col-auto">
+            <a href="../logout/logout.php" class="btn btn-outline-danger btn-lg">Logout</a>
+          </div>
+          <div class="col-auto">
+            <a href="../profil/profil.php" class="btn btn-outline-warning btn-lg">View Profile</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-
-
-<section class="services py-5" id="services">
-  <div class="container text-center" class="service-card">
-    <h2 class="mb-4">Services</h2>
+ 
+<!-- ══ SERVICES ══ -->
+<section id="services" class="py-5">
+  <div class="container text-center">
+    <p class="section-label mb-2">What we offer</p>
+    <h2 class="section-title mb-5">Our Services</h2>
+ 
     <div class="row g-4">
+ 
+      <!-- Card 1 – Company -->
       <div class="col-md-4">
-        <div class="card h-100">
-          <div class="service-card" >
-            <h5 class="card-title">Company Services</h5>
-            <p class="card-text">Tools and services for companies.</p>
-            <ul>
-                    <li>Clients & Employees Management</li>
-                    <li>Sales Management</li>
-                    <li>Recruitment</li>
+        <div class="service-card-wrap">
+          <img src="../image/one.jpg"
+               alt="Company Services" class="service-card-img" />
+          <div class="service-card-body">
+            <div class="card-top-row">
+              <span class="service-badge">Enterprise</span>
+              <div class="service-card-icon"><i class="bi bi-building"></i></div>
+            </div>
+            <h5 class="service-card-title">Company Services</h5>
+            <p class="service-card-desc">End-to-end tools to run and scale your organisation — from HR to sales pipelines.</p>
+            <ul class="service-card-list">
+              <li>Clients &amp; Employees Management</li>
+              <li>Sales Management</li>
+              <li>Recruitment</li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="col-md-4" class="service-card">
-        <div class="card h-100">
-          <div class="service-card" >
-            <h5 class="card-title">Employee Services</h5>
-            <p class="card-text">Employee management and resources.</p>
-            <ul>
-                    <li>Clients Management</li>
-                    <li>Sales Management</li>
-                    <li>Services</li>
+ 
+      <!-- Card 2 – Employee -->
+      <div class="col-md-4">
+        <div class="service-card-wrap">
+          <img src="../image/two.jpg"
+               alt="Employee Services" class="service-card-img" />
+          <div class="service-card-body">
+            <div class="card-top-row">
+              <span class="service-badge">Workforce</span>
+              <div class="service-card-icon"><i class="bi bi-people"></i></div>
+            </div>
+            <h5 class="service-card-title">Employee Services</h5>
+            <p class="service-card-desc">Everything employees need to manage their work, track clients and close more sales.</p>
+            <ul class="service-card-list">
+              <li>Clients Management</li>
+              <li>Sales Management</li>
+              <li>Internal Services</li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="col-md-4" >
-        <div class="card h-100">
-          <div class="service-card" >
-            <h5 class="card-title">Client / Applicant</h5>
-            <p class="card-text">Applications and user services.</p>
-            <ul>
-                    <li>Articles Feed</li>
-                    <li>Company Offers</li>
-                    <li>CV Management</li>
+ 
+      <!-- Card 3 – Client / Applicant -->
+      <div class="col-md-4">
+        <div class="service-card-wrap">
+          <img src="../image/client.jpg"
+               alt="Client Applicant" class="service-card-img" />
+          <div class="service-card-body">
+            <div class="card-top-row">
+              <span class="service-badge">Applicant</span>
+              <div class="service-card-icon"><i class="bi bi-person-badge"></i></div>
+            </div>
+            <h5 class="service-card-title">Client / Applicant</h5>
+            <p class="service-card-desc">Discover opportunities, build your CV and connect directly with hiring companies.</p>
+            <ul class="service-card-list">
+              <li>Articles Feed</li>
+              <li>Company Offers</li>
+              <li>CV Management</li>
             </ul>
           </div>
         </div>
       </div>
+ 
     </div>
   </div>
 </section>
+ 
+<!-- ══ CAPABILITIES ══ -->
+<section class="capabilities-section py-5">
+  <div class="container text-center">
+    <div class="mb-5">
+      <h6 class="text-uppercase fw-bold small opacity-50">Capabilities</h6>
+      <h2 class="display-5 fw-bold mb-3">What we bring to the table</h2>
+      <p class="text-secondary mx-auto" style="max-width:600px;">
+        Whether you're running a company, managing a team, or searching for your next opportunity —
+        we connect you with the tools and people that matter.
+      </p>
+    </div>
+    <div class="row g-4 mt-2">
+      <div class="col-md-4">
+        <div class="p-3">
+          <i class="bi bi-briefcase fs-2 mb-3 d-block" style="color:var(--primary-teal);"></i>
+          <h4 class="h5">Seamless Collaboration</h4>
+          <p class="text-secondary small">Unified workspace for companies, employees and clients.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3">
+          <i class="bi bi-globe fs-2 mb-3 d-block" style="color:var(--primary-teal);"></i>
+          <h4 class="h5">Global Reach</h4>
+          <p class="text-secondary small">Access markets and talent across every major region.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3">
+          <i class="bi bi-gear fs-2 mb-3 d-block" style="color:var(--primary-teal);"></i>
+          <h4 class="h5">Expert Support</h4>
+          <p class="text-secondary small">Our team stands ready to help you succeed at every step.</p>
+        </div>
+      </div>
+    </div>
+</section>
+
 <?php 
     $pagePath = "";
     include '../squelettes entreprise/footer.php'; ?>

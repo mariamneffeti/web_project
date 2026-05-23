@@ -2,10 +2,11 @@
     require_once __DIR__ . '/../../config/session_check.php';
     require_once __DIR__ . '/../../config/database.php';
     $pdo = getDB();
-    $stmt = $pdo->prepare("SELECT id FROM companies WHERE user_id = ?");
+    $stmt = $pdo->prepare("SELECT id, company_name FROM companies WHERE user_id = ?");
     $stmt->execute([$currentUser['id']]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     $company_id = $result ? $result['id'] : null;
+    $companyName = $result ? $result['company_name'] : null;
     requireRole('company');
 ?> 
 <!DOCTYPE html>
@@ -18,8 +19,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <style>
+   </head> 
+   <style>
         .dropdown-toggle::after { display: none !important; }
 
         .form-control, .form-select {
@@ -136,6 +137,7 @@
             display: none !important;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark custom-navbar" data-bs-theme="dark">
