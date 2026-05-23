@@ -7,51 +7,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $password = $_POST["password"];
     $password_confirm = $_POST["password_confirm"];
-    $role = $_POST["role"];
-
-    if (empty($email) || empty($password) || empty($password_confirm) || empty($role)) {
-        die("All fields are required");
-    }
+    $role = strtolower(trim($_POST["role"])); // visitor or company
+    
+    $first_name = trim($_POST["first_name"]);
+    $last_name = trim($_POST["last_name"]);
 
     if ($password !== $password_confirm) {
         die("Passwords do not match");
     }
 
-    if (!in_array($role, ['company', 'employee'])) {
-        die("Invalid role selected");
-    }
-
     try {
-        $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-        $checkStmt->execute([$email]);
+        $conn->beginTransaction();
 
-        if ($checkStmt->rowCount() > 0) {
-            die("Email already registered!");
+        // 1. Create the User (Login Credentials)
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        // Assuming your users table has first_name and last_name columns
+        $stmtUser = $conn->prepare("INSERT INTO users (email, password, role, first_name, last_name) VALUES (?, ?, ?, ?, ?)");
+        $stmtUser->execute([$email, $hashedPassword, $role, $first_name, $last_name]);
+        $newUserId = $conn->lastInsertId();
+
+        // 2. Create the Company record if role is company
+        if ($role === 'company') {
+            $company_name = trim($_POST["company_name"]);
+            $industry     = trim($_POST["industry"]);
+            $address      = trim($_POST["address"]);
+            $phone        = trim($_POST["phone"]);
+
+            // Using your exact companies table attributes
+            $stmtCo = $conn->prepare("INSERT INTO companies (user_id, company_name, industry, address, phone) VALUES (?, ?, ?, ?, ?)");
+            $stmtCo->execute([$newUserId, $company_name, $industry, $address, $phone]);
         }
 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $conn->commit();
 
-        $stmt = $conn->prepare("INSERT INTO users (email, password, role) VALUES (?, ?, ?)");
-        $stmt->execute([$email, $hashedPassword, $role]);
-        $newId = $conn->lastInsertId();
-        $_SESSION['user_id'] = $newId;
+        $_SESSION['user_id'] = $newUserId;
         $_SESSION['email']   = $email;
         $_SESSION['role']    = $role;
 
-        
-        switch ($role) {
-            case 'employee':
-                header("Location: ../sales/sales.html");
-                break;
-            case 'company':
-                header("Location: ../rh/rh.php");
-                break;
-            default:
-                header("Location: ../clients viewE/clientsE.php");
-                break;
-        }
+        header("Location: " . ($role === 'company' ? "../rh/rh.php" : "../clients viewE/clientsE.php"));
         exit();
+
     } catch (PDOException $e) {
+        $conn->rollBack();
         echo "Error: " . $e->getMessage();
     }
 }
@@ -71,25 +68,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <form action="#" method="post">
         <input type="email" name="email" placeholder="Email Address" required>
-
         <input type="password" name="password" placeholder="Password" required>
-
         <input type="password" name="password_confirm" placeholder="Confirm Password" required>
+        
+        <input type="text" name="first_name" placeholder="First Name" required>
+        <input type="text" name="last_name" placeholder="Last Name" required>
 
-        <select name="role" required>
-            <option value="">Select Role</option>
-            <option value="company">Company</option>
-            <option value="employee">Employee</option>
-        </select>
+        <input type="text" name="role" id="roleInput" list="roleOptions" placeholder="Select Role (Visitor or Company)" oninput="checkRole()" required autocomplete="off">
+        <datalist id="roleOptions">
+            <option value="Visitor">
+            <option value="Company">
+        </datalist>
+
+        <div id="company-fields" style="display:none;">
+            <input type="text" name="company_name" id="cname" placeholder="Company Name">
+            <input type="text" name="industry" id="ind" placeholder="Industry">
+            <input type="text" name="address" id="addr" placeholder="Address">
+            <input type="text" name="phone" id="ph" placeholder="Phone Number">
+        </div>
 
         <button type="submit">Register</button>
     </form>
 
     <div class="login-link">
-        Already have an account?
-        <a href="../login/login.php">Login</a>
+        Already have an account? <a href="../login/login.php">Login</a>
     </div>
 </div>
+
+<script>
+function checkRole() {
+    const roleValue = document.getElementById('roleInput').value.toLowerCase();
+    const companyDiv = document.getElementById('company-fields');
+    const inputs = companyDiv.getElementsByTagName('input');
+
+    if (roleValue === 'company') {
+        companyDiv.style.display = 'block';
+        for (let i of inputs) i.required = true;
+    } else {
+        companyDiv.style.display = 'none';
+        for (let i of inputs) i.required = false;
+    }
+}
+</script>
 
 </body>
 </html>
