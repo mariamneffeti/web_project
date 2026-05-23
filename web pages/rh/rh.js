@@ -80,5 +80,5 @@ employeeTableBody.addEventListener('click', async (e) => {
     });
 });
 
-});
+
 

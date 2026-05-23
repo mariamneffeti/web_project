@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 alert("Error: " + result.message);
             }
         })
-        .catch(err => console.error("Fetch error:", err));
+        .catch(err => alert("Fetch error:"+err));
     });
 
     function resetFormUI() {
@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
 
             if (data.status === "success") {
-                const ZAPIER_WEBHOOK = process.env.ZAPIER_URL; 
+                const ZAPIER_WEBHOOK = window.APP_CONFIG.apiUrl;
 
                 let badge = row.querySelector("td:nth-child(3) .badge");
 

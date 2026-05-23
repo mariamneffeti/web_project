@@ -6,7 +6,7 @@ let visibleCount  = ROWS_STEP;
 let allClients    = [];   
 let allEmployees  = [];  
 
-const ZAPIER_WEBHOOK = process.env.ZAPIER_URL; 
+const ZAPIER_WEBHOOK = window.APP_CONFIG.apiUrl;
 document.addEventListener("DOMContentLoaded", () => {
   loadMeetings();
   loadClients();
