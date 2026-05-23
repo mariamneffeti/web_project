@@ -460,11 +460,7 @@
       </div>
     </div>
     <div class="mt-5 d-flex justify-content-center align-items-center gap-3 flex-wrap">
-      <a href="../login/login.php"
-         class="btn btn-hero px-4"
-         style="color:#F6F6F2;border:1px solid #F6F6F2;">
-        Discover offers
-      </a>
+      
       <a href="../register/register.php" class="text-white text-decoration-none">
         Create account <i class="bi bi-chevron-right"></i>
       </a>
