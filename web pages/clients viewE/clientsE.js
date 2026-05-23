@@ -5,12 +5,21 @@ document.addEventListener("DOMContentLoaded",() =>{
     updateChurnKPI();
     Monthly_load();
 });
+async function sessionFetch(url, options = {}) {
+    const response = await fetch(url, options);
+    if (response.status === 401) {
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "../../web pages/login/login.php";
+        throw new Error("Unauthenticated");
+    }
+    return response;
+}
 async function loadclients(){
     
     const tbody = document.querySelector("#client-table-body")
     tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">Loading…</td></tr>`;
     try{
-        const response = await fetch("../../api/clients.php?action=list");
+        const response = await sessionFetch("../../api/clients.php?action=list");
         const result = await response.json();
         if (!response.ok) throw new Error("Network response was not ok");
         if (result.success){
@@ -59,7 +68,7 @@ async function loadclients(){
     }
 async function fetchChurnScore(id) {
     try {
-        const res = await fetch(`../../api/clients.php?action=churn&id=${id}`);
+        const res = await sessionFetch(`../../api/clients.php?action=churn&id=${id}`);
         const result = await res.json();
         
         const client = allclients.find(c => c.id == id);
@@ -97,7 +106,7 @@ async function fetchChurnScore(id) {
 async function updateChurnKPI(){
     const churnBadge = document.querySelector("#stat-churn-risk");
     try{
-        const res = await fetch(`../../api/clients.php?action=bulk_churn`);
+        const res = await sessionFetch(`../../api/clients.php?action=bulk_churn`);
         if (!res.ok) {
             const errorText = await res.text();
             console.error("Server Error Output:", errorText);
@@ -117,7 +126,7 @@ async function updateChurnKPI(){
 async function Monthly_load() {
     const monthly = document.querySelector("#stat-month-amount");
     try{
-        res = await fetch(`../../api/sales.php?action=stats`);
+        res = await sessionFetch(`../../api/sales.php?action=stats`);
         response = await res.json();
         if (!res.ok) {
                 console.error("Server error status:", res.status);
@@ -309,7 +318,7 @@ async function deleteClient(id) {
     const clientName = clientToDelete ? clientToDelete.client_name : "Client";
 
     try {
-        const response = await fetch(`../../api/clients.php?action=delete&id=${id}`, {
+        const response = await sessionFetch(`../../api/clients.php?action=delete&id=${id}`, {
             method: 'POST' 
         });
         
@@ -360,7 +369,7 @@ async function saveClientEdit() {
     };
 
     try {
-        const response = await fetch(`../../api/clients.php?action=update&id=${id}`, {
+        const response = await sessionFetch(`../../api/clients.php?action=update&id=${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' 
@@ -442,7 +451,7 @@ async function saveNewClient() {
     };
 
     try {
-        const response = await fetch(`../../api/clients.php?action=create`, {
+        const response = await sessionFetch(`../../api/clients.php?action=create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newClientData)

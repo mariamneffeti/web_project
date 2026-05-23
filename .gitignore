@@ -14,3 +14,4 @@ package-lock.json
 ml_model_logic/
 .env
 *.env
+web_project_symfony/
