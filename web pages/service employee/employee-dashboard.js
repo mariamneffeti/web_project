@@ -330,6 +330,10 @@ function updateTotals() {
     let subtotal = 0;
     document.querySelectorAll('#services-tbody tr').forEach(row => {
         const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+        if (qty < 1) {
+            qty = 1;
+            row.querySelector('.item-qty').value = 1;
+        }
         const price = parseFloat(row.querySelector('.price-input').textContent) || 0;
         const total = qty * price;
         row.querySelector('.row-total').innerText = formatCurrency(total);
