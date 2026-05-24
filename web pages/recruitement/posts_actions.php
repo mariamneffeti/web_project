@@ -124,7 +124,7 @@
         $salary_min = $_POST['salary_min'] !== '' ? (int)$_POST['salary_min'] : null;
         $salary_max = $_POST['salary_max'] !== '' ? (int)$_POST['salary_max'] : null;
 
-        // validation (keep yours)
+        // validation 
         if ($salary_min !== null && $salary_min < 500) {
             echo json_encode(['status' => 'error', 'message' => 'Min salary must be ≥ 500']);
             exit;
@@ -146,7 +146,7 @@
                 salary_min = ?,
                 salary_max = ?,
                 description = ?,
-                tags = ?
+                tags = ?,
                 status = ?
             WHERE id = ? AND company_id = ?
         ");

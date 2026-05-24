@@ -31,5 +31,6 @@
 
 </body>
 <script src="/js libs/chart.js"></script>
+<script src="/config/get_webhook.js.php"></script>
 <script src=<?php echo $pagePath ?>></script>
 </html>

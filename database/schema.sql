@@ -1,4 +1,3 @@
-drop database web_project;
 CREATE DATABASE IF NOT EXISTS web_project;
 USE web_project;
 

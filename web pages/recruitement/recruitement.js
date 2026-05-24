@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 alert("Error: " + result.message);
             }
         })
-        .catch(err => console.error("Fetch error:", err));
+        .catch(err => alert("Fetch error:"+err));
     });
 
     function resetFormUI() {
@@ -469,8 +469,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
 
             if (data.status === "success") {
-                const ZAPIER_WEBHOOK = process.env.ZAPIER_URL; 
-
                 let badge = row.querySelector("td:nth-child(3) .badge");
 
                 if (action === "accept") {
@@ -504,17 +502,20 @@ document.addEventListener("DOMContentLoaded", function() {
                         contactBtn.classList.add("opacity-50");
                     }
                 }
-
+                
                 fetch(ZAPIER_WEBHOOK, {
                     method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify({
                         to: email,
-                        name: name,
+                        clientName: name,
                         subject: subject,
                         body: body,
                         type: action
                     }),
-                });
+                })
             }
         });
     });

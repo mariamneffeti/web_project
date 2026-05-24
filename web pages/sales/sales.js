@@ -11,12 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
   bindFilters();
   updateChurnKPI();
 });
-
+async function sessionFetch(url, options = {}) {
+    const response = await fetch(url, options);
+    if (response.status === 401) {
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "../../web pages/login/login.php";
+        throw new Error("Unauthenticated");
+    }
+    return response;
+}
 //  HELPERS 
 const api = (file, params = {}) => {
   const url = new URL(`../../api/${file}`, window.location.href);
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-  return fetch(url).then(r => r.json());
+  return sessionFetch(url).then(r => r.json());
 };
 
 const fmt = n =>
@@ -57,7 +65,7 @@ function showToast(message, type = 'info') {
 }
 async function updateChurnKPI() {
     try {
-        const response = await fetch('../../api/clients.php?action=bulk_churn');
+        const response = await sessionFetch('../../api/clients.php?action=bulk_churn');
         const data = await response.json();
 
         const churnValue = document.getElementById('stat-churn-risk');
@@ -275,7 +283,7 @@ async function toggleStatus(id) {
         return;
     }
 try {
-        const response = await fetch(`../../api/sales.php?action=update_status&id=${tx._saleId}`, {
+        const response = await sessionFetch(`../../api/sales.php?action=update_status&id=${tx._saleId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ payment_status: 'Paid' }), 
@@ -306,7 +314,7 @@ async function deleteSale(saleId) {
   if (!confirm('Delete this sale and all its items? This cannot be undone.')) return;
 
   try {
-    const res = await fetch(`../../api/sales.php?action=delete&id=${saleId}`, {
+    const res = await sessionFetch(`../../api/sales.php?action=delete&id=${saleId}`, {
       method: 'POST',
     }).then(r => r.json());
 
@@ -427,7 +435,7 @@ async function generateInvoice(saleId) {
     const doc = new jsPDF();
 
     try {
-        const response = await fetch(`../../api/sales.php?action=get&id=${saleId}`);
+        const response = await sessionFetch(`../../api/sales.php?action=get&id=${saleId}`);
         
         if (!response.ok) {
             throw new Error(`Server responded with status ${response.status}`);

@@ -7,13 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('filterCategory').addEventListener('change', applyFilters);
     document.getElementById('filterStatus').addEventListener('change', applyFilters);
 });
-
+async function sessionFetch(url, options = {}) {
+    const response = await fetch(url, options);
+    if (response.status === 401) {
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "../../web pages/login/login.php";
+        throw new Error("Unauthenticated");
+    }
+    return response;
+}
 async function loadProducts() {
     const tbody = document.getElementById("tableBody");
     tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">Loading products...</td></tr>`;
 
     try {
-        const response = await fetch("../../api/products.php?action=list");
+        const response = await sessionFetch("../../api/products.php?action=list");
         const result = await response.json();
 
         if (result.success) {
@@ -106,7 +114,7 @@ function applyFilters() {
 
 async function viewDetails(id) {
     try {
-        const res = await fetch(`../../api/products.php?action=get&id=${id}`);
+        const res = await sessionFetch(`../../api/products.php?action=get&id=${id}`);
         const result = await res.json();
         
         if (result.success) {

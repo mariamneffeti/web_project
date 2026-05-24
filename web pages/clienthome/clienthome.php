@@ -80,8 +80,7 @@
     </div>
 
     <div class="mt-5 d-flex justify-content-center align-items-center gap-3">
-      <a href="offre.html" class="btn btn-outline" Style="color:#F6F6F2; border: 1px solid #F6F6F2;">Discover offers</a>
-      <a href="cv.html" class="text-white text-decoration-none">Upload Cv <i class="bi bi-chevron-right"></i></a>
+      <a href="../offre/offre.php" class="btn btn-outline" Style="color:#F6F6F2; border: 1px solid #F6F6F2;">Discover offers</a>
     </div>
   </div>
 </section>

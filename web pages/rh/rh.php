@@ -41,18 +41,19 @@
         </div>
 
         <div class="col-md-12">
-          <label class="form-label">CV</label>
-              <div class="input-group">
-                  <input name="cv_path" id="cvPathInput" type="text" class="form-control" placeholder="No CV uploaded yet" readonly>
-
-                            <a href="../cv/cvv.php" onclick="openCvPicker(event)" class="btn text-white" style="background:#388087;">
-                                <i class="bi bi-upload me-1"></i> Upload CV
-                            </a>
-                        </div>
-                        <div class="form-text">
-                            Click "Upload CV" to go to the CV upload page and attach a file.
-                        </div>
-                    </div>
+            <label class="form-label">CV</label>
+            <input type="file" name="cv_file" id="cvFileInput" class="form-control" >
+            <div class="form-text text-muted">
+                <i class="bi bi-info-circle me-1"></i>
+                Accepted formats: PDF, DOC, DOCX 
+            </div>
+            <div id="cvPreview" style="display:none; margin-top:.5rem;">
+                <span class="badge" style="background:rgba(56,128,135,.12);color:#388087;padding:.4em .8em;border-radius:8px;font-size:.8rem;">
+                    <i class="bi bi-file-earmark-text me-1"></i>
+                    <span id="cvFileName"></span>
+                </span>
+            </div>
+        </div>
 
         <div class="col-12 text-end">
           <button name="submit" type="submit" class="btn btn-primary">Add Employee</button>

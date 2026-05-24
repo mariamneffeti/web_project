@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     loadDashboardData();
-    updateSalesChart();
 
     const processBtn = document.getElementById('btn-process-transaction');
     if (processBtn) processBtn.addEventListener('click', processTransaction);
@@ -36,15 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     if (document.getElementById('sale-start-date')) document.getElementById('sale-start-date').value = weekAgo;
     if (document.getElementById('sale-end-date')) document.getElementById('sale-end-date').value = today;
-});
-document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('client-search-input');
     const resultsContainer = document.getElementById('search-results');
     const clientIdHidden = document.getElementById('client-id');
     
     let allClients = [];
 
-    fetch('../../api/clients.php?action=list')
+    sessionFetch('../../api/clients.php?action=list')
         .then(res => res.json())
         .then(result => {
             if (result.success) allClients = result.data;
@@ -87,9 +84,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!searchInput.contains(e.target)) resultsContainer.classList.add('d-none');
     });
 });
+async function sessionFetch(url, options = {}) {
+    const response = await fetch(url, options);
+    if (response.status === 401) {
+        alert("Your session has expired. Please log in again.");
+        window.location.href = "../../web pages/login/login.php";
+        throw new Error("Unauthenticated");
+    }
+    return response;
+}
 async function updateClientStats(clientId) {
     try {
-        const response = await fetch(`../../api/clients.php?action=get&id=${clientId}`);
+        const response = await sessionFetch(`../../api/clients.php?action=get&id=${clientId}`);
         const result = await response.json();
         
         if (result.success) {
@@ -109,7 +115,7 @@ async function updateClientStats(clientId) {
 }
 async function performClientSearch(name) {
     try {
-        const response = await fetch(`../../api/clients.php?action=list&search=${encodeURIComponent(name)}`);
+        const response = await sessionFetch(`../../api/clients.php?action=list&search=${encodeURIComponent(name)}`);
         const result = await response.json();
 
         if (result.success && result.data.length > 0) {
@@ -130,7 +136,7 @@ async function performClientSearch(name) {
         showToast('Error searching for client', 'error');
     }
 }
-function updateSalesChart(salesData) {
+async function updateSalesChart(salesData) {
     const ctx = document.getElementById('salesChart');
     if (!ctx) return;
     
@@ -226,9 +232,9 @@ function showToast(message, type = 'info') {
 async function loadDashboardData() {
     try {
         const [statsRes, prodRes, servRes] = await Promise.all([
-            fetch('../../api/sales.php?action=stats'),
-            fetch('../../api/products.php?action=list'),
-            fetch('../../api/services.php?action=list')
+            sessionFetch('../../api/sales.php?action=stats'),
+            sessionFetch('../../api/products.php?action=list'),
+            sessionFetch('../../api/services.php?action=list')
         ]);
 
         const statsResult = await statsRes.json();
@@ -240,7 +246,7 @@ async function loadDashboardData() {
 
         if (statsResult.success) {
             updateStatsUI(statsResult.data);
-            if (typeof updateSalesChart === 'function') updateSalesChart(statsResult.data.recent_sales);
+            if (typeof updateSalesChart === 'function') await updateSalesChart(statsResult.data.recent_sales);
         }
 
         const tbody = document.getElementById('services-tbody');
@@ -396,7 +402,7 @@ async function processTransaction() {
     }
 
     try {
-        const response = await fetch('../../api/sales.php?action=create', {
+        const response = await sessionFetch('../../api/sales.php?action=create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
