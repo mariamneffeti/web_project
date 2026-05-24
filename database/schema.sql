@@ -52,6 +52,7 @@ CREATE TABLE employees (
     hire_date DATE,
     email VARCHAR(250),
     salary DECIMAL(10, 2),
+    cv_path VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
