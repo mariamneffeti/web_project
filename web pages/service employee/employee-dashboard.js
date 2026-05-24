@@ -357,13 +357,19 @@ async function processTransaction() {
         showToast('Please select a client first', 'warning');
         return;
     }
+    let calculatedSubtotal = 0;
+    document.querySelectorAll('#services-tbody tr').forEach(row => {
+        const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+        const price = parseFloat(row.querySelector('.price-input').textContent) || 0;
+        calculatedSubtotal += (qty * price);
+    });
 
     const payload = {
         client_id: clientId,
         sale_date: saleDate,
         payment_method: 'Cash', 
         payment_status: 'Pending',
-        discount: parseFloat(document.getElementById('summary-discount').textContent.replace(/[$-]/g, '')) || 0,
+        discount: calculatedSubtotal,
         tax: 0, 
         notes: "Transaction from Dashboard",
         product_items: [],
