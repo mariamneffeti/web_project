@@ -75,8 +75,8 @@
             $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, ?)");
             $stmt->execute([$cv['first_name'], $cv['last_name'], $cv['email'], password_hash('password123', PASSWORD_DEFAULT), 'employee']);
             
-            $stmt = $pdo->prepare("INSERT INTO employees (user_id, company_id, first_name, last_name, hire_date, salary, email) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$pdo->lastInsertId(), $company_id, $cv['first_name'], $cv['last_name'], date('Y-m-d'), $jobOffer['salary_min'], $cv['email']]);
+            $stmt = $pdo->prepare("INSERT INTO employees (user_id, company_id, first_name, last_name, hire_date, salary, email, cv_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$pdo->lastInsertId(), $company_id, $cv['first_name'], $cv['last_name'], date('Y-m-d'), $jobOffer['salary_min'], $cv['email'], $cv['cv_path']]);
         } 
         if ($action === "reject") $status = "Rejected";
         if ($action === "contact") $status = "Reviewed";
