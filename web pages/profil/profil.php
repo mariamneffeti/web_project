@@ -25,12 +25,12 @@ require_once __DIR__ . '/../../config/session_check.php';
         color:#1f2933;
         }
 
-        /* NAVBAR */
+      
         .navbar{
         background:#388087;
         }
 
-        /* CARDS */
+  
         .card{
         border:none;
         border-radius:16px;
@@ -41,12 +41,12 @@ require_once __DIR__ . '/../../config/session_check.php';
         transform:translateY(-4px);
         }
 
-        /* KPI LEFT BORDER */
+       
         .kpi{
         border-left:6px solid #102E4A;
         }
 
-        /* BUTTONS */
+      
         .btn-primary-custom{
         background:#388087;
         border:none;
@@ -56,13 +56,12 @@ require_once __DIR__ . '/../../config/session_check.php';
         background:#2f6f75;
         }
 
-        /* TABLE */
+   
         .table thead{
         background:#102E4A;
         color:white;
         }
 
-        /* FOOTER */
         footer{
         background:linear-gradient(180deg,#388087,#0d1f1b);
         }
