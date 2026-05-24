@@ -7,8 +7,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $password = $_POST["password"];
     $password_confirm = $_POST["password_confirm"];
-    $role = strtolower(trim($_POST["role"])); // visitor or company
-    
+    $role = strtolower(trim($_POST["role"])); 
+    if($role=="visitor"){
+        $role="normal";
+    }
     $first_name = trim($_POST["first_name"]);
     $last_name = trim($_POST["last_name"]);
 
@@ -19,21 +21,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $conn->beginTransaction();
 
-        // 1. Create the User (Login Credentials)
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        // Assuming your users table has first_name and last_name columns
+
         $stmtUser = $conn->prepare("INSERT INTO users (email, password, role, first_name, last_name) VALUES (?, ?, ?, ?, ?)");
         $stmtUser->execute([$email, $hashedPassword, $role, $first_name, $last_name]);
         $newUserId = $conn->lastInsertId();
 
-        // 2. Create the Company record if role is company
         if ($role === 'company') {
             $company_name = trim($_POST["company_name"]);
             $industry     = trim($_POST["industry"]);
             $address      = trim($_POST["address"]);
             $phone        = trim($_POST["phone"]);
 
-            // Using your exact companies table attributes
+
             $stmtCo = $conn->prepare("INSERT INTO companies (user_id, company_name, industry, address, phone) VALUES (?, ?, ?, ?, ?)");
             $stmtCo->execute([$newUserId, $company_name, $industry, $address, $phone]);
         }
@@ -44,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['email']   = $email;
         $_SESSION['role']    = $role;
 
-        header("Location: " . ($role === 'company' ? "../rh/rh.php" : "../clients viewE/clientsE.php"));
+        header("Location: " . ($role === 'company' ? "../home admin/home.php" : "../clienthome/clienthome.php"));
         exit();
 
     } catch (PDOException $e) {
@@ -66,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="container">
     <h2>Create Account</h2>
 
-    <form action="#" method="post">
+    <form action="register.php" method="post">
         <input type="email" name="email" placeholder="Email Address" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="password_confirm" placeholder="Confirm Password" required>
@@ -113,3 +114,4 @@ function checkRole() {
 
 </body>
 </html>
+
