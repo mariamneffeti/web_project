@@ -30,6 +30,8 @@ $employee = $stmt->fetch(PDO::FETCH_ASSOC);
   <input type="email" name="email" value="<?= $employee['email'] ?>" class="form-control mb-2">
   <input type="text" name="department" value="<?= $employee['department'] ?>" class="form-control mb-2">
   <input type="text" name="position" value="<?= $employee['position'] ?>" class="form-control mb-2">
+  <input type="url" name="cv" value="<?= $employee['cv_path'] ?>" class="form-control mb-2">
+  
 
   <button class="btn btn-success">Update</button>
 </form>

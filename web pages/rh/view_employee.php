@@ -31,6 +31,7 @@ if (!$employee) {
   <li class="list-group-item"><strong>Email:</strong> <?= $employee['email'] ?></li>
   <li class="list-group-item"><strong>Department:</strong> <?= $employee['department'] ?></li>
   <li class="list-group-item"><strong>Position:</strong> <?= $employee['position'] ?></li>
+  <li class="list-group-item"><strong>CV:</strong> <?= $employee['cv_path'] ?></li>
 </ul>
 
 <a href="rh.php" class="btn btn-secondary mt-3">Back</a>
