@@ -10,9 +10,9 @@ fetch("/api/get_articles.php")
     }
 
     grid.innerHTML = articles.map(a => {
-      const date = a.date ? new Date(a.date).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '';
-      const img  = a.image
-        ? `<img src="${a.image}" alt="${a.title}" style="width:100%;height:180px;object-fit:cover;">`
+      const date = a.ar_date ? new Date(a.ar_date).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '';
+      const img  = a.ar_image
+        ? `<img src="${a.ar_image}" alt="${a.title}" style="width:100%;height:180px;object-fit:cover;">`
         : `<div style="width:100%;height:180px;background:linear-gradient(135deg,#388087,#1B4965);display:flex;align-items:center;justify-content:center;">
              <i class="bi bi-newspaper text-white" style="font-size:2.5rem;opacity:0.5;"></i>
            </div>`;
@@ -31,7 +31,7 @@ fetch("/api/get_articles.php")
       </div>
       <h6 class="fw-bold mb-2" style="color:#111;font-family:Montserrat;line-height:1.4;">${a.title || 'Untitled'}</h6>
       <p style="color:#333;font-size:0.875rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;" class="flex-grow-1 mb-3">
-        ${a.description || ''}
+        ${a.ar_description || ''}
       </p>
       <div class="d-flex justify-content-between align-items-center mt-auto pt-2" style="border-top:1px solid #f0f0f0;">
         <span style="font-size:0.875rem;color:#555;"><i class="bi bi-building me-1"></i>${a.company_name}</span>

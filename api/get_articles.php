@@ -5,8 +5,8 @@ header('Content-Type: application/json');
 try {
     $db = getDB();
     $stmt = $db->query("
-        SELECT a.id, a.title, a.category, a.date, a.description, 
-               a.link, a.image, a.author_name, c.company_name
+        SELECT a.id, a.title, a.category, a.ar_date, a.ar_description, 
+               a.link, a.ar_image, a.author_name, c.company_name
         FROM articles a
         JOIN companies c ON a.company_id = c.id
         ORDER BY a.created_at DESC
