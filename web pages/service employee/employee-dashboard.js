@@ -306,10 +306,8 @@ function addRow() {
             <input type="number" class="form-control form-control-sm text-center item-qty" value="1" min="1" onchange="updateTotals()">
         </td>
         <td>
-            <div class="input-group input-group-sm">
-                <span class="input-group-text bg-transparent border-0 text-muted small">$</span>
-                <input type="number" class="form-control form-control-sm border-0 bg-light price-input" value="0" step="0.01" onchange="updateTotals()">
-            </div>
+            <span class="text-muted small">$</span>
+            <span class="price-input fw-semibold">0</span>
         </td>
         <td class="fw-bold text-dark row-total">$0.00</td>
         <td class="text-end pe-4">
@@ -324,7 +322,7 @@ function handleItemSelect(select) {
     const option = select.options[select.selectedIndex];
     const price = option.getAttribute('data-price') || 0;
     const row = select.closest('tr');
-    row.querySelector('.price-input').value = price;
+    row.querySelector('.price-input').textContent = price;
     updateTotals();
 }
 
@@ -332,7 +330,7 @@ function updateTotals() {
     let subtotal = 0;
     document.querySelectorAll('#services-tbody tr').forEach(row => {
         const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-        const price = parseFloat(row.querySelector('.price-input').value) || 0;
+        const price = parseFloat(row.querySelector('.price-input').textContent) || 0;
         const total = qty * price;
         row.querySelector('.row-total').innerText = formatCurrency(total);
         subtotal += total;
@@ -374,7 +372,7 @@ async function processTransaction() {
         if (!id) return;
 
         const qty = parseInt(row.querySelector('.item-qty').value) || 0;
-        const price = parseFloat(row.querySelector('.price-input').value) || 0;
+        const price = parseFloat(row.querySelector('.price-input').textContent) || 0;
         const name = select.options[select.selectedIndex].getAttribute('data-name');
         const type = row.getAttribute('data-type');
 
