@@ -4,6 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const employeeTableBody = document.getElementById('employeeTableBody');
     const searchInput = document.getElementById('searchInput');
 
+    document.getElementById('cvFileInput').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+        alert('File too large (max 5MB).');
+        this.value = '';
+        return;
+    }
+
+    document.getElementById('cvFileName').textContent = file.name;
+    document.getElementById('cvPreview').style.display = 'block';
+    });
+
     employeeForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
@@ -27,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             alert(data.message);
-
             if (data.status === 'success') {
                 location.reload();
             }
