@@ -31,10 +31,6 @@
 
 </body>
 <script src="/js libs/chart.js"></script>
-<script>
-    window.APP_CONFIG = {
-        apiUrl: "<?php echo $_ENV['API_URL'] ?? ''; ?>"
-    };
-</script>
+<script src="/config/get_webhook.js.php"></script>
 <script src=<?php echo $pagePath ?>></script>
 </html>

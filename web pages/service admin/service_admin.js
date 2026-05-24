@@ -6,7 +6,6 @@ let visibleCount  = ROWS_STEP;
 let allClients    = [];   
 let allEmployees  = [];  
 
-const ZAPIER_WEBHOOK = window.APP_CONFIG.apiUrl;
 document.addEventListener("DOMContentLoaded", () => {
   loadMeetings();
   loadClients();
@@ -241,7 +240,8 @@ async function updateMeeting() {
     });
     const data = await res.json();
     if (data.success) {
-      status_el.innerHTML = `<div class="alert alert-success py-2">Meeting updated! Reschedule emails sent.</div>`;
+      if (status != "done") {
+      status_el.innerHTML = `<div class="alert alert-success py-2">Meeting updated! Reschedule emails sent.</div>`;}
       setTimeout(() => {
         bootstrap.Modal.getInstance(document.getElementById("rescheduleModal")).hide();
         status_el.innerHTML = "";
@@ -366,7 +366,7 @@ function fillClientInfo() {
 
 // sending emails to selected clients
 async function sendClientEmail() {
-  const sel     = document.getElementById("clientSelect");
+  const sel      = document.getElementById("clientSelect");
   const selected = Array.from(sel.selectedOptions);
   const subject  = document.getElementById("mailSubject").value.trim();
   const body     = document.getElementById("mailPrompt").value.trim();
@@ -382,6 +382,7 @@ async function sendClientEmail() {
   const sends = selected.map(c =>
     fetch(ZAPIER_WEBHOOK, {
       method: "POST",
+      headers: { "Content-Type": "application/json" }, 
       body: JSON.stringify({ to: c.value, clientName: c.text, subject, body })
     })
   );
